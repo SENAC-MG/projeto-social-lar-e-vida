@@ -1,101 +1,147 @@
 import Image from "next/image";
-import { Mail, Lock } from "lucide-react";
+import { Mail, Lock, Eye } from "lucide-react";
+
 export default function Home() {
   return (
     <main className="flex min-h-screen w-full font-sans">
-      <div className="relative hidden w-1/2 lg:block">
+      {/* LADO ESQUERDO: Imagem e Texto Informativo */}
+      <div className="relative hidden w-[55%] lg:block">
         <Image
           src="/imglogin.png"
-          alt="Background Casa do Vovô"
+          alt="Background Lar e Vida"
           fill
           priority
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="absolute left-25 bottom-0 top-0 right-0 p-6">
-          <Image
-            src={"/logoLareVida.png"}
-            alt="Logo Lar e Vida"
-            width={50}
-            height={10}
-          />
-          <h2 className="text-xl font-bold text-white">Lar e Vida</h2>
-          <p className="text-gray-300">
-            Cuidando de cada história com amor, <br /> respeito e a dedicação
-            que a vida merece.
-          </p>
+
+        {/* Overlay degradê */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50" />
+
+        {/* Container de Conteúdo */}
+        <div className="absolute inset-0 flex flex-col p-16 text-white">
+          {/* 1. Logo no Topo */}
+          <div className="flex items-center gap-4">
+            <div className="relative h-18 w-18 rounded-full bg-white/10 p-2 backdrop-blur-md border border-white/20">
+              <Image
+                src="/logoLar&Vida.png"
+                alt="Logo Lar e Vida"
+                fill
+                className="object-contain p-0"
+              />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold leading-tight">Lar e Vida</h2>
+              <p className="text-sm text-[#F97316] font-medium uppercase tracking-wider">
+                Sistema de Doações
+              </p>
+            </div>
+          </div>
+
+          {/* 2. Texto Centralizado (O segredo está no flex-1 e justify-center) */}
+          <div className="flex-1 flex flex-col justify-center">
+            <div className="mb-6 h-1.5 w-16 bg-[#F97316]" />
+            <h3 className="text-6xl font-serif font-medium leading-[1.1] mb-6 drop-shadow-lg">
+              Ajudando quem <br />
+              <span className="text-[#F97316]">sempre cuidou de nós</span>
+            </h3>
+            <p className="max-w-md text-xl text-gray-100 leading-relaxed drop-shadow-md">
+              Gerencie as doações com facilidade. Nossa plataforma foi criada
+              para gerenciar sua doação de bom coração aos nossos pacientes.
+            </p>
+          </div>
+
+          {/* 3. Rodapé Vazio (opcional) para equilibrar o flex */}
+          <div className="h-14" />
         </div>
       </div>
 
-      {/* LADO DIREITO */}
-      <div className="flex w-full flex-col items-center justify-center bg-white px-8 lg:w-1/2 xl:px-24">
-        {/* O max-w-md aqui agora controla a largura de tudo dentro dele */}
+      {/* LADO DIREITO: Formulário de Login */}
+      <div className="flex w-full flex-col items-center justify-center bg-white px-12 lg:w-[45%]">
         <div className="w-full max-w-md">
-          <div className="mb-8">
-            <div className="mb-4 h-1 w-12 bg-[#F97316]" />
-            <h1 className="text-4xl font-serif font-bold text-gray-900">
-              Bem-vindo
-            </h1>
+          {/* Header */}
+          <div className="mb-10">
+            <div className="mb-4 h-1.5 w-14 bg-[#F97316]" />
+            <h1 className="text-4xl font-bold text-gray-900">Bem-vindo</h1>
             <p className="mt-2 text-gray-500">
               Acesse sua conta para continuar cuidando de suas doações.
             </p>
           </div>
 
+          {/* Formulário */}
           <form className="space-y-6">
-            {/* E-mail */}
-            <div className="flex flex-col gap-1 w-full">
+            <div className="space-y-1.5">
               <label className="text-sm font-medium text-gray-700">
                 E-mail
               </label>
               <div className="relative flex items-center">
-                <div className="absolute left-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
-                </div>
+                <Mail className="absolute left-4 h-5 w-5 text-gray-400" />
                 <input
                   type="email"
                   placeholder="seu@gmail.com"
-                  className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-3 text-gray-600 outline-none transition-all focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316]"
+                  className="w-full text-black rounded-xl border border-gray-300 py-3.5 pl-12 pr-4 outline-none focus:border-[#F97316] transition-all"
                 />
               </div>
             </div>
 
-            {/* Senha */}
-            <div className="flex flex-col gap-1 w-full">
+            <div className="space-y-1.5">
               <label className="text-sm font-medium text-gray-700">Senha</label>
               <div className="relative flex items-center">
-                <div className="absolute left-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
+                <Lock className="absolute left-4 h-5 w-5 text-gray-400" />
                 <input
                   type="password"
-                  placeholder="********"
-                  className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-3 text-gray-600 outline-none transition-all focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316]"
+                  placeholder="**********"
+                  className="w-full text-black rounded-xl border border-gray-300 py-3.5 pl-12 pr-12 outline-none focus:border-[#F97316] transition-all"
                 />
+                <Eye className="absolute right-4 h-5 w-5 text-gray-400 cursor-pointer" />
               </div>
             </div>
 
-            {/* Botão agora alinhado */}
-            <button className="w-full rounded-lg bg-[#F97316] py-3 font-bold text-white transition-colors hover:bg-[#ea580c] shadow-lg shadow-orange-200">
+            <div className="flex items-center justify-between text-sm">
+              <label className="flex items-center gap-2 text-gray-500 cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="rounded border-gray-300 accent-[#F97316]"
+                />
+                Lembrar-me
+              </label>
+              <a
+                href="#"
+                className="text-[#F97316] font-medium hover:underline"
+              >
+                Esqueci minha senha
+              </a>
+            </div>
+
+            <button className="w-full rounded-xl bg-[#F97316] py-4 font-bold text-white shadow-lg shadow-orange-200 hover:bg-[#ea580c] transition-all">
               Entrar no Sistema
             </button>
           </form>
 
-          {/* Depoimento */}
-          <div className="mt-12 rounded-xl bg-gray-50 p-6 border border-gray-100">
-            <span className="text-4xl text-[#F97316] font-serif">"</span>
-            <p className="text-sm italic text-gray-600 -mt-4">
+          <p className="mt-6 text-center text-sm text-gray-500">
+            Precisa de ajuda?{" "}
+            <a href="#" className="text-[#F97316] font-bold">
+              Fale com o suporte
+            </a>
+          </p>
+
+          {/* Card de Depoimento */}
+          <div className="mt-12 rounded-2xl bg-gray-50 p-6 border border-gray-100">
+            <span className="text-4xl text-[#F97316] font-serif font-bold italic">
+              “
+            </span>
+            <p className="text-xs italic text-gray-500 leading-relaxed -mt-2">
               O sistema mudou completamente a forma como gerenciamos nossas
               doações. Tudo ficou mais organizado e a ajuda a nossos residentes
               aumentou.
             </p>
             <div className="mt-4 flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-gray-300 overflow-hidden">
-                {/* Aqui você pode colocar a foto do Carlos dps */}
+              <div className="h-10 w-10 rounded-full bg-gray-300 overflow-hidden relative">
+                {/* <Image src="/avatar-carlos.png" fill className="object-cover" /> */}
               </div>
               <div>
-                <p className="text-xs font-bold text-black">Carlos</p>
-                <p className="text-[10px] text-gray-500">
-                  Diretor - Casa do Vovô
+                <p className="text-xs font-bold text-gray-900">Carlos</p>
+                <p className="text-[10px] text-gray-400">
+                  Diretor - Lar e Vida
                 </p>
               </div>
             </div>
