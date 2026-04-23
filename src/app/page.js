@@ -16,7 +16,7 @@ export default function Home() {
           <Image
             src={"/logoLareVida.png"}
             alt="Logo Lar e Vida"
-            width={80}
+            width={50}
             height={10}
           />
           <h2 className="text-xl font-bold text-white">Lar e Vida</h2>
