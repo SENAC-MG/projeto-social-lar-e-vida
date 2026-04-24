@@ -12,13 +12,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-    title: "Lar e Vida - Dashboard",
-    description: "Hospital de Câncer Lar e Vida - Dashboard de Upload",
+    title: "Lar e Vida",
+    description: "Hospital de Câncer Lar e Vida",
 };
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable}`}>
+        <html lang="pt-BR" className={`h-full ${geistSans.variable} ${geistMono.variable}`}>
             <body className="min-h-full flex flex-col antialiased">
                 {children}
             </body>

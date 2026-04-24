@@ -12,12 +12,15 @@ import {
     AlertCircle,
 } from "lucide-react";
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
 export default function DashboardPage() {
     const [darkMode, setDarkMode] = useState(false);
     const [files, setFiles] = useState([]);
     const [isDragging, setIsDragging] = useState(false);
     const [uploadProgress, setUploadProgress] = useState({});
     const fileInputRef = useRef(null);
+    const intervalsRef = useRef({});
 
     // Load theme preference from localStorage on mount
     useEffect(() => {
@@ -26,6 +29,10 @@ export default function DashboardPage() {
             setDarkMode(true);
             document.documentElement.classList.add("dark");
         }
+        // Clear all intervals on unmount
+        return () => {
+            Object.values(intervalsRef.current).forEach(clearInterval);
+        };
     }, []);
 
     // Toggle theme
@@ -43,20 +50,26 @@ export default function DashboardPage() {
     // Handle file selection
     const handleFiles = (newFiles) => {
         const fileArray = Array.from(newFiles);
-        const newFileObjects = fileArray.map((file) => ({
-            id: `${file.name}-${Date.now()}-${Math.random()}`,
-            file,
-            name: file.name,
-            size: formatFileSize(file.size),
-            type: file.type || "unknown",
-            status: "pending", // pending, uploading, completed, error
-        }));
+        const newFileObjects = fileArray.map((file) => {
+            const oversized = file.size > MAX_FILE_SIZE;
+            return {
+                id: `${file.name}-${Date.now()}-${Math.random()}`,
+                file,
+                name: file.name,
+                size: formatFileSize(file.size),
+                type: file.type || "unknown",
+                status: oversized ? "error" : "pending",
+                error: oversized ? "Arquivo excede o limite de 10MB" : null,
+            };
+        });
         setFiles((prev) => [...prev, ...newFileObjects]);
 
-        // Simulate upload for each file
-        newFileObjects.forEach((fileObj) => {
-            simulateUpload(fileObj.id);
-        });
+        // Simulate upload for each valid file
+        newFileObjects
+            .filter((fileObj) => fileObj.status !== "error")
+            .forEach((fileObj) => {
+                simulateUpload(fileObj.id);
+            });
     };
 
     // Simulate file upload with progress
@@ -71,6 +84,7 @@ export default function DashboardPage() {
             if (progress >= 100) {
                 progress = 100;
                 clearInterval(interval);
+                delete intervalsRef.current[fileId];
                 setFiles((prev) =>
                     prev.map((f) =>
                         f.id === fileId ? { ...f, status: "completed" } : f
@@ -85,10 +99,15 @@ export default function DashboardPage() {
                 setUploadProgress((prev) => ({ ...prev, [fileId]: progress }));
             }
         }, 200);
+        intervalsRef.current[fileId] = interval;
     };
 
     // Remove file from list
     const removeFile = (fileId) => {
+        if (intervalsRef.current[fileId]) {
+            clearInterval(intervalsRef.current[fileId]);
+            delete intervalsRef.current[fileId];
+        }
         setFiles((prev) => prev.filter((f) => f.id !== fileId));
         setUploadProgress((prev) => {
             const newProgress = { ...prev };
@@ -185,7 +204,7 @@ export default function DashboardPage() {
                         onClick={toggleTheme}
                         className="p-2 rounded-lg bg-card-bg border border-card-border hover:bg-upload-hover transition-colors"
                         aria-label={
-                            darkMode ? "Ativar modo claro" : "Ativar mode escuro"
+                            darkMode ? "Ativar modo claro" : "Ativar modo escuro"
                         }
                     >
                         {darkMode ? (
@@ -205,6 +224,15 @@ export default function DashboardPage() {
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                     onClick={() => fileInputRef.current?.click()}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            fileInputRef.current?.click();
+                        }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Área de upload. Arraste e solte arquivos aqui ou pressione Enter para selecionar arquivos"
                     className={`
             relative border-2 border-dashed rounded-xl p-12 text-center cursor-pointer
             transition-all duration-300 ease-in-out
@@ -257,6 +285,8 @@ export default function DashboardPage() {
                             </h2>
                             <button
                                 onClick={() => {
+                                    Object.values(intervalsRef.current).forEach(clearInterval);
+                                    intervalsRef.current = {};
                                     setFiles([]);
                                     setUploadProgress({});
                                 }}
@@ -298,6 +328,9 @@ export default function DashboardPage() {
                                             <div className="flex items-center justify-between mt-1">
                                                 <p className="text-sm text-foreground/50">
                                                     {fileObj.size}
+                                                    {fileObj.error && (
+                                                        <span className="ml-2 text-red-500">{fileObj.error}</span>
+                                                    )}
                                                 </p>
 
                                                 {/* Progress Bar */}

@@ -12,6 +12,20 @@
   --upload-hover: #e5e7eb;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --card-bg: #1f1f1f;
+    --card-border: #333333;
+    --primary: #60a5fa;
+    --primary-hover: #93c5fd;
+    --upload-area: #1a1a1a;
+    --upload-border: #404040;
+    --upload-hover: #2a2a2a;
+  }
+}
+
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
