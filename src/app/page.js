@@ -28,7 +28,7 @@ export default function Home() {
                         <div>
                             <h2 className="text-xl font-bold leading-tight">Lar e Vida</h2>
                             <p className="text-sm text-[#F97316] font-medium uppercase tracking-wider">
-                                Sistema de Doações
+                                Sistema de Gestão Hospitalar com Analytics Integrado
                             </p>
                         </div>
                     </div>
@@ -36,12 +36,13 @@ export default function Home() {
                     <div className="flex-1 flex flex-col justify-center">
                         <div className="mb-6 h-1.5 w-16 bg-[#F97316]" />
                         <h3 className="text-6xl font-serif font-medium leading-[1.1] mb-6 drop-shadow-lg">
-                            Ajudando quem <br />
-                            <span className="text-[#F97316]">sempre cuidou de nós</span>
+                            Um futuro mais <br />
+                            <span className="text-[#F97316]">
+                                organizado
+                            </span>
                         </h3>
                         <p className="max-w-md text-xl text-gray-100 leading-relaxed drop-shadow-md">
-                            Gerencie as doações com facilidade. Nossa plataforma foi criada
-                            para gerenciar sua doação de bom coração aos nossos pacientes.
+                            O Lar e Vida é um sistema de gestão hospitalar desenvolvido para otimizar o gerenciamento de doações, voluntariado e recursos, garantindo que cada contribuição faça a maior diferença possível para nossos residentes.
                         </p>
                     </div>
 
