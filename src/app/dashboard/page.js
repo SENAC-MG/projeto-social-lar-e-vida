@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 import { useState, useRef, useEffect } from "react";
 import {
@@ -184,13 +185,18 @@ export default function DashboardPage() {
 
     return (
         <div className="min-h-screen bg-background transition-colors duration-300">
-            {/* Header */}
+
             <header className="border-b border-card-border bg-card-bg sticky top-0 z-10">
                 <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-                            <Upload className="w-6 h-6 text-white" />
-                        </div>
+                        <div className="relative h-18 w-18 rounded-full bg-white/10 p-2 backdrop-blur-md border border-white/20">
+                                                    <Image
+                                                        src="/logo.png"
+                                                        alt="Logo Lar e Vida"
+                                                        fill
+                                                        className="object-contain p-0"
+                                                    />
+                                                </div>
                         <div>
                             <h1 className="text-xl font-bold text-foreground">Lar e Vida</h1>
                             <p className="text-sm text-foreground/60">
