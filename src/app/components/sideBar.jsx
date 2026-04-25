@@ -1,5 +1,4 @@
 "use client";
-
 import { LayoutGrid, Users, Package, Wrench, Sun } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -43,7 +42,7 @@ export default function Sidebar() {
               href={item.path}
               className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-colors ${
                 isActive
-                  ? "bg-orange-600 text-white"
+                  ? "bg-[#F97316] text-white"
                   : "bg-transparent text-gray-400 hover:text-white hover:bg-white/10"
               }`}
             >
