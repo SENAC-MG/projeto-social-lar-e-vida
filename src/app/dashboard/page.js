@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Sidebar from "../components/sideBar";
 
 import { useState, useRef, useEffect } from "react";
 import {
@@ -184,7 +185,9 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background transition-colors duration-300">
+    <div className="min-h-screen bg-background transition-colors duration-300 flex">
+      <Sidebar />
+      <div className="flex-1 flex flex-col">
       <header className="border-b border-card-border bg-card-bg sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -379,6 +382,7 @@ export default function DashboardPage() {
           </div>
         )}
       </main>
+      </div>
     </div>
   );
 }
