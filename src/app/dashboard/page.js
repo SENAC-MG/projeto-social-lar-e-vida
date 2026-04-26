@@ -24,20 +24,17 @@ export default function DashboardPage() {
   const fileInputRef = useRef(null);
   const intervalsRef = useRef({});
 
-  // Load theme preference from localStorage on mount
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
       setDarkMode(true);
       document.documentElement.classList.add("dark");
     }
-    // Clear all intervals on unmount
     return () => {
       Object.values(intervalsRef.current).forEach(clearInterval);
     };
   }, []);
 
-  // Toggle theme
   const toggleTheme = () => {
     const newMode = !darkMode;
     setDarkMode(newMode);
@@ -49,7 +46,6 @@ export default function DashboardPage() {
     }
   };
 
-  // Handle file selection
   const handleFiles = (newFiles) => {
     const fileArray = Array.from(newFiles);
     const newFileObjects = fileArray.map((file) => {
@@ -66,7 +62,6 @@ export default function DashboardPage() {
     });
     setFiles((prev) => [...prev, ...newFileObjects]);
 
-    // Simulate upload for each valid file
     newFileObjects
       .filter((fileObj) => fileObj.status !== "error")
       .forEach((fileObj) => {
@@ -74,7 +69,6 @@ export default function DashboardPage() {
       });
   };
 
-  // Simulate file upload with progress
   const simulateUpload = (fileId) => {
     setFiles((prev) =>
       prev.map((f) => (f.id === fileId ? { ...f, status: "uploading" } : f)),
@@ -104,7 +98,6 @@ export default function DashboardPage() {
     intervalsRef.current[fileId] = interval;
   };
 
-  // Remove file from list
   const removeFile = (fileId) => {
     if (intervalsRef.current[fileId]) {
       clearInterval(intervalsRef.current[fileId]);
@@ -118,7 +111,6 @@ export default function DashboardPage() {
     });
   };
 
-  // Format file size
   const formatFileSize = (bytes) => {
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
@@ -127,7 +119,6 @@ export default function DashboardPage() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
-  // Handle drag events
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
@@ -146,7 +137,6 @@ export default function DashboardPage() {
     }
   };
 
-  // Get status icon and color
   const getStatusInfo = (status) => {
     switch (status) {
       case "pending":
@@ -187,59 +177,46 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-background transition-colors duration-300 flex">
       <Sidebar />
-      <div className="flex-1 flex flex-col">
-      <header className="border-b border-card-border bg-card-bg sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="relative h-18 w-18 rounded-full bg-white/10 p-2 backdrop-blur-md border border-white/20">
-              <Image
-                src="/logo.png"
-                alt="Logo Lar e Vida"
-                fill
-                className="object-contain p-0"
-              />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-foreground">Lar e Vida</h1>
-              <p className="text-sm text-foreground/60">
-                Dashboard de Upload de Arquivos
-              </p>
+      <div className="flex-1 flex flex-col bg-gray-950">
+        <header className="border-b bg-[rgb(10,10,10)] border-card-border sticky top-0 z-8">
+          <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="relative h-18 w-18 rounded-full bg-white/10 p-2 backdrop-blur-md border border-white/20">
+                <Image
+                  src="/logo.png"
+                  alt="Logo Lar e Vida"
+                  fill
+                  className="object-contain p-0"
+                />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-foreground">
+                  Lar e Vida
+                </h1>
+                <p className="text-sm text-foreground/60">
+                  Dashboard de Upload de Arquivos
+                </p>
+              </div>
             </div>
           </div>
+        </header>
 
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-lg bg-card-bg border border-card-border hover:bg-upload-hover transition-colors"
-            aria-label={darkMode ? "Ativar modo claro" : "Ativar modo escuro"}
-          >
-            {darkMode ? (
-              <Sun className="w-5 h-5 text-foreground" />
-            ) : (
-              <Moon className="w-5 h-5 text-foreground" />
-            )}
-          </button>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        {/* Upload Area */}
-        <div
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-          onClick={() => fileInputRef.current?.click()}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              fileInputRef.current?.click();
-            }
-          }}
-          role="button"
-          tabIndex={0}
-          aria-label="Área de upload. Arraste e solte arquivos aqui ou pressione Enter para selecionar arquivos"
-          className={`
+        <main className="max-w-6xl mx-auto px-4 py-8">
+          <div
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onClick={() => fileInputRef.current?.click()}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                fileInputRef.current?.click();
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label="Área de upload. Arraste e solte arquivos aqui ou pressione Enter para selecionar arquivos"
+            className={`
             relative border-2 border-dashed rounded-xl p-12 text-center cursor-pointer
             transition-all duration-300 ease-in-out
             ${
@@ -248,140 +225,137 @@ export default function DashboardPage() {
                 : "border-upload-border bg-upload-area hover:border-primary hover:bg-upload-hover"
             }
           `}
-        >
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            onChange={(e) => handleFiles(e.target.files)}
-            className="hidden"
-          />
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              onChange={(e) => handleFiles(e.target.files)}
+              className="hidden"
+            />
 
-          <div className="flex flex-col items-center gap-4">
-            <div
-              className={`w-16 h-16 rounded-full flex items-center justify-center transition-colors ${
-                isDragging ? "bg-primary/20" : "bg-card-bg"
-              }`}
-            >
-              <Upload
-                className={`w-8 h-8 ${
-                  isDragging ? "text-primary" : "text-foreground/50"
+            <div className="flex flex-col items-center gap-4">
+              <div
+                className={`w-16 h-16 rounded-full flex items-center justify-center transition-colors ${
+                  isDragging ? "bg-primary/20" : "bg-card-bg"
                 }`}
-              />
-            </div>
-            <div>
-              <p className="text-lg font-medium text-foreground">
-                {isDragging
-                  ? "Solte os arquivos aqui"
-                  : "Arraste e solte arquivos aqui"}
-              </p>
-              <p className="text-sm text-foreground/60 mt-1">
-                ou clique para selecionar arquivos
-              </p>
-            </div>
-            <p className="text-xs text-foreground/40">
-              Suporta todos os tipos de arquivos • Tamanho máximo: 10MB
-            </p>
-          </div>
-        </div>
-
-        {/* Files List */}
-        {files.length > 0 && (
-          <div className="mt-8">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-foreground">
-                Arquivos ({files.length})
-              </h2>
-              <button
-                onClick={() => {
-                  Object.values(intervalsRef.current).forEach(clearInterval);
-                  intervalsRef.current = {};
-                  setFiles([]);
-                  setUploadProgress({});
-                }}
-                className="text-sm text-red-500 hover:text-red-600 flex items-center gap-1 transition-colors"
               >
-                <Trash2 className="w-4 h-4" />
-                Limpar tudo
-              </button>
+                <Upload
+                  className={`w-8 h-8 ${
+                    isDragging ? "text-primary" : "text-foreground/50"
+                  }`}
+                />
+              </div>
+              <div>
+                <p className="text-lg font-medium text-foreground">
+                  {isDragging
+                    ? "Solte os arquivos aqui"
+                    : "Arraste e solte arquivos aqui"}
+                </p>
+                <p className="text-sm  mt-1">
+                  ou{" "}
+                  <span className="text-[#F97316] font-medium">
+                    clique para selecionar
+                  </span>
+                </p>
+              </div>
+              <p className="text-xs text-foreground/40">
+                Suporta todos os tipos de arquivos • Tamanho máximo: 10MB
+              </p>
             </div>
+          </div>
 
-            <div className="space-y-3">
-              {files.map((fileObj) => {
-                const statusInfo = getStatusInfo(fileObj.status);
-                const progress = uploadProgress[fileObj.id] || 0;
+          {files.length > 0 && (
+            <div className="mt-8">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-foreground">
+                  Arquivos ({files.length})
+                </h2>
+                <button
+                  onClick={() => {
+                    Object.values(intervalsRef.current).forEach(clearInterval);
+                    intervalsRef.current = {};
+                    setFiles([]);
+                    setUploadProgress({});
+                  }}
+                  className="text-sm text-red-500 hover:text-red-600 flex items-center gap-1 transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Limpar tudo
+                </button>
+              </div>
 
-                return (
-                  <div
-                    key={fileObj.id}
-                    className="flex items-center gap-4 p-4 rounded-lg bg-card-bg border border-card-border transition-all hover:border-primary/50"
-                  >
-                    {/* File Icon */}
-                    <div className="flex-shrink-0">{statusInfo.icon}</div>
+              <div className="space-y-3">
+                {files.map((fileObj) => {
+                  const statusInfo = getStatusInfo(fileObj.status);
+                  const progress = uploadProgress[fileObj.id] || 0;
 
-                    {/* File Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <p className="font-medium text-foreground truncate pr-4">
-                          {fileObj.name}
-                        </p>
-                        <span
-                          className={`text-xs flex-shrink-0 ${statusInfo.color}`}
-                        >
-                          {statusInfo.label}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center justify-between mt-1">
-                        <p className="text-sm text-foreground/50">
-                          {fileObj.size}
-                          {fileObj.error && (
-                            <span className="ml-2 text-red-500">
-                              {fileObj.error}
-                            </span>
-                          )}
-                        </p>
-
-                        {/* Progress Bar */}
-                        {fileObj.status === "uploading" && (
-                          <div className="w-32 h-1.5 bg-card-border rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-primary transition-all duration-200"
-                              style={{ width: `${progress}%` }}
-                            />
-                          </div>
-                        )}
-
-                        {fileObj.status === "completed" && (
-                          <span className="text-xs text-green-500">100%</span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Remove Button */}
-                    <button
-                      onClick={() => removeFile(fileObj.id)}
-                      className="flex-shrink-0 p-1 rounded hover:bg-upload-hover text-foreground/40 hover:text-red-500 transition-colors"
-                      aria-label="Remover arquivo"
+                  return (
+                    <div
+                      key={fileObj.id}
+                      className="flex items-center gap-4 p-4 rounded-lg bg-card-bg border border-card-border transition-all hover:border-primary/50"
                     >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
+                      <div className="flex-shrink-0">{statusInfo.icon}</div>
 
-        {/* Empty State */}
-        {files.length === 0 && (
-          <div className="mt-12 text-center">
-            <p className="text-foreground/40">
-              Nenhum arquivo enviado ainda. Comece fazendo upload de arquivos.
-            </p>
-          </div>
-        )}
-      </main>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <p className="font-medium text-foreground truncate pr-4">
+                            {fileObj.name}
+                          </p>
+                          <span
+                            className={`text-xs flex-shrink-0 ${statusInfo.color}`}
+                          >
+                            {statusInfo.label}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center justify-between mt-1">
+                          <p className="text-sm text-foreground/50">
+                            {fileObj.size}
+                            {fileObj.error && (
+                              <span className="ml-2 text-red-500">
+                                {fileObj.error}
+                              </span>
+                            )}
+                          </p>
+
+                          {fileObj.status === "uploading" && (
+                            <div className="w-32 h-1.5 bg-card-border rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-primary transition-all duration-200"
+                                style={{ width: `${progress}%` }}
+                              />
+                            </div>
+                          )}
+
+                          {fileObj.status === "completed" && (
+                            <span className="text-xs text-green-500">100%</span>
+                          )}
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => removeFile(fileObj.id)}
+                        className="flex-shrink-0 p-1 rounded hover:bg-upload-hover text-foreground/40 hover:text-red-500 transition-colors"
+                        aria-label="Remover arquivo"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {files.length === 0 && (
+            <div className="mt-12 text-center">
+              <p className="text-foreground/40">
+                Nenhum arquivo enviado ainda. Comece fazendo upload de arquivos.
+              </p>
+            </div>
+          )}
+        </main>
       </div>
     </div>
   );
