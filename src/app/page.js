@@ -38,7 +38,7 @@ export default function Home() {
 
         <div className="absolute inset-0 flex flex-col p-16 text-white">
           <div className="flex items-center gap-4">
-            <div className="relative h-18 w-18 rounded-full bg-white/10 p-2 backdrop-blur-md border border-white/20">
+            <div className="relative h-18 w-18 rounded-full bg-white/10 flex p-2 backdrop-blur-md border border-white/20">
               <Image
                 src="/logo.png"
                 alt="Logo Lar e Vida"

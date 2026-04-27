@@ -34,7 +34,6 @@ export default function ModalNovoEmprestimo({ onClose }) {
       onClick={handleOverlayClick}
     >
       <div className="w-full max-w-4xl bg-[#11141d] border border-gray-800 rounded-xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
-        {/* Header */}
         <div className="flex justify-between items-center px-6 py-4 border-b border-gray-800 bg-[#11141d]">
           <h2 className="text-white font-bold text-lg">Novo Empréstimo</h2>
           <button
@@ -47,7 +46,6 @@ export default function ModalNovoEmprestimo({ onClose }) {
         </div>
 
         <form className="p-6 space-y-8 overflow-y-auto max-h-[85vh] custom-scrollbar">
-          {/* Seção: DADOS PESSOAIS */}
           <section>
             <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4">
               Dados Pessoais
@@ -108,8 +106,6 @@ export default function ModalNovoEmprestimo({ onClose }) {
               </div>
             </div>
           </section>
-
-          {/* Seção: MATERIAIS */}
           <section>
             <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4">
               Materiais Emprestados *
@@ -137,8 +133,6 @@ export default function ModalNovoEmprestimo({ onClose }) {
               Selecione ao menos um material
             </p>
           </section>
-
-          {/* Seção: ENDEREÇO */}
           <section>
             <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4">
               Endereço
@@ -192,8 +186,6 @@ export default function ModalNovoEmprestimo({ onClose }) {
               </div>
             </div>
           </section>
-
-          {/* Seção: CONTATO */}
           <section>
             <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4">
               Contato
@@ -221,8 +213,6 @@ export default function ModalNovoEmprestimo({ onClose }) {
               </div>
             </div>
           </section>
-
-          {/* Botões de Ação */}
           <div className="flex gap-3 pt-4 border-t border-gray-800">
             <button
               type="submit"

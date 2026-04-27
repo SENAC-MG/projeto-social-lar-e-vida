@@ -179,7 +179,7 @@ export default function DashboardPage() {
       <Sidebar />
       <div className="flex-1 flex flex-col bg-gray-950">
         <header className="border-b bg-[rgb(10,10,10)] border-card-border sticky top-0 z-8">
-          <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="max-w-6xl px-4 py-4 flex items-center justify-start">
             <div className="flex items-center gap-3">
               <div className="relative h-18 w-18 rounded-full bg-white/10 p-2 backdrop-blur-md border border-white/20">
                 <Image
