@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { X, Save, RotateCcw } from "lucide-react";
 
 export default function ModalNovoServico({ onClose }) {
-  // Estado para os campos de seleção (exemplo: Unidade)
   const [unidadeSelecionada, setUnidadeSelecionada] = useState("");
 
   const unidades = ["Hora", "Dia", "Mês", "Sessão"];
@@ -18,7 +17,6 @@ export default function ModalNovoServico({ onClose }) {
       onClick={handleOverlayClick}
     >
       <div className="w-full max-w-2xl bg-[#11141d] border border-gray-800 rounded-xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
-        {/* Header */}
         <div className="flex justify-between items-center px-6 py-4 border-b border-gray-800 bg-[#11141d]">
           <h2 className="text-white font-bold text-lg">Novo Serviço</h2>
           <button
@@ -32,7 +30,6 @@ export default function ModalNovoServico({ onClose }) {
 
         <form className="p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Tipo de Serviço */}
             <div className="md:col-span-2">
               <label className="block text-gray-400 text-sm mb-2 font-medium">
                 Tipo de Serviço *
@@ -43,8 +40,6 @@ export default function ModalNovoServico({ onClose }) {
                 className="w-full bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] outline-none transition-all"
               />
             </div>
-
-            {/* Duração */}
             <div>
               <label className="block text-gray-400 text-sm mb-2 font-medium">
                 Duração *
@@ -55,8 +50,6 @@ export default function ModalNovoServico({ onClose }) {
                 className="w-full bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-[#F97316] outline-none transition-all"
               />
             </div>
-
-            {/* Valor/Preço (Opcional, mas comum em serviços) */}
             <div>
               <label className="block text-gray-400 text-sm mb-2 font-medium">
                 Valor Sugerido (R$)
@@ -68,8 +61,6 @@ export default function ModalNovoServico({ onClose }) {
               />
             </div>
           </div>
-
-          {/* Unidade de Medida (Estilo Botões Selecionáveis) */}
           <div>
             <label className="block text-gray-400 text-sm mb-3 font-medium">
               Unidade *
@@ -94,8 +85,6 @@ export default function ModalNovoServico({ onClose }) {
               })}
             </div>
           </div>
-
-          {/* Botões de Ação */}
           <div className="flex gap-3 pt-4 border-t border-gray-800">
             <button
               type="submit"
