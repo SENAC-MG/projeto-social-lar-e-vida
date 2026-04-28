@@ -1,384 +1,341 @@
 "use client";
 import Image from "next/image";
-
 import { useState, useRef, useEffect } from "react";
 import {
-  Upload,
-  File,
-  X,
-  Sun,
-  Moon,
-  Trash2,
-  CheckCircle,
-  AlertCircle,
+    Upload,
+    File,
+    X,
+    Sun,
+    Moon,
+    CheckCircle,
+    AlertCircle,
 } from "lucide-react";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 export default function DashboardPage() {
-  const [darkMode, setDarkMode] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [isDragging, setIsDragging] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState({});
-  const fileInputRef = useRef(null);
-  const intervalsRef = useRef({});
+    const [darkMode, setDarkMode] = useState(false);
+    const [files, setFiles] = useState([]);
+    const [uploadProgress, setUploadProgress] = useState({});
+    const [isDragging, setIsDragging] = useState(false);
+    const fileInputRef = useRef(null);
+    const intervalsRef = useRef({});
 
-  // Load theme preference from localStorage on mount
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      setDarkMode(true);
-      document.documentElement.classList.add("dark");
-    }
-    // Clear all intervals on unmount
-    return () => {
-      Object.values(intervalsRef.current).forEach(clearInterval);
+    useEffect(() => {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "dark") {
+            setDarkMode(true);
+            document.documentElement.classList.add("dark");
+        }
+
+        return () => {
+            Object.values(intervalsRef.current).forEach(clearInterval);
+        };
+    }, []);
+
+    const toggleTheme = () => {
+        const newMode = !darkMode;
+        setDarkMode(newMode);
+        localStorage.setItem("theme", newMode ? "dark" : "light");
+
+        document.documentElement.classList.toggle("dark", newMode);
     };
-  }, []);
 
-  // Toggle theme
-  const toggleTheme = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    localStorage.setItem("theme", newMode ? "dark" : "light");
-    if (newMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
+    const handleFiles = (newFiles) => {
+        const fileArray = Array.from(newFiles);
 
-  // Handle file selection
-  const handleFiles = (newFiles) => {
-    const fileArray = Array.from(newFiles);
-    const newFileObjects = fileArray.map((file) => {
-      const oversized = file.size > MAX_FILE_SIZE;
-      return {
-        id: `${file.name}-${Date.now()}-${Math.random()}`,
-        file,
-        name: file.name,
-        size: formatFileSize(file.size),
-        type: file.type || "unknown",
-        status: oversized ? "error" : "pending",
-        error: oversized ? "Arquivo excede o limite de 10MB" : null,
-      };
-    });
-    setFiles((prev) => [...prev, ...newFileObjects]);
+        const newFileObjects = fileArray.map((file) => {
+            const oversized = file.size > MAX_FILE_SIZE;
 
-    // Simulate upload for each valid file
-    newFileObjects
-      .filter((fileObj) => fileObj.status !== "error")
-      .forEach((fileObj) => {
-        simulateUpload(fileObj.id);
-      });
-  };
-
-  // Simulate file upload with progress
-  const simulateUpload = (fileId) => {
-    setFiles((prev) =>
-      prev.map((f) => (f.id === fileId ? { ...f, status: "uploading" } : f)),
-    );
-
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.random() * 30;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        delete intervalsRef.current[fileId];
-        setFiles((prev) =>
-          prev.map((f) =>
-            f.id === fileId ? { ...f, status: "completed" } : f,
-          ),
-        );
-        setUploadProgress((prev) => {
-          const newProgress = { ...prev };
-          delete newProgress[fileId];
-          return newProgress;
+            return {
+                id: `${file.name}-${Date.now()}`,
+                file,
+                name: file.name,
+                size: formatFileSize(file.size),
+                status: oversized ? "error" : "pending",
+                error: oversized ? "Arquivo excede o limite de 10MB" : null,
+            };
         });
-      } else {
-        setUploadProgress((prev) => ({ ...prev, [fileId]: progress }));
-      }
-    }, 200);
-    intervalsRef.current[fileId] = interval;
-  };
 
-  // Remove file from list
-  const removeFile = (fileId) => {
-    if (intervalsRef.current[fileId]) {
-      clearInterval(intervalsRef.current[fileId]);
-      delete intervalsRef.current[fileId];
-    }
-    setFiles((prev) => prev.filter((f) => f.id !== fileId));
-    setUploadProgress((prev) => {
-      const newProgress = { ...prev };
-      delete newProgress[fileId];
-      return newProgress;
-    });
-  };
+        setFiles((prev) => [...prev, ...newFileObjects]);
 
-  // Format file size
-  const formatFileSize = (bytes) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
-  };
+        newFileObjects
+            .filter((f) => f.status !== "error")
+            .forEach((f) => {
+                setTimeout(() => simulateUpload(f.id), 300);
+            });
+    };
 
-  // Handle drag events
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
+    const simulateUpload = (fileId) => {
+        setFiles((prev) =>
+            prev.map((f) =>
+                f.id === fileId ? { ...f, status: "uploading" } : f
+            )
+        );
 
-  const handleDragLeave = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
+        let progress = 0;
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      handleFiles(e.dataTransfer.files);
-    }
-  };
+        const interval = setInterval(() => {
+            progress += 25;
 
-  // Get status icon and color
-  const getStatusInfo = (status) => {
-    switch (status) {
-      case "pending":
-        return {
-          icon: <File className="w-5 h-5 text-gray-400" />,
-          color: "text-gray-500",
-          label: "Pendente",
-        };
-      case "uploading":
-        return {
-          icon: (
-            <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-          ),
-          color: "text-primary",
-          label: "Enviando...",
-        };
-      case "completed":
-        return {
-          icon: <CheckCircle className="w-5 h-5 text-green-500" />,
-          color: "text-green-500",
-          label: "Concluído",
-        };
-      case "error":
-        return {
-          icon: <AlertCircle className="w-5 h-5 text-red-500" />,
-          color: "text-red-500",
-          label: "Erro",
-        };
-      default:
-        return {
-          icon: <File className="w-5 h-5 text-gray-400" />,
-          color: "text-gray-500",
-          label: "Pendente",
-        };
-    }
-  };
+            if (progress >= 100) {
+                clearInterval(interval);
+                delete intervalsRef.current[fileId];
 
-  return (
-    <div className="min-h-screen bg-background transition-colors duration-300">
-      <header className="border-b border-card-border bg-card-bg sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="relative h-18 w-18 rounded-full bg-white/10 p-2 backdrop-blur-md border border-white/20">
-              <Image
-                src="/logo.png"
-                alt="Logo Lar e Vida"
-                fill
-                className="object-contain p-0"
-              />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-foreground">Lar e Vida</h1>
-              <p className="text-sm text-foreground/60">
-                Dashboard de Upload de Arquivos
-              </p>
-            </div>
-          </div>
+                setFiles((prev) =>
+                    prev.map((f) =>
+                        f.id === fileId ? { ...f, status: "completed" } : f
+                    )
+                );
 
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-lg bg-card-bg border border-card-border hover:bg-upload-hover transition-colors"
-            aria-label={darkMode ? "Ativar modo claro" : "Ativar modo escuro"}
-          >
-            {darkMode ? (
-              <Sun className="w-5 h-5 text-foreground" />
-            ) : (
-              <Moon className="w-5 h-5 text-foreground" />
-            )}
-          </button>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        {/* Upload Area */}
-        <div
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-          onClick={() => fileInputRef.current?.click()}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              fileInputRef.current?.click();
+                setUploadProgress((prev) => {
+                    const copy = { ...prev };
+                    delete copy[fileId];
+                    return copy;
+                });
+            } else {
+                setUploadProgress((prev) => ({
+                    ...prev,
+                    [fileId]: progress,
+                }));
             }
-          }}
-          role="button"
-          tabIndex={0}
-          aria-label="Área de upload. Arraste e solte arquivos aqui ou pressione Enter para selecionar arquivos"
-          className={`
-            relative border-2 border-dashed rounded-xl p-12 text-center cursor-pointer
-            transition-all duration-300 ease-in-out
-            ${
-              isDragging
-                ? "border-primary bg-upload-hover scale-[1.02]"
-                : "border-upload-border bg-upload-area hover:border-primary hover:bg-upload-hover"
-            }
-          `}
-        >
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            onChange={(e) => handleFiles(e.target.files)}
-            className="hidden"
-          />
+        }, 200);
 
-          <div className="flex flex-col items-center gap-4">
-            <div
-              className={`w-16 h-16 rounded-full flex items-center justify-center transition-colors ${
-                isDragging ? "bg-primary/20" : "bg-card-bg"
-              }`}
-            >
-              <Upload
-                className={`w-8 h-8 ${
-                  isDragging ? "text-primary" : "text-foreground/50"
-                }`}
-              />
-            </div>
-            <div>
-              <p className="text-lg font-medium text-foreground">
-                {isDragging
-                  ? "Solte os arquivos aqui"
-                  : "Arraste e solte arquivos aqui"}
-              </p>
-              <p className="text-sm text-foreground/60 mt-1">
-                ou clique para selecionar arquivos
-              </p>
-            </div>
-            <p className="text-xs text-foreground/40">
-              Suporta todos os tipos de arquivos • Tamanho máximo: 10MB
-            </p>
-          </div>
-        </div>
+        intervalsRef.current[fileId] = interval;
+    };
 
-        {/* Files List */}
-        {files.length > 0 && (
-          <div className="mt-8">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-foreground">
-                Arquivos ({files.length})
-              </h2>
-              <button
-                onClick={() => {
-                  Object.values(intervalsRef.current).forEach(clearInterval);
-                  intervalsRef.current = {};
-                  setFiles([]);
-                  setUploadProgress({});
-                }}
-                className="text-sm text-red-500 hover:text-red-600 flex items-center gap-1 transition-colors"
-              >
-                <Trash2 className="w-4 h-4" />
-                Limpar tudo
-              </button>
-            </div>
+    const removeFile = (fileId) => {
+        if (intervalsRef.current[fileId]) {
+            clearInterval(intervalsRef.current[fileId]);
+            delete intervalsRef.current[fileId];
+        }
 
-            <div className="space-y-3">
-              {files.map((fileObj) => {
-                const statusInfo = getStatusInfo(fileObj.status);
-                const progress = uploadProgress[fileObj.id] || 0;
+        setFiles((prev) => prev.filter((f) => f.id !== fileId));
+    };
 
-                return (
-                  <div
-                    key={fileObj.id}
-                    className="flex items-center gap-4 p-4 rounded-lg bg-card-bg border border-card-border transition-all hover:border-primary/50"
-                  >
-                    {/* File Icon */}
-                    <div className="flex-shrink-0">{statusInfo.icon}</div>
+    const clearAllFiles = () => {
+        Object.values(intervalsRef.current).forEach(clearInterval);
+        intervalsRef.current = {};
+        setFiles([]);
+        setUploadProgress({});
+    };
 
-                    {/* File Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <p className="font-medium text-foreground truncate pr-4">
-                          {fileObj.name}
+    const formatFileSize = (bytes) => {
+        if (bytes === 0) return "0 Bytes";
+        const k = 1024;
+        const sizes = ["Bytes", "KB", "MB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return (bytes / Math.pow(k, i)).toFixed(2) + " " + sizes[i];
+    };
+
+    const getStatusInfo = (status) => {
+        switch (status) {
+            case "pending":
+                return { label: "Pendente" };
+            case "uploading":
+                return { label: "Enviando..." };
+            case "completed":
+                return { label: "Concluído" };
+            case "error":
+                return { label: "Erro" };
+            default:
+                return { label: "Pendente" };
+        }
+    };
+
+    // Drag and drop handlers
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e) => {
+        e.preventDefault();
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setIsDragging(false);
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            handleFiles(e.dataTransfer.files);
+        }
+    };
+
+    return (
+        <div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
+            <header className="flex justify-between items-center p-4 border-b">
+                <div className="flex items-center gap-4">
+                    <div className="relative h-10 w-10">
+                        <Image
+                            src="/logo.png"
+                            alt="Logo Lar e Vida"
+                            fill
+                            className="object-contain"
+                        />
+                    </div>
+                    <div>
+                        <h1 className="text-2xl font-bold">Lar e Vida</h1>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                            Dashboard de Upload de Arquivos
                         </p>
-                        <span
-                          className={`text-xs flex-shrink-0 ${statusInfo.color}`}
+                    </div>
+                </div>
+
+                <button
+                    onClick={toggleTheme}
+                    aria-label={darkMode ? "Ativar modo claro" : "Ativar modo escuro"}
+                >
+                    {darkMode ? <Sun /> : <Moon />}
+                </button>
+            </header>
+
+            <main className="p-6">
+                {/* Upload Area */}
+                <div
+                    onClick={() => fileInputRef.current?.click()}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    aria-label="Área de upload. Arraste e solte arquivos aqui ou pressione Enter para selecionar arquivos"
+                    className={`border-2 border-dashed p-10 text-center cursor-pointer transition-colors ${
+                        isDragging
+                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                            : 'border-gray-300 dark:border-gray-600'
+                    }`}
+                >
+                    <input
+                        data-testid="file-input"
+                        ref={fileInputRef}
+                        type="file"
+                        multiple
+                        onChange={(e) => handleFiles(e.target.files)}
+                        className="hidden"
+                    />
+
+                    <div data-state="open" className="flex justify-center mb-4">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="48"
+                            height="48"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="text-gray-400"
                         >
-                          {statusInfo.label}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center justify-between mt-1">
-                        <p className="text-sm text-foreground/50">
-                          {fileObj.size}
-                          {fileObj.error && (
-                            <span className="ml-2 text-red-500">
-                              {fileObj.error}
-                            </span>
-                          )}
-                        </p>
-
-                        {/* Progress Bar */}
-                        {fileObj.status === "uploading" && (
-                          <div className="w-32 h-1.5 bg-card-border rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-primary transition-all duration-200"
-                              style={{ width: `${progress}%` }}
-                            />
-                          </div>
-                        )}
-
-                        {fileObj.status === "completed" && (
-                          <span className="text-xs text-green-500">100%</span>
-                        )}
-                      </div>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" x2="12" y1="3" y2="15" />
+                        </svg>
                     </div>
 
-                    {/* Remove Button */}
-                    <button
-                      onClick={() => removeFile(fileObj.id)}
-                      className="flex-shrink-0 p-1 rounded hover:bg-upload-hover text-foreground/40 hover:text-red-500 transition-colors"
-                      aria-label="Remover arquivo"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
+                    {isDragging ? (
+                        <p className="text-lg font-semibold text-blue-600 dark:text-blue-400">
+                            Solte os arquivos aqui
+                        </p>
+                    ) : (
+                        <>
+                            <p className="text-lg">Arraste e solte arquivos aqui</p>
+                            <p className="text-gray-500 dark:text-gray-400">
+                                ou clique para selecionar arquivos
+                            </p>
+                        </>
+                    )}
+                    <p className="text-sm text-gray-400 mt-2">
+                        Suporta todos os tipos de arquivos • Tamanho máximo: 10MB
+                    </p>
+                </div>
 
-        {/* Empty State */}
-        {files.length === 0 && (
-          <div className="mt-12 text-center">
-            <p className="text-foreground/40">
-              Nenhum arquivo enviado ainda. Comece fazendo upload de arquivos.
-            </p>
-          </div>
-        )}
-      </main>
-    </div>
-  );
+                {/* File counter and clear button */}
+                {files.length > 0 && (
+                    <div className="flex justify-between items-center mt-4">
+                        <h2 className="text-lg font-semibold">Arquivos ({files.length})</h2>
+                        <button
+                            onClick={clearAllFiles}
+                            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                        >
+                            Limpar tudo
+                        </button>
+                    </div>
+                )}
+
+                {/* Empty state */}
+                {files.length === 0 && (
+                    <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                        <p>Nenhum arquivo enviado ainda. Comece fazendo upload de arquivos.</p>
+                    </div>
+                )}
+
+                {/* File List */}
+                {files.length > 0 && (
+                    <div className="mt-4">
+                        {files.map((file) => {
+                            const status = getStatusInfo(file.status);
+                            const statusColor =
+                                file.status === "completed"
+                                    ? "text-green-600"
+                                    : file.status === "error"
+                                    ? "text-red-600"
+                                    : file.status === "uploading"
+                                    ? "text-blue-600"
+                                    : "text-gray-600";
+
+                            return (
+                                <div
+                                    key={file.id}
+                                    className="flex justify-between items-center border p-3 mt-2 rounded"
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <File size={20} />
+                                        <span>{file.name}</span>
+                                        <span className="text-sm text-gray-500">
+                                            ({file.size})
+                                        </span>
+                                    </div>
+
+                                    <div className="flex items-center gap-4">
+                                        <span
+                                            data-testid="status"
+                                            className={`font-medium ${statusColor}`}
+                                        >
+                                            {status.label}
+                                        </span>
+
+                                        {file.status === "error" && (
+                                            <span className="text-sm text-red-500">
+                                                {file.error}
+                                            </span>
+                                        )}
+
+                                        <button
+                                            aria-label="Remover arquivo"
+                                            onClick={() => removeFile(file.id)}
+                                            className="text-gray-500 hover:text-red-500"
+                                        >
+                                            <X size={20} />
+                                        </button>
+                                    </div>
+
+                                    {/* Progress bar for uploading files */}
+                                    {file.status === "uploading" && uploadProgress[file.id] && (
+                                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200">
+                                            <div
+                                                className="h-full bg-blue-500 transition-all"
+                                                style={{
+                                                    width: `${uploadProgress[file.id]}%`,
+                                                }}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
+            </main>
+        </div>
+    );
 }
