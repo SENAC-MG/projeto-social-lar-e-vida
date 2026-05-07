@@ -9,6 +9,7 @@ import {
   Phone,
   MapPin,
   Briefcase,
+  Stethoscope, // Adicionei este ícone para os CIDs
 } from "lucide-react";
 
 export default function ModalNovoPaciente({ onClose, onSuccess }) {
@@ -36,6 +37,7 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
         </div>
 
         <form className="p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar">
+          {/* SEÇÃO: DADOS PESSOAIS */}
           <section>
             <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <User size={14} /> Dados Pessoais
@@ -66,17 +68,6 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
 
               <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-gray-400">
-                  Tipo de Câncer <span className="text-[#F97316]">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="Selecione ou digite"
-                  className={inputClass}
-                />
-              </div>
-
-              <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-gray-400">
                   CPF <span className="text-[#F97316]">*</span>
                 </label>
                 <input
@@ -100,7 +91,7 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
                 <input type="date" className={inputClass} />
               </div>
 
-              <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
+              <div className="col-span-12 md:col-span-6 flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-gray-400">
                   Profissão
                 </label>
@@ -111,13 +102,13 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
                 />
               </div>
 
-              <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
+              <div className="col-span-12 md:col-span-6 flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-gray-400">
                   Data de Cadastro
                 </label>
                 <input
                   type="text"
-                  value="24/04/2026"
+                  value={new Date().toLocaleDateString("pt-BR")}
                   readOnly
                   className={`${inputClass} bg-gray-800/20 text-gray-500 cursor-not-allowed`}
                 />
@@ -125,6 +116,52 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
             </div>
           </section>
 
+          {/* SEÇÃO: INFORMAÇÕES CLÍNICAS (NOVOS CAMPOS DA IMAGEM) */}
+          {/* SEÇÃO: INFORMAÇÕES CLÍNICAS */}
+          <section>
+            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+              <Stethoscope size={14} /> Informações Clínicas
+            </h3>
+            <div className="grid grid-cols-12 gap-4">
+              {/* Tipo de Câncer */}
+              <div className="col-span-12 md:col-span-12 flex flex-col gap-1.5">
+                <label className="text-sm font-medium text-gray-400">
+                  Tipo de Câncer <span className="text-[#F97316]">*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Ex: Neoplasia maligna do quadrante superior externo da mama"
+                  className={inputClass}
+                />
+              </div>
+
+              {/* CID Principal como Mini Textarea */}
+              <div className="col-span-12 md:col-span-6 flex flex-col gap-1.5">
+                <label className="text-sm font-medium text-gray-400">
+                  CID Principal <span className="text-[#F97316]">*</span>
+                </label>
+                <textarea
+                  rows="2"
+                  placeholder="Ex: C50.4"
+                  className={`${inputClass} resize-none py-2 min-h-[60px]`}
+                />
+              </div>
+
+              {/* CID Secundário como Mini Textarea */}
+              <div className="col-span-12 md:col-span-6 flex flex-col gap-1.5">
+                <label className="text-sm font-medium text-gray-400">
+                  CID Secundário / Observações
+                </label>
+                <textarea
+                  rows="2"
+                  placeholder="Ex: C78.0"
+                  className={`${inputClass} resize-none py-2 min-h-[60px]`}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* SEÇÃO: ENDEREÇO */}
           <section>
             <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <MapPin size={14} /> Endereço
@@ -178,6 +215,8 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
               </div>
             </div>
           </section>
+
+          {/* SEÇÃO: CONTATO */}
           <section>
             <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <Phone size={14} /> Contato
