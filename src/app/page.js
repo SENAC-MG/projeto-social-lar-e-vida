@@ -82,28 +82,33 @@ export default function Home() {
             </p>
           </div>
 
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="text-sm font-medium text-gray-700">
                 E-mail
               </label>
               <div className="relative flex items-center">
                 <Mail className="absolute left-4 h-5 w-5 text-gray-400" />
                 <input
+                  id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="seu@gmail.com"
                   className="w-full text-black rounded-xl border border-gray-300 py-3.5 pl-12 pr-4 outline-none focus:border-[#F97316] transition-all"
+                  autoFocus
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-gray-700">Senha</label>
+              <label htmlFor="password" className="text-sm font-medium text-gray-700">
+                Senha
+              </label>
               <div className="relative flex items-center">
                 <Lock className="absolute left-4 h-5 w-5 text-gray-400" />
                 <input
+                  id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -131,7 +136,7 @@ export default function Home() {
             </div>
 
             <button
-              onClick={handleSubmit}
+              type="submit"
               className="w-full rounded-xl bg-[#F97316] py-4 font-bold text-white shadow-lg shadow-orange-200 hover:bg-[#ea580c] transition-all"
             >
               Entrar no Sistema
