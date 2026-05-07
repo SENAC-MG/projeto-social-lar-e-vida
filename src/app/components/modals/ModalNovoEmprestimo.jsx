@@ -106,33 +106,24 @@ export default function ModalNovoEmprestimo({ onClose }) {
               </div>
             </div>
           </section>
+          {/* Subistitua a seção de Materiais Emprestados por esta */}
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
               Materiais Emprestados *
             </h3>
-            <div className="flex flex-wrap gap-3">
-              {listaMateriais.map((item) => {
-                const isSelecionado = materialSelecionado === item;
-                return (
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => setMaterialSelecionado(item)}
-                    className={`px-5 py-1.5 rounded-full text-sm font-bold transition-all shadow-sm active:scale-95 ${
-                      isSelecionado
-                        ? "bg-[#F97316] text-white"
-                        : "bg-white text-gray-900 hover:bg-gray-200"
-                    }`}
-                  >
-                    {item}
-                  </button>
-                );
-              })}
+            <div className="flex flex-col gap-1.5">
+              <textarea
+                rows="3"
+                placeholder="Descreva os materiais (ex: 1 Cadeira de Rodas, 2 Muletas Tam. M...)"
+                className="w-full bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] outline-none transition-all placeholder:text-gray-600 resize-none min-h-[80px]"
+              />
+              <p className="text-gray-500 text-[11px] italic font-medium">
+                Dica: Liste todos os itens e acessórios incluídos no empréstimo.
+              </p>
             </div>
-            <p className="text-red-500 text-[11px] mt-2 italic font-medium">
-              Selecione ao menos um material
-            </p>
           </section>
+
+          
           <section>
             <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4">
               Endereço
