@@ -2,7 +2,7 @@
 
 export async function login(email, senha) {
   console.log("Tentativa de login no servidor:", { email });
-  if (email === "admin" && senha === "admin") {
+  if (email === "admin@email.com" && senha === "admin") {
     console.log("Usuário Autenticado com Sucesso");
     return { success: true, message: "Login bem-sucedido" };
   } else {
