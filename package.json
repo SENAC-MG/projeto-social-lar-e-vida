@@ -1,24 +1,30 @@
 {
-  "name": "projeto-social-casa-do-vovo",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "lucide-react": "^1.9.0",
-    "next": "16.2.4",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.4",
-    "tailwindcss": "^4"
-  }
+    "name": "projeto-social-casa-do-vovo",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "eslint",
+        "test": "playwright test --project=firefox",
+        "test:headed": "playwright test --project=firefox --headed",
+        "test:ui": "playwright test --ui",
+        "test:debug": "playwright test --debug"
+    },
+    "dependencies": {
+        "lucide-react": "^1.9.0",
+        "next": "16.2.4",
+        "react": "19.2.4",
+        "react-dom": "19.2.4"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.59.1",
+        "@tailwindcss/postcss": "^4",
+        "@types/node": "^25.6.0",
+        "babel-plugin-react-compiler": "1.0.0",
+        "eslint": "^9",
+        "eslint-config-next": "16.2.4",
+        "tailwindcss": "^4"
+    }
 }

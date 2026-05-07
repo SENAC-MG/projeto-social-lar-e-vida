@@ -17,7 +17,12 @@ import {
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export default function DashboardPage() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+    return localStorage.getItem("theme") === "dark";
+  });
   const [files, setFiles] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadProgress, setUploadProgress] = useState({});
@@ -25,25 +30,18 @@ export default function DashboardPage() {
   const intervalsRef = useRef({});
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      setDarkMode(true);
-      document.documentElement.classList.add("dark");
-    }
+    document.documentElement.classList.toggle("dark", darkMode);
+    localStorage.setItem("theme", darkMode ? "dark" : "light");
+  }, [darkMode]);
+
+  useEffect(() => {
     return () => {
       Object.values(intervalsRef.current).forEach(clearInterval);
     };
   }, []);
 
   const toggleTheme = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    localStorage.setItem("theme", newMode ? "dark" : "light");
-    if (newMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    setDarkMode((prev) => !prev);
   };
 
   const handleFiles = (newFiles) => {
@@ -179,7 +177,7 @@ export default function DashboardPage() {
       <Sidebar />
       <div className="flex-1 flex flex-col bg-gray-950">
         <header className="border-b bg-[rgb(10,10,10)] border-card-border sticky top-0 z-8">
-          <div className="max-w-6xl px-4 py-4 flex items-center justify-start">
+          <div className="max-w-6xl px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative h-18 w-18 rounded-full bg-white/10 p-2 backdrop-blur-md border border-white/20">
                 <Image
@@ -198,6 +196,12 @@ export default function DashboardPage() {
                 </p>
               </div>
             </div>
+            <button
+              onClick={toggleTheme}
+              aria-label={darkMode ? "Ativar modo claro" : "Ativar modo escuro"}
+            >
+              {darkMode ? <Sun /> : <Moon />}
+            </button>
           </div>
         </header>
 
@@ -227,6 +231,7 @@ export default function DashboardPage() {
           `}
           >
             <input
+              data-testid="file-input"
               ref={fileInputRef}
               type="file"
               multiple
@@ -236,6 +241,7 @@ export default function DashboardPage() {
 
             <div className="flex flex-col items-center gap-4">
               <div
+                data-state="open"
                 className={`w-16 h-16 rounded-full flex items-center justify-center transition-colors ${
                   isDragging ? "bg-primary/20" : "bg-card-bg"
                 }`}
@@ -255,7 +261,7 @@ export default function DashboardPage() {
                 <p className="text-sm  mt-1">
                   ou{" "}
                   <span className="text-[#F97316] font-medium">
-                    clique para selecionar
+                    clique para selecionar arquivos
                   </span>
                 </p>
               </div>
@@ -303,6 +309,7 @@ export default function DashboardPage() {
                             {fileObj.name}
                           </p>
                           <span
+                            data-testid="status"
                             className={`text-xs flex-shrink-0 ${statusInfo.color}`}
                           >
                             {statusInfo.label}

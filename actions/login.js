@@ -1,7 +1,7 @@
 "use server";
 
 export async function login(email, senha) {
-  console.log("Tentativa de login no servidor:", { email, senha });
+  console.log("Tentativa de login no servidor:", { email });
   if (email === "leopoldino2@gmail.com" && senha === "1234") {
     console.log("Usuário Autenticado com Sucesso");
     return { success: true, message: "Login bem-sucedido" };
