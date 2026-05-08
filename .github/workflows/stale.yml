@@ -1,0 +1,45 @@
+name: Stale Issues & PRs
+
+on:
+  schedule:
+    # Runs every Monday at 08:00 UTC.
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    name: Mark and Close Stale Items
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          # ── Issues ──────────────────────────────────────────────────────
+          stale-issue-label: stale
+          stale-issue-message: >
+            Esta issue está inativa há 30 dias. Ela será fechada em 7 dias
+            sem nova atividade. Se ainda for relevante, adicione um comentário
+            ou remova a etiqueta `stale`.
+          close-issue-message: >
+            Fechando por inatividade. Reabra se o problema ainda for relevante.
+          days-before-issue-stale: 30
+          days-before-issue-close: 7
+          exempt-issue-labels: 'pinned,segurança,security,in-progress,bloqueado'
+
+          # ── Pull Requests ────────────────────────────────────────────────
+          stale-pr-label: stale
+          stale-pr-message: >
+            Este PR está inativo há 14 dias. Ele será fechado em 7 dias sem
+            nova atividade. Se o trabalho ainda estiver em andamento, remova
+            a etiqueta `stale` ou adicione `in-progress`.
+          close-pr-message: >
+            Fechando por inatividade. Reabra se o PR ainda for necessário.
+          days-before-pr-stale: 14
+          days-before-pr-close: 7
+          exempt-pr-labels: 'pinned,segurança,security,in-progress,bloqueado,do-not-merge'
+
+          # Process at most 30 items per run to stay within rate limits.
+          operations-per-run: 30

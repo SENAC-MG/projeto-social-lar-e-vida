@@ -1,0 +1,61 @@
+# Auto-labeler configuration for actions/labeler@v5
+# ---------------------------------------------------------------------------
+# Maps PR label names → file-path globs.
+# Labels are ADDED automatically; existing labels are never removed
+# (sync-labels: false in the labeler workflow).
+# ---------------------------------------------------------------------------
+
+frontend:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/app/**/*'
+      - 'public/**/*'
+      - 'src/app/globals.css'
+
+backend:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'actions/**/*'
+      - 'src/app/api/**/*'
+
+database:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'prisma/**/*'
+      - 'prisma.config.ts'
+
+tests:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'tests/**/*'
+      - 'playwright.config.js'
+
+ci:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.github/workflows/**/*'
+      - '.github/dependabot.yml'
+
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'package.json'
+      - 'package-lock.json'
+
+documentation:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '*.md'
+      - '.github/*.md'
+      - '.github/ISSUE_TEMPLATE/**/*'
+      - '.github/CONTRIBUTING.md'
+
+configuration:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '*.mjs'
+      - '*.ts'
+      - '*.config.*'
+      - 'jsconfig.json'
+      - '.gitignore'
+      - '.eslint*'
