@@ -3,27 +3,15 @@
 # Defines the default reviewers for each area of the codebase.
 # See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 #
-# IMPORTANT: Replace @SENAC-MG with the actual GitHub usernames or team slugs
-# (e.g. @SENAC-MG/maintainers) once the team is configured in the
-# organisation's "Teams" settings. Until then, reviews are not enforced.
+# Replace @SENAC-MG with specific GitHub team slugs (e.g. @SENAC-MG/backend)
+# once teams are configured in the organisation's "Teams" settings.
+# Until then this global fallback ensures at least the org is notified.
+#
+# Example team structure to configure:
+#   @SENAC-MG/maintainers  – leads; can approve any file
+#   @SENAC-MG/frontend     – owns src/ and public/
+#   @SENAC-MG/backend      – owns actions/ and prisma/
 # ---------------------------------------------------------------------------
 
-# Global fallback — any unmatched file requires a review from the org/team.
+# Global fallback — requires review from the org for any unmatched file.
 * @SENAC-MG
-
-# CI/CD, automation and security configuration.
-/.github/ @SENAC-MG
-
-# Core application source.
-/src/ @SENAC-MG
-
-# Server actions (authentication, business logic).
-/actions/ @SENAC-MG
-
-# Data layer — Prisma schema and migrations.
-/prisma/ @SENAC-MG
-
-# Build and runtime configuration.
-/next.config.mjs @SENAC-MG
-/package.json @SENAC-MG
-/package-lock.json @SENAC-MG

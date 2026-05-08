@@ -22,7 +22,7 @@ jobs:
           stale-issue-message: >
             Esta issue está inativa há 30 dias. Ela será fechada em 7 dias
             sem nova atividade. Se ainda for relevante, adicione um comentário
-            ou remova a etiqueta `stale`.
+            ou remova o label `stale`.
           close-issue-message: >
             Fechando por inatividade. Reabra se o problema ainda for relevante.
           days-before-issue-stale: 30
@@ -34,7 +34,7 @@ jobs:
           stale-pr-message: >
             Este PR está inativo há 14 dias. Ele será fechado em 7 dias sem
             nova atividade. Se o trabalho ainda estiver em andamento, remova
-            a etiqueta `stale` ou adicione `in-progress`.
+            o label `stale` ou adicione `in-progress`.
           close-pr-message: >
             Fechando por inatividade. Reabra se o PR ainda for necessário.
           days-before-pr-stale: 14

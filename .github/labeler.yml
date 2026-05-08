@@ -54,8 +54,9 @@ configuration:
   - changed-files:
     - any-glob-to-any-file:
       - '*.mjs'
-      - '*.ts'
-      - '*.config.*'
+      - '*.config.ts'
+      - '*.config.js'
+      - '*.config.mjs'
       - 'jsconfig.json'
       - '.gitignore'
       - '.eslint*'
