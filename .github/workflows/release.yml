@@ -1,0 +1,80 @@
+name: Release/Deploy - Manual Promotion
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target deployment environment'
+        required: true
+        default: production
+        type: choice
+        options:
+          - staging
+          - production
+      confirm:
+        description: 'Type CONFIRM to proceed with the deployment'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  # ── Validate Inputs ────────────────────────────────────────────────────────
+  validate:
+    name: Validate Release Inputs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require explicit confirmation
+        if: ${{ inputs.confirm != 'CONFIRM' }}
+        run: |
+          echo "::error::Deployment requires explicit confirmation. Enter CONFIRM in the 'confirm' input."
+          exit 1
+
+  # ── Build for Release ──────────────────────────────────────────────────────
+  build-release:
+    name: Build for Release (${{ inputs.environment }})
+    needs: [validate]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-build-${{ inputs.environment }}-${{ github.sha }}
+          path: .next/
+          retention-days: 7
+
+  # ── Post-build Summary ─────────────────────────────────────────────────────
+  summary:
+    name: Release Summary
+    needs: [build-release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write job summary
+        run: |
+          echo "## 🚀 Release Build Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Environment | \`${{ inputs.environment }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Commit | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Triggered by | @${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Artifact | \`release-build-${{ inputs.environment }}-${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY

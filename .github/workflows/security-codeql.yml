@@ -1,0 +1,73 @@
+name: Security - CodeQL & Dependency Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Runs every Monday at 06:00 UTC to catch newly disclosed vulnerabilities.
+    - cron: '0 6 * * 1'
+
+# CodeQL requires write access to upload SARIF results.
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+jobs:
+  # ── CodeQL Static Analysis ─────────────────────────────────────────────────
+  codeql:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [javascript-typescript]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          # Query suite: security-and-quality covers OWASP Top 10 + quality rules.
+          queries: security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: /language:${{ matrix.language }}
+
+  # ── Dependency Vulnerability Audit ────────────────────────────────────────
+  dependency-audit:
+    name: Dependency Vulnerability Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Fail on high/critical severity vulnerabilities.
+      # Tune --audit-level as the project matures and known issues are resolved.
+      - name: Run npm audit
+        run: npm audit --audit-level=high
+
+      - name: Generate audit report
+        run: npm audit --json > /tmp/npm-audit.json || true
+
+      - name: Upload audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-${{ github.sha }}
+          path: /tmp/npm-audit.json
+          retention-days: 30

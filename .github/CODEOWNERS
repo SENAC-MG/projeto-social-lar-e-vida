@@ -1,0 +1,17 @@
+# CODEOWNERS
+# ---------------------------------------------------------------------------
+# Defines the default reviewers for each area of the codebase.
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Replace @SENAC-MG with specific GitHub team slugs (e.g. @SENAC-MG/backend)
+# once teams are configured in the organisation's "Teams" settings.
+# Until then this global fallback ensures at least the org is notified.
+#
+# Example team structure to configure:
+#   @SENAC-MG/maintainers  – leads; can approve any file
+#   @SENAC-MG/frontend     – owns src/ and public/
+#   @SENAC-MG/backend      – owns actions/ and prisma/
+# ---------------------------------------------------------------------------
+
+# Global fallback — requires review from the org for any unmatched file.
+* @SENAC-MG

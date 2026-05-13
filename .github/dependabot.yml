@@ -1,0 +1,58 @@
+version: 2
+
+updates:
+  # ── npm dependencies ──────────────────────────────────────────────────────
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: America/Sao_Paulo
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - automated
+    # Group related packages into single PRs to reduce noise.
+    groups:
+      next-ecosystem:
+        patterns:
+          - next
+          - react
+          - react-dom
+      ui-and-icons:
+        patterns:
+          - lucide-react
+          - sonner
+      tailwind:
+        patterns:
+          - tailwindcss
+          - '@tailwindcss/*'
+          - postcss*
+      prisma:
+        patterns:
+          - prisma
+          - '@prisma/*'
+      dev-tooling:
+        patterns:
+          - eslint*
+          - '@playwright/test'
+          - babel*
+          - '@types/*'
+    # Ignore patch updates for packages already pinned in a known-good state.
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-patch']
+
+  # ── GitHub Actions ────────────────────────────────────────────────────────
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: America/Sao_Paulo
+    labels:
+      - dependencies
+      - ci
+      - automated
