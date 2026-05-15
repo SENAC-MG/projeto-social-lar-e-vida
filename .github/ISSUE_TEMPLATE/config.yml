@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Dúvidas gerais
+    url: https://github.com/SENAC-MG/projeto-social-lar-e-vida/discussions
+    about: Use as Discussions para perguntas e dúvidas que não são bugs nem funcionalidades.
+  - name: 🔒 Reportar vulnerabilidade de segurança
+    url: https://github.com/SENAC-MG/projeto-social-lar-e-vida/security/advisories/new
+    about: Relate vulnerabilidades de segurança de forma responsável via GitHub Security Advisories.

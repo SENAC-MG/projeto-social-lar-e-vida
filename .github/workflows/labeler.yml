@@ -1,0 +1,21 @@
+name: Auto Label PR
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+# Only write access needed is to manage PR labels.
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label:
+    name: Label PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/labeler@v6
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler.yml
+          sync-labels: false

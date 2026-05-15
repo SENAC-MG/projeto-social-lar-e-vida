@@ -1,0 +1,66 @@
+name: ✨ Solicitação de Funcionalidade
+description: Proponha uma nova funcionalidade ou melhoria no sistema.
+labels: [funcionalidade, triagem]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado pela sugestão! Descreva a funcionalidade com clareza para que possa ser avaliada e priorizada.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema ou necessidade
+      description: Qual problema esta funcionalidade resolve? Quem se beneficia?
+      placeholder: 'Como responsável pelos empréstimos, preciso filtrar por período para gerar relatórios mensais...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solução proposta
+      description: Descreva como você imagina a funcionalidade.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas
+      description: Existem outras formas de resolver o problema?
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridade sugerida
+      options:
+        - 🔴 Alta — impacto direto na operação
+        - 🟡 Média — melhoria relevante
+        - 🟢 Baixa — nice-to-have
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Componente/área afetada
+      multiple: true
+      options:
+        - Login / Autenticação
+        - Dashboard
+        - Pacientes
+        - Empréstimos
+        - Serviços
+        - Relatórios
+        - Banco de dados / Prisma
+        - CI/CD / Automação
+        - Outro
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto adicional
+      description: Links, mockups, referências a outras issues ou qualquer informação extra.

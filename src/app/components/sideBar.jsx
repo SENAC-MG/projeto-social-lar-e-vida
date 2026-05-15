@@ -1,5 +1,5 @@
 "use client";
-import { LayoutGrid, Users, Package, Wrench, Sun } from "lucide-react";
+import { LayoutGrid, Users, Package, Wrench, Sun, Hospital } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,6 +9,7 @@ export default function Sidebar() {
 
   const navItems = [
     { path: "/dashboard", icon: LayoutGrid, label: "Dashboard" },
+    { path: "/funcionarios", icon: Hospital, label: "Funcionários" },
     { path: "/pacientes", icon: Users, label: "Pacientes" },
     { path: "/emprestimos", icon: Package, label: "Empréstimos" },
     { path: "/servicos", icon: Wrench, label: "Serviços" },
