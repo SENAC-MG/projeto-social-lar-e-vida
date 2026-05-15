@@ -58,13 +58,11 @@ export default function ModalNovoFuncionario({ onClose, onSuccess }) {
                 <label className="text-sm font-medium text-gray-400">
                   Cargo <span className="text-[#F97316]">*</span>
                 </label>
-                <select
-                  className={`${inputClass} appearance-none bg-[#11141d] cursor-pointer`}
-                >
-                  <option>Gerente</option>
-                  <option>Assistente</option>
-                  <option>Analista</option>
-                </select>
+                <input
+                  type="text"
+                  placeholder="Cargo"
+                  className={inputClass}
+                />
               </div>
 
               <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">

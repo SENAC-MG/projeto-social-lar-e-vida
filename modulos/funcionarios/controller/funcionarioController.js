@@ -1,0 +1,61 @@
+"use server";
+
+// import { revalidatePath } from 'next/cache';
+import { apaga_Funcionario, gravarFuncionario, pegar_Funcionarios} from "../services/funcionarioService";
+/**
+ * Buscar todos os funcionários
+ *
+ * - Apenas delega para o service
+ * - Não tem regra aqui porque é leitura simples
+ * - Não preciso passar Argumentos
+ */
+export async function get_Funcionarios() {
+  const dados = await pegar_Funcionarios();
+  // Atualiza os dados da rota (refaz cache do Next.js)
+  return dados;
+}
+
+export async function cadastrar_Funcionario(formData) {
+  // Extração e Limpeza dos dados
+  const nome = formData.get('nome')?.toString().trim();
+  const email = formData.get('nome')?.toString().trim();
+  const cargo = formData.get('nome')?.toString().trim();
+  const telefone = formData.get('nome')?.toString().trim();
+
+  console.log('Dados recebidos no action:', { nome, email, cargo, telefone});
+
+  try {
+    // Regras de negócio estão no service
+    await gravarFuncionario(nome, email, cargo, telefone);
+    //Voltando com a resposta conrolada para o frontend
+    return {
+      success: true,
+      message: 'Funcionário cadastrado com sucesso!',
+    };
+  } catch (err) {
+    // Retorna erro controlado para o frontend
+    return {
+      success: false,
+      error: err.message
+    };
+  }
+}
+
+/**
+ * Deletar Aluno
+ *
+ * Regras:
+ * -> Service valida se o funcionário existe antes de excluir
+ * -> Após deletar, revalida a listagem
+ */
+export async function deletar_Funcionario(id) {
+  try {
+    await apaga_Funcionario(id);
+    return { success: true, message: 'Funcionário deletado com sucesso!'}
+  } catch (err) {
+    return {
+      success: false,
+      error: err.message,
+    };
+  }
+}
