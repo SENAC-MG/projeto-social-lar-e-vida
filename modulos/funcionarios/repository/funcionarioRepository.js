@@ -45,3 +45,35 @@ export async function del_Funcionario(id) {
   });
   return result;
 }
+
+/**
+ * Buscar funcionário pelo ID
+ *
+ * - Busca um único funcionário pelo ID ( chave primária )
+ * - Retorna null se não encontrar
+ * - Usado em edição, detalhes, etc
+ */
+export async function findFuncionarioById(id) {
+  const funcionario = await prisma.Funcionario.findUnique({
+    where: { id },
+  });
+  // Retorna o funcionário encontrado ou null se não existir
+  return funcionario;
+}
+
+/**
+ * - Recebe o ID do funcionário e os novos dados
+ * - Atualiza apenas os campos enviados
+ * - Retorna o aluno atualizado
+ */
+export async function updateFuncionario(id, data) {
+  console.log('Atualizando aluno ID:', id, 'com dados', data);
+
+  const Funcionario_atualizado = await prisma.Funcionario.update({
+    where: { id },
+    data,
+  });
+
+  console.log('Funcionário atualizado com sucesso:', Funcionario_atualizado);
+  return Funcionario_atualizado;
+}

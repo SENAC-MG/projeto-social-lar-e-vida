@@ -2,7 +2,7 @@
 import { error } from "node:console";
 // Importa funções do repository (acesso ao banco via Prisma)
 
-import { del_Funcionario, post_Funcionario, get_AllFuncionarios } from "../repository/funcionarioRepository";
+import { del_Funcionario, post_Funcionario, get_AllFuncionarios, findFuncionarioById, updateFuncionario } from "../repository/funcionarioRepository";
 
 /**
  * Buscar todos os alunos
@@ -32,13 +32,13 @@ export async function gravarFuncionario(
   }
 
 
-// Se passou por todas regras pode salvar -> pode salvar
-return await post_Funcionario({
-  nome,
-  email,
-  cargo,
-  telefone
-});
+  // Se passou por todas regras pode salvar -> pode salvar
+  return await post_Funcionario({
+    nome,
+    email,
+    cargo,
+    telefone
+  });
 }
 
 /**
@@ -50,4 +50,24 @@ return await post_Funcionario({
  */
 export async function apaga_Funcionario(id) {
   return await del_Funcionario(Number(id));
+}
+
+/**
+ * Atualizar aluno
+ *
+ * Regra de negócio:
+ * - Antes de atualizar, precisamos garantir que o aluno existe
+ * - Evita atualizar algo que não está no banco
+ */
+export async function updateFuncionarioService(id, data) {
+  // Chamando a função de busca para garantir que o funcionário existe
+  const existe = await findFuncionarioById(Number(id));
+  if (!existe) {
+    throw new Error('Funcionário não encontrado para atualizar');
+  } else {
+    console.log('Funcionário encontrado para atualização:', existe);
+  }
+  const funcionarioAtualizado = await updateFuncionario(Number(id), data);
+
+  return funcionarioAtualizado;
 }

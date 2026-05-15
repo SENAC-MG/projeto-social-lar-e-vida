@@ -1,7 +1,7 @@
 "use server";
 
 // import { revalidatePath } from 'next/cache';
-import { apaga_Funcionario, gravarFuncionario, pegar_Funcionarios} from "../services/funcionarioService";
+import { apaga_Funcionario, gravarFuncionario, pegar_Funcionarios, updateFuncionarioService } from "../services/funcionarioService";
 /**
  * Buscar todos os funcionários
  *
@@ -22,7 +22,7 @@ export async function cadastrar_Funcionario(formData) {
   const cargo = formData.get('nome')?.toString().trim();
   const telefone = formData.get('nome')?.toString().trim();
 
-  console.log('Dados recebidos no action:', { nome, email, cargo, telefone});
+  console.log('Dados recebidos no action:', { nome, email, cargo, telefone });
 
   try {
     // Regras de negócio estão no service
@@ -51,11 +51,36 @@ export async function cadastrar_Funcionario(formData) {
 export async function deletar_Funcionario(id) {
   try {
     await apaga_Funcionario(id);
-    return { success: true, message: 'Funcionário deletado com sucesso!'}
+    return { success: true, message: 'Funcionário deletado com sucesso!' }
   } catch (err) {
     return {
       success: false,
       error: err.message,
+    };
+  }
+}
+
+/**
+ * Atualizar funcionário
+ *
+ * Regras:
+ * - Todos os campos tem que ser atualizados
+ * - Service garante que o funcionário existe
+ */
+export async function updateFuncionarioAction(id, formData) {
+  const nome = formData.get('nome')?.toString().trim();
+  const email = formData.get('email')?.toString().trim();
+  const cargo = formData.get('cargo')?.toString().trim();
+  const telefone = formData.get('nome')?.toString().trim();
+
+  try {
+
+    const funcionarioAtualizado = await updateFuncionarioService(id, { nome, email, cargo, telefone });
+    return { success: true, message: 'Funcionário atualizado com sucesso!', funcionario: funcionarioAtualizado };
+  } catch (err) {
+    return {
+      success: false,
+      error: err.message
     };
   }
 }

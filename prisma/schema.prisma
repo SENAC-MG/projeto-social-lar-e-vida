@@ -65,5 +65,5 @@ model Funcionarios {
   nome              String
   email               String      @unique
   cargo       String
-  telefones           String
+  telefone           String
 }
