@@ -17,7 +17,7 @@ export default function Home() {
     }
     const result = await login(email, password);
     if (result.success) {
-      router.push("/dashboard");
+      router.push("/home");
     } else {
       alert("Usuário ou senha incorretos. Tente novamente.");
     }
