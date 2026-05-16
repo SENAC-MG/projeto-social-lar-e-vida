@@ -1,5 +1,4 @@
 "use server";
-import { error } from "node:console";
 // Importa funções do repository (acesso ao banco via Prisma)
 
 import { del_Emprestimo, post_Emprestimo, get_AllEmprestimos, findEmprestimoById, updateEmprestimo } from "../repository/emprestimoRepository";
