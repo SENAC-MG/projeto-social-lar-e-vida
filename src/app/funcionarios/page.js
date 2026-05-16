@@ -1,16 +1,39 @@
 "use client";
-import React, { useState } from "react";
-import { UserPlus, Users, Search, MoreHorizontal, Hospital } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { UserPlus, Hospital, Search } from "lucide-react";
 import Sidebar from "../components/sideBar";
 import ModalNovoFuncionario from "../components/modals/ModalNovoFuncionario";
+import { get_Funcionarios } from "@modulos/funcionarios/controller/funcionarioController";
+import BotaoDeletar from "../components/BotaoDeletar";
 
-export default function PacientesPage() {
+export default function FuncionariosPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [funcionarios, setFuncionarios] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const carregarFuncionarios = async () => {
+    setLoading(true);
+    try {
+      const dados = await get_Funcionarios();
+      setFuncionarios(dados);
+    } catch (error) {
+      console.error("Erro ao carregar funcionários:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    carregarFuncionarios();
+  }, []);
+
+  const handleModalSuccess = () => {
+    carregarFuncionarios();
+  };
 
   return (
     <div className="min-h-screen bg-[#0a0c10] flex">
       <Sidebar />
-
       <main className="flex-1 flex flex-col bg-gray-950">
         <div className="p-8">
           <div className="flex justify-between items-center mb-8">
@@ -20,7 +43,7 @@ export default function PacientesPage() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white">Funcionários</h1>
-                <p className="text-gray-500 text-sm">0 registros</p>
+                <p className="text-gray-500 text-sm">{funcionarios.length} registros</p>
               </div>
             </div>
             <button
@@ -53,24 +76,56 @@ export default function PacientesPage() {
                     <th className="px-6 py-4 font-semibold">Email</th>
                     <th className="px-6 py-4 font-semibold">Telefone</th>
                     <th className="px-6 py-4 font-semibold">Cargo</th>
+                    <th className="px-6 py-4 font-semibold text-right">Ações</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td
-                      colSpan="8"
-                      className="py-24 text-center text-gray-600 italic text-sm"
-                    >
-                      Nenhum funcionário cadastrado
-                    </td>
-                  </tr>
+                  {loading ? (
+                    <tr>
+                      <td
+                        colSpan="4"
+                        className="py-24 text-center text-gray-600 italic text-sm"
+                      >
+                        Carregando...
+                      </td>
+                    </tr>
+                  ) : funcionarios.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan="4"
+                        className="py-24 text-center text-gray-600 italic text-sm"
+                      >
+                        Nenhum funcionário cadastrado
+                      </td>
+                    </tr>
+                  ) : (
+                    funcionarios.map((funcionario) => (
+                      <tr
+                        key={funcionario.id}
+                        className="border-b border-gray-800/30 hover:bg-gray-800/30 transition-colors"
+                      >
+                        <td className="px-6 py-4 text-white">{funcionario.nome}</td>
+                        <td className="px-6 py-4 text-gray-400">{funcionario.email}</td>
+                        <td className="px-6 py-4 text-gray-400">{funcionario.telefone}</td>
+                        <td className="px-6 py-4 text-gray-400">{funcionario.cargo}</td>
+                        <td className="px-6 py-4 text-right">
+                          <BotaoDeletar
+                            id={funcionario.id}
+                          />
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
         {isModalOpen && (
-          <ModalNovoFuncionario onClose={() => setIsModalOpen(false)} />
+          <ModalNovoFuncionario
+            onClose={() => setIsModalOpen(false)}
+            onSuccess={handleModalSuccess}
+          />
         )}
       </main>
     </div>

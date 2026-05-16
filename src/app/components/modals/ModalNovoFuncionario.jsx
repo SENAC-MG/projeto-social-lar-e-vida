@@ -1,24 +1,50 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   X,
   Save,
   RotateCcw,
-  Calendar,
   User,
-  Phone,
-  MapPin,
-  Briefcase,
-  Stethoscope, // Adicionei este ícone para os CIDs
 } from "lucide-react";
+import { cadastrar_Funcionario } from "@modulos/funcionarios/controller/funcionarioController";
 
 export default function ModalNovoFuncionario({ onClose, onSuccess }) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) onClose();
   };
 
   const inputClass =
     "w-full bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] outline-none transition-all placeholder:text-gray-600";
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const formData = new FormData(e.target);
+
+    try {
+      const result = await cadastrar_Funcionario(formData);
+
+      if (result.success) {
+        onSuccess?.();
+        onClose();
+      } else {
+        setError(result.error || "Erro ao cadastrar funcionário");
+      }
+    } catch (err) {
+      setError("Erro ao cadastrar funcionário: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReset = () => {
+    setError(null);
+  };
 
   return (
     <div
@@ -36,7 +62,17 @@ export default function ModalNovoFuncionario({ onClose, onSuccess }) {
           </button>
         </div>
 
-        <form className="p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar">
+        <form
+          className="p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
+          onSubmit={handleSubmit}
+          onReset={handleReset}
+        >
+          {error && (
+            <div className="bg-red-900/30 border border-red-700 text-red-400 px-4 py-3 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+
           {/* SEÇÃO: DADOS PESSOAIS */}
           <section>
             <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
@@ -49,8 +85,10 @@ export default function ModalNovoFuncionario({ onClose, onSuccess }) {
                 </label>
                 <input
                   type="text"
+                  name="nome"
                   placeholder="Nome Completo"
                   className={inputClass}
+                  required
                 />
               </div>
 
@@ -60,8 +98,10 @@ export default function ModalNovoFuncionario({ onClose, onSuccess }) {
                 </label>
                 <input
                   type="text"
+                  name="cargo"
                   placeholder="Cargo"
                   className={inputClass}
+                  required
                 />
               </div>
 
@@ -71,8 +111,10 @@ export default function ModalNovoFuncionario({ onClose, onSuccess }) {
                 </label>
                 <input
                   type="email"
+                  name="email"
                   placeholder="exemplo@email.com"
                   className={inputClass}
+                  required
                 />
               </div>
 
@@ -80,7 +122,13 @@ export default function ModalNovoFuncionario({ onClose, onSuccess }) {
                 <label className="text-sm font-medium text-gray-400">
                   Telefone <span className="text-[#F97316]">*</span>
                 </label>
-                <input type="text" placeholder="Telefone" className={inputClass} />
+                <input
+                  type="text"
+                  name="telefone"
+                  placeholder="Telefone"
+                  className={inputClass}
+                  required
+                />
               </div>
             </div>
           </section>
@@ -88,10 +136,11 @@ export default function ModalNovoFuncionario({ onClose, onSuccess }) {
           <div className="flex items-center gap-4 pt-4 border-t border-gray-800">
             <button
               type="submit"
-              className="flex items-center gap-2 bg-[#F97316] hover:bg-[#e85a1a] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-orange-900/20 active:scale-95"
+              disabled={loading}
+              className="flex items-center gap-2 bg-[#F97316] hover:bg-[#e85a1a] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-orange-900/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Save size={18} />
-              Salvar
+              {loading ? "Salvando..." : "Salvar"}
             </button>
             <button
               type="reset"

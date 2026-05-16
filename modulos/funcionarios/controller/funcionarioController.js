@@ -18,9 +18,9 @@ export async function get_Funcionarios() {
 export async function cadastrar_Funcionario(formData) {
   // Extração e Limpeza dos dados
   const nome = formData.get('nome')?.toString().trim();
-  const email = formData.get('nome')?.toString().trim();
-  const cargo = formData.get('nome')?.toString().trim();
-  const telefone = formData.get('nome')?.toString().trim();
+  const email = formData.get('email')?.toString().trim();
+  const cargo = formData.get('cargo')?.toString().trim();
+  const telefone = formData.get('telefone')?.toString().trim();
 
   console.log('Dados recebidos no action:', { nome, email, cargo, telefone });
 
@@ -71,7 +71,7 @@ export async function updateFuncionarioAction(id, formData) {
   const nome = formData.get('nome')?.toString().trim();
   const email = formData.get('email')?.toString().trim();
   const cargo = formData.get('cargo')?.toString().trim();
-  const telefone = formData.get('nome')?.toString().trim();
+  const telefone = formData.get('telefone')?.toString().trim();
 
   try {
 

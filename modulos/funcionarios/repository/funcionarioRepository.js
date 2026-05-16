@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../../lib/prisma";
 /**
  * Buscar todos os funcionários
  *
@@ -7,7 +7,7 @@ import { prisma } from "@/lib/prisma";
  * - Usado normalmente para listagem em tabelas
  */
 export async function get_AllFuncionarios() {
-  const result = await prisma.funcionarios.findMany({
+  const result = await prisma.Funcionarios.findMany({
     orderBy: {
       nome: "asc",
     },
@@ -23,7 +23,7 @@ export async function get_AllFuncionarios() {
  */
 export async function post_Funcionario(data) {
   const { nome, email, cargo, telefone } = data;
-  return await prisma.funcionarios.create({
+  return await prisma.Funcionarios.create({
     data: {
       nome,
       email,
@@ -40,7 +40,7 @@ export async function post_Funcionario(data) {
  * - Cuidado: Operação irreversível
  */
 export async function del_Funcionario(id) {
-  const result = await prisma.funcionario.delete({
+  const result = await prisma.Funcionarios.delete({
     where: { id },
   });
   return result;
@@ -54,7 +54,7 @@ export async function del_Funcionario(id) {
  * - Usado em edição, detalhes, etc
  */
 export async function findFuncionarioById(id) {
-  const funcionario = await prisma.Funcionario.findUnique({
+  const funcionario = await prisma.Funcionarios.findUnique({
     where: { id },
   });
   // Retorna o funcionário encontrado ou null se não existir
@@ -69,7 +69,7 @@ export async function findFuncionarioById(id) {
 export async function updateFuncionario(id, data) {
   console.log('Atualizando aluno ID:', id, 'com dados', data);
 
-  const Funcionario_atualizado = await prisma.Funcionario.update({
+  const Funcionario_atualizado = await prisma.Funcionarios.update({
     where: { id },
     data,
   });
