@@ -1,16 +1,16 @@
 "use client";
 
-import { deletar_Paciente } from "@modulos/pacientes/controller/pacienteController";
+import { deletar_Servico } from "@modulos/servicos/controller/servicoController";
 import { toast } from "sonner";
 import { Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
 
-export default function BotaoDeletar({ id, onDeleted }) {
+export default function BotaoDeletarServico({ id, onDeleted }) {
   const [loading, setLoading] = useState(false);
 
   async function handleDelete() {
     const confirmar = window.confirm(
-      "Tem certeza que deseja deletar este paciente?",
+      "Tem certeza que deseja deletar este serviço?",
     );
 
     if (!confirmar) return;
@@ -18,19 +18,19 @@ export default function BotaoDeletar({ id, onDeleted }) {
     try {
       setLoading(true);
 
-      const res = await deletar_Paciente(id);
+      const res = await deletar_Servico(id);
 
       if (res?.success) {
-        toast.success(res.message || "Paciente deletado com sucesso!");
+        toast.success(res.message || "Serviço deletado com sucesso!");
 
         if (onDeleted) {
           await onDeleted();
         }
       } else {
-        toast.error(res?.error || "Erro ao deletar paciente.");
+        toast.error(res?.error || "Erro ao deletar serviço.");
       }
     } catch (error) {
-      console.error("Erro ao deletar paciente:", error);
+      console.error("Erro ao deletar serviço:", error);
 
       toast.error("Erro inesperado ao deletar.");
     } finally {
@@ -42,7 +42,7 @@ export default function BotaoDeletar({ id, onDeleted }) {
     <button
       onClick={handleDelete}
       disabled={loading}
-      title="Deletar paciente"
+      title="Deletar serviço"
       className="
         flex items-center justify-center
         w-10 h-10

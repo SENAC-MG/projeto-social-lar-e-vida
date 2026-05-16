@@ -1,50 +1,37 @@
 "use client";
+
 import React, { useState } from "react";
-import {
-  X,
-  Save,
-  RotateCcw,
-  User,
-} from "lucide-react";
+import { X, Save, RotateCcw, User } from "lucide-react";
+import { toast } from "sonner";
 import { cadastrar_Funcionario } from "@modulos/funcionarios/controller/funcionarioController";
 
 export default function ModalNovoFuncionario({ onClose, onSuccess }) {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+
+  const inputClass =
+    "w-full bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] outline-none transition-all placeholder:text-gray-600";
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) onClose();
   };
 
-  const inputClass =
-    "w-full bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] outline-none transition-all placeholder:text-gray-600";
-
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
-    setError(null);
 
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.currentTarget);
+    const result = await cadastrar_Funcionario(formData);
 
-    try {
-      const result = await cadastrar_Funcionario(formData);
-
-      if (result.success) {
-        onSuccess?.();
-        onClose();
-      } else {
-        setError(result.error || "Erro ao cadastrar funcionário");
-      }
-    } catch (err) {
-      setError("Erro ao cadastrar funcionário: " + err.message);
-    } finally {
-      setLoading(false);
+    if (result.success) {
+      toast.success(result.message || "Funcionário cadastrado com sucesso!");
+      onSuccess?.();
+      onClose();
+    } else {
+      toast.error(result.error || "Erro ao cadastrar funcionário.");
     }
-  };
 
-  const handleReset = () => {
-    setError(null);
-  };
+    setLoading(false);
+  }
 
   return (
     <div
@@ -54,7 +41,9 @@ export default function ModalNovoFuncionario({ onClose, onSuccess }) {
       <div className="bg-[#11141d] w-full max-w-4xl rounded-2xl shadow-2xl border border-gray-800 overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
         <div className="flex justify-between items-center p-6 border-b border-gray-800 bg-[#1a1f2e]">
           <h2 className="text-xl font-bold text-white">Novo Funcionário</h2>
+
           <button
+            type="button"
             onClick={onClose}
             className="text-gray-400 hover:text-white transition-colors p-1 hover:bg-gray-800 rounded-md"
           >
@@ -63,32 +52,25 @@ export default function ModalNovoFuncionario({ onClose, onSuccess }) {
         </div>
 
         <form
-          className="p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
           onSubmit={handleSubmit}
-          onReset={handleReset}
+          className="p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
         >
-          {error && (
-            <div className="bg-red-900/30 border border-red-700 text-red-400 px-4 py-3 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
-
-          {/* SEÇÃO: DADOS PESSOAIS */}
           <section>
             <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <User size={14} /> Dados Pessoais
             </h3>
+
             <div className="grid grid-cols-12 gap-4">
               <div className="col-span-12 md:col-span-8 flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-gray-400">
                   Nome Completo <span className="text-[#F97316]">*</span>
                 </label>
                 <input
-                  type="text"
                   name="nome"
+                  type="text"
+                  required
                   placeholder="Nome Completo"
                   className={inputClass}
-                  required
                 />
               </div>
 
@@ -97,37 +79,37 @@ export default function ModalNovoFuncionario({ onClose, onSuccess }) {
                   Cargo <span className="text-[#F97316]">*</span>
                 </label>
                 <input
-                  type="text"
                   name="cargo"
+                  type="text"
+                  required
                   placeholder="Cargo"
                   className={inputClass}
-                  required
                 />
               </div>
 
-              <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
+              <div className="col-span-12 md:col-span-6 flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-gray-400">
                   Email <span className="text-[#F97316]">*</span>
                 </label>
                 <input
-                  type="email"
                   name="email"
+                  type="email"
+                  required
                   placeholder="exemplo@email.com"
                   className={inputClass}
-                  required
                 />
               </div>
 
-              <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
+              <div className="col-span-12 md:col-span-6 flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-gray-400">
                   Telefone <span className="text-[#F97316]">*</span>
                 </label>
                 <input
-                  type="text"
                   name="telefone"
+                  type="text"
+                  required
                   placeholder="Telefone"
                   className={inputClass}
-                  required
                 />
               </div>
             </div>
@@ -142,9 +124,11 @@ export default function ModalNovoFuncionario({ onClose, onSuccess }) {
               <Save size={18} />
               {loading ? "Salvando..." : "Salvar"}
             </button>
+
             <button
               type="reset"
-              className="flex items-center gap-2 border border-gray-700 text-gray-300 hover:bg-gray-800 px-8 py-2.5 rounded-lg font-bold transition-all active:scale-95"
+              disabled={loading}
+              className="flex items-center gap-2 border border-gray-700 text-gray-300 hover:bg-gray-800 px-8 py-2.5 rounded-lg font-bold transition-all active:scale-95 disabled:opacity-50"
             >
               <RotateCcw size={18} />
               Limpar

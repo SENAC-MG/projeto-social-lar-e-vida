@@ -51,8 +51,9 @@ model Emprestimo {
 }
 
 model Servicos {
+  id                Int      @id @default(autoincrement())
   nome              String
-  cpf               String   @unique
+  cpf               String
   tipoServico       String
   duracao           String
   valorServico      Float
