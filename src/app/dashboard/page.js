@@ -12,11 +12,21 @@ import {
   Trash2,
   CheckCircle,
   AlertCircle,
+  Menu, // Adicionado para o ícone de três riscos no cabeçalho mobile
 } from "lucide-react";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export default function DashboardPage() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Começa fechada para não quebrar o mobile
+
+  // Forçar a sidebar a começar aberta se for Desktop na primeira renderização
+  useEffect(() => {
+    if (window.innerWidth >= 768) {
+      setIsSidebarOpen(true);
+    }
+  }, []);
+
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window === "undefined") {
       return false;
@@ -42,6 +52,10 @@ export default function DashboardPage() {
 
   const toggleTheme = () => {
     setDarkMode((prev) => !prev);
+  };
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev);
   };
 
   const handleFiles = (newFiles) => {
@@ -156,7 +170,7 @@ export default function DashboardPage() {
           icon: <CheckCircle className="w-5 h-5 text-green-500" />,
           color: "text-green-500",
           label: "Concluído",
-        };
+          };
       case "error":
         return {
           icon: <AlertCircle className="w-5 h-5 text-red-500" />,
@@ -173,39 +187,30 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background transition-colors duration-300 flex">
-      <Sidebar />
-      <div className="flex-1 flex flex-col bg-gray-950">
-        <header className="border-b bg-[rgb(10,10,10)] border-card-border sticky top-0 z-8">
-          <div className="max-w-6xl px-4 py-4 flex items-center justify-between">
+    <div className="min-h-screen bg-background transition-colors duration-300 flex overflow-x-hidden">
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      
+      <div className="flex-1 flex flex-col bg-gray-950 min-w-0 transition-all duration-300">
+        <header className=" bg-transparent sticky top-0 z-30 w-full">
+          <div className="max-w-6xl w-full mx-auto px-4 py-4 flex items-center justify-between">
+            
             <div className="flex items-center gap-3">
-              <div className="relative h-18 w-18 rounded-full bg-white/10 p-2 backdrop-blur-md border border-white/20">
-                <Image
-                  src="/logo.png"
-                  alt="Logo Lar e Vida"
-                  fill
-                  className="object-contain p-0"
-                />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-foreground">
-                  Lar e Vida
-                </h1>
-                <p className="text-sm text-foreground/60">
-                  Dashboard de Upload de Arquivos
-                </p>
-              </div>
+              {/* ÍCONE DE TRÊS RISCOS (MENU HAMBÚRGUER): Aparece apenas no Mobile */}
+              <button
+                onClick={toggleSidebar}
+                className="bg-black text-gray-400 hover:text-white p-2 hover:bg-white/10 rounded-lg transition-colors md:hidden mr-1"
+                aria-label="Abrir menu"
+              >
+                <Menu size={24} />
+              </button>
+
+            
             </div>
-            <button
-              onClick={toggleTheme}
-              aria-label={darkMode ? "Ativar modo claro" : "Ativar modo escuro"}
-            >
-              {darkMode ? <Sun /> : <Moon />}
-            </button>
+
           </div>
         </header>
 
-        <main className="max-w-6xl mx-auto px-4 py-8">
+        <main className="w-full max-w-6xl mx-auto px-4 py-8 flex-1">
           <div
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -221,11 +226,11 @@ export default function DashboardPage() {
             tabIndex={0}
             aria-label="Área de upload. Arraste e solte arquivos aqui ou pressione Enter para selecionar arquivos"
             className={`
-            relative border-2 border-dashed rounded-xl p-12 text-center cursor-pointer
+            relative border-2 border-dashed rounded-xl p-8 sm:p-12 text-center cursor-pointer
             transition-all duration-300 ease-in-out
             ${
               isDragging
-                ? "border-primary bg-upload-hover scale-[1.02]"
+                ? "border-primary bg-upload-hover scale-[1.01]"
                 : "border-upload-border bg-upload-area hover:border-primary hover:bg-upload-hover"
             }
           `}
@@ -253,19 +258,19 @@ export default function DashboardPage() {
                 />
               </div>
               <div>
-                <p className="text-lg font-medium text-foreground">
+                <p className="text-base sm:text-lg font-medium text-foreground">
                   {isDragging
                     ? "Solte os arquivos aqui"
                     : "Arraste e solte arquivos aqui"}
                 </p>
-                <p className="text-sm  mt-1">
+                <p className="text-sm mt-1">
                   ou{" "}
                   <span className="text-[#F97316] font-medium">
                     clique para selecionar arquivos
                   </span>
                 </p>
               </div>
-              <p className="text-xs text-foreground/40">
+              <p className="text-xs text-foreground/40 px-2">
                 Suporta todos os tipos de arquivos • Tamanho máximo: 10MB
               </p>
             </div>
@@ -304,30 +309,30 @@ export default function DashboardPage() {
                       <div className="flex-shrink-0">{statusInfo.icon}</div>
 
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <p className="font-medium text-foreground truncate pr-4">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="font-medium text-foreground truncate pr-2 text-sm sm:text-base">
                             {fileObj.name}
                           </p>
                           <span
                             data-testid="status"
-                            className={`text-xs flex-shrink-0 ${statusInfo.color}`}
+                            className={`text-xs flex-shrink-0 font-medium ${statusInfo.color}`}
                           >
                             {statusInfo.label}
                           </span>
                         </div>
 
-                        <div className="flex items-center justify-between mt-1">
-                          <p className="text-sm text-foreground/50">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-1 gap-1">
+                          <p className="text-xs sm:text-sm text-foreground/50 truncate">
                             {fileObj.size}
                             {fileObj.error && (
-                              <span className="ml-2 text-red-500">
+                              <span className="ml-2 text-red-500 block sm:inline">
                                 {fileObj.error}
                               </span>
                             )}
                           </p>
 
                           {fileObj.status === "uploading" && (
-                            <div className="w-32 h-1.5 bg-card-border rounded-full overflow-hidden">
+                            <div className="w-full sm:w-32 h-1.5 bg-card-border rounded-full overflow-hidden mt-1 sm:mt-0">
                               <div
                                 className="h-full bg-primary transition-all duration-200"
                                 style={{ width: `${progress}%` }}
@@ -336,7 +341,7 @@ export default function DashboardPage() {
                           )}
 
                           {fileObj.status === "completed" && (
-                            <span className="text-xs text-green-500">100%</span>
+                            <span className="text-xs text-green-500 font-medium">100%</span>
                           )}
                         </div>
                       </div>
@@ -357,7 +362,7 @@ export default function DashboardPage() {
 
           {files.length === 0 && (
             <div className="mt-12 text-center">
-              <p className="text-foreground/40">
+              <p className="text-sm text-foreground/40">
                 Nenhum arquivo enviado ainda. Comece fazendo upload de arquivos.
               </p>
             </div>
