@@ -31,7 +31,6 @@ export async function post_Funcionario(data) {
       telefone
     }
   });
-  return result;
 }
 /**
  * Deletar funcionário

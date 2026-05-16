@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { UserPlus, Hospital, Search } from "lucide-react";
+import { Toaster } from "sonner";
 import Sidebar from "../components/sideBar";
 import ModalNovoFuncionario from "../components/modals/ModalNovoFuncionario";
 import { get_Funcionarios } from "@modulos/funcionarios/controller/funcionarioController";
@@ -33,6 +34,7 @@ export default function FuncionariosPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0c10] flex">
+      <Toaster richColors position="top-right" />
       <Sidebar />
       <main className="flex-1 flex flex-col bg-gray-950">
         <div className="p-8">
@@ -111,6 +113,7 @@ export default function FuncionariosPage() {
                         <td className="px-6 py-4 text-right">
                           <BotaoDeletar
                             id={funcionario.id}
+                            onDeleted={carregarFuncionarios}
                           />
                         </td>
                       </tr>

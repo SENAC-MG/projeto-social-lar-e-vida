@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
+import ToastProvider from "./components/ToastProvider";
+import { Toaster } from "sonner";
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
     return (
         <html lang="pt-BR" className={`h-full ${geistSans.variable} ${geistMono.variable}`}>
             <body className="min-h-full flex flex-col antialiased">
+                <ToastProvider />
                 {children}
             </body>
         </html>
