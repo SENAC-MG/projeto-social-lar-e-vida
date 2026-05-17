@@ -1,3 +1,4 @@
+import { ThemeProvider } from "next-themes";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -13,14 +14,20 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
     title: "Lar e Vida",
-    description: "Hospital de Câncer Lar e Vida",
+    description: "Sistema de Gestão Hospitalar com Analytics Integrado",
 };
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="pt-BR" className={`h-full ${geistSans.variable} ${geistMono.variable}`}>
+        <html lang="pt-BR" className={`h-full ${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
             <body className="min-h-full flex flex-col antialiased">
-                {children}
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                >
+                    {children}
+                </ThemeProvider>
             </body>
         </html>
     );
