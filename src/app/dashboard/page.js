@@ -1,14 +1,13 @@
 "use client";
 import Image from "next/image";
 import Sidebar from "../components/sideBar";
+import ThemeChanger from "../components/ui/ThemeChanger";
 
 import { useState, useRef, useEffect } from "react";
 import {
   Upload,
   File,
   X,
-  Sun,
-  Moon,
   Trash2,
   CheckCircle,
   AlertCircle,
@@ -27,12 +26,6 @@ export default function DashboardPage() {
     }
   }, []);
 
-  const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window === "undefined") {
-      return false;
-    }
-    return localStorage.getItem("theme") === "dark";
-  });
   const [files, setFiles] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadProgress, setUploadProgress] = useState({});
@@ -40,19 +33,11 @@ export default function DashboardPage() {
   const intervalsRef = useRef({});
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", darkMode);
-    localStorage.setItem("theme", darkMode ? "dark" : "light");
-  }, [darkMode]);
-
-  useEffect(() => {
     return () => {
       Object.values(intervalsRef.current).forEach(clearInterval);
+      intervalsRef.current = {};
     };
   }, []);
-
-  const toggleTheme = () => {
-    setDarkMode((prev) => !prev);
-  };
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -204,7 +189,7 @@ export default function DashboardPage() {
                 <Menu size={24} />
               </button>
 
-            
+              <ThemeChanger />
             </div>
 
           </div>
