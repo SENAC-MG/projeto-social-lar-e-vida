@@ -8,7 +8,6 @@ import Sidebar from "../components/sideBar";
 import ModalNovoPaciente from "../components/modals/ModalNovoPaciente";
 import { get_Pacientes } from "@modulos/pacientes/controller/pacienteController";
 import BotaoDeletarPaciente from "../components/BotaoDeletarPaciente";
-import ThemeChanger from "../components/ui/ThemeChanger";
 
 export default function PacientesPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -103,7 +102,6 @@ export default function PacientesPage() {
                 className="w-full bg-card-bg border border-card-border rounded-lg pl-10 pr-4 py-2 text-sm text-foreground focus:outline-none focus:border-primary/50"
               />
             </div>
-            <ThemeChanger />
           </div>
 
           {/* Tabela Isolada com Scroll Lateral */}

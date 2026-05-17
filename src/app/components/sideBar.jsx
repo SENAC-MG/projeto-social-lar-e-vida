@@ -1,22 +1,33 @@
 "use client";
-import { LayoutGrid, Users, Package, Wrench, Sun, Hospital, Menu } from "lucide-react";
+import { LayoutGrid, Users, Package, Wrench, Sun, Moon, Hospital, Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
+import { useEffect, useMemo, useState } from "react";
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
   const pathname = usePathname();
-  const { resolvedTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const isDark = resolvedTheme === "dark";
+  const nextTheme = isDark ? "light" : "dark";
+  const toggleLabel = isDark ? "Modo Claro" : "Modo Escuro";
 
-  const navItems = [
-    { path: "/dashboard", icon: LayoutGrid, label: "Dashboard" },
-    { path: "/funcionarios", icon: Hospital, label: "Funcionários" },
-    { path: "/pacientes", icon: Users, label: "Pacientes" },
-    { path: "/emprestimos", icon: Package, label: "Empréstimos" },
-    { path: "/servicos", icon: Wrench, label: "Serviços" },
-  ];
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const navItems = useMemo(
+    () => [
+      { path: "/dashboard", icon: LayoutGrid, label: "Dashboard" },
+      { path: "/funcionarios", icon: Hospital, label: "Funcionários" },
+      { path: "/pacientes", icon: Users, label: "Pacientes" },
+      { path: "/emprestimos", icon: Package, label: "Empréstimos" },
+      { path: "/servicos", icon: Wrench, label: "Serviços" },
+    ],
+    [],
+  );
 
   return (
     <>
@@ -116,13 +127,28 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
         {/* Rodapé da Sidebar */}
         <div className="mt-auto border-t pt-4" style={{ borderColor: isDark ? 'rgba(255,255,255,0.1)' : '#E5E5E5' }}>
           <button
+            type="button"
+            onClick={() => mounted && setTheme(nextTheme)}
+            disabled={!mounted}
+            aria-label={mounted ? `Ativar ${toggleLabel.toLowerCase()}` : "Carregando tema"}
             className={`flex items-center py-2 transition-colors ${
               isOpen ? "gap-3 px-4" : "justify-center"
-            }`}
+            } ${mounted ? "cursor-pointer" : "cursor-default opacity-70"}`}
             style={{ color: isDark ? '#A3A3A3' : '#737373' }}
           >
-            <Sun size={20} className="flex-shrink-0" />
-            {isOpen && <span className="font-medium text-sm truncate">Modo Claro</span>}
+            <span className="relative flex h-6 w-11 flex-shrink-0 items-center rounded-full bg-foreground/15 transition-colors duration-300">
+              <span
+                className={`absolute h-5 w-5 rounded-full bg-primary transition-transform duration-300 ease-out ${
+                  isDark ? "translate-x-5" : "translate-x-1"
+                }`}
+              />
+              {isDark ? (
+                <Moon size={12} className="absolute left-1 text-white/80" />
+              ) : (
+                <Sun size={12} className="absolute right-1 text-white/80" />
+              )}
+            </span>
+            {isOpen && <span className="font-medium text-sm truncate">{toggleLabel}</span>}
           </button>
         </div>
       </div>

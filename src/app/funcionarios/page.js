@@ -15,8 +15,6 @@ import { get_Funcionarios } from "@modulos/funcionarios/controller/funcionarioCo
 
 import BotaoDeletar from "../components/BotaoDeletar";
 
-import ThemeChanger from "../components/ui/ThemeChanger";
-
 
 
 export default function FuncionariosPage() {
@@ -198,8 +196,6 @@ export default function FuncionariosPage() {
               />
 
             </div>
-
-            <ThemeChanger />
 
           </div>
 

@@ -6,7 +6,6 @@ import Sidebar from "../components/sideBar";
 import ModalNovoServico from "../components/modals/ModalNovoServico";
 import { get_Servicos } from "@modulos/servicos/controller/servicoController";
 import BotaoDeletarServico from "../components/BotaoDeletarServico";
-import ThemeChanger from "../components/ui/ThemeChanger";
 
 export default function ServicosPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -109,7 +108,6 @@ export default function ServicosPage() {
                 className="w-full bg-card-bg border border-card-border rounded-lg pl-10 pr-4 py-2 text-sm text-foreground focus:outline-none focus:border-primary/50"
               />
             </div>
-            <ThemeChanger />
           </div>
 
           {/* Tabela Responsiva com Scroll Lateral */}

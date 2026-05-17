@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Menu } from "lucide-react";
 import Sidebar from "../components/sideBar";
-import ThemeChanger from "../components/ui/ThemeChanger";
 
 export default function HomePage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -43,8 +42,6 @@ export default function HomePage() {
               <h2 className="text-sm font-bold text-foreground -mt-1">Lar e Vida</h2>
             </div>
           </div>
-
-          <ThemeChanger />
 
         </header>
 
