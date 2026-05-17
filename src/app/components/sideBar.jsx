@@ -3,9 +3,12 @@ import { LayoutGrid, Users, Package, Wrench, Sun, Hospital, Menu } from "lucide-
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
   const pathname = usePathname();
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   const navItems = [
     { path: "/dashboard", icon: LayoutGrid, label: "Dashboard" },
@@ -19,27 +22,31 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
     <>
       {/* BACKDROP: Fundo escurecido apenas no mobile quando a sidebar estiver aberta */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/60 z-40 md:hidden"
           onClick={toggleSidebar}
         />
       )}
 
-      <div 
-        className={`fixed md:sticky top-0 left-0 h-screen bg-black flex flex-col p-4 border-r border-gray-800 transition-all duration-300 z-50
+      <div
+        className={`fixed md:sticky top-0 left-0 h-screen flex flex-col p-4 transition-all duration-300 z-50
           ${isOpen ? "w-64 translate-x-0" : "w-0 -translate-x-full md:w-20 md:translate-x-0 overflow-hidden md:overflow-visible"}
         `}
+        style={{
+          backgroundColor: isDark ? '#2A2927' : '#F5F5F5',
+          borderRight: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : '#E5E5E5'}`
+        }}
       >
         {/* Topo da Sidebar com o Botão de Três Riscos sempre acessível */}
         <div className={`flex items-center mb-10 min-h-[72px] ${isOpen ? "justify-between ml-2" : "justify-center"}`}>
           {isOpen ? (
             <>
               {/* LOGO E TEXTO ENVOLVIDOS NO LINK PARA VOLTAR À HOME */}
-              <Link 
-                href="/home" 
+              <Link
+                href="/home"
                 className="flex items-center gap-3 animate-fadeIn hover:opacity-80 transition-opacity cursor-pointer min-w-0"
               >
-                <div className="relative h-12 w-12 rounded-full bg-white/10 p-2 backdrop-blur-md border border-white/20 flex-shrink-0">
+                <div className="relative h-12 w-12 rounded-full p-2 flex-shrink-0" style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)', border: `1px solid ${isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)'}`, backdropFilter: 'blur(8px)' }}>
                   <Image
                     src="/logo.png"
                     alt="Logo Lar e Vida"
@@ -48,17 +55,18 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                   />
                 </div>
                 <div className="min-w-0">
-                  <h2 className="text-white font-bold text-sm leading-none truncate">
+                  <h2 className="font-bold text-sm leading-none truncate" style={{ color: isDark ? '#FAFAFA' : '#1D1C1A' }}>
                     Lar e Vida
                   </h2>
-                  <p className="text-gray-500 text-xs truncate mt-1">Hospitalar</p>
+                  <p className="text-xs truncate mt-1" style={{ color: isDark ? '#A3A3A3' : '#737373' }}>Hospitalar</p>
                 </div>
               </Link>
-              
+
               {/* Botão de fechar (3 riscos) - Visível tanto no PC quanto no Mobile quando a barra está aberta */}
-              <button 
+              <button
                 onClick={toggleSidebar}
-                className="text-gray-400 hover:text-white p-2 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
+                style={{ color: isDark ? '#A3A3A3' : '#737373' }}
                 aria-label="Recolher barra lateral"
               >
                 <Menu size={20} />
@@ -66,9 +74,10 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
             </>
           ) : (
             /* Botão de abrir (3 riscos) - Visível apenas no PC quando recolhida */
-            <button 
+            <button
               onClick={toggleSidebar}
-              className="hidden md:block text-gray-400 hover:text-white p-2 hover:bg-white/10 rounded-lg transition-colors mx-auto"
+              className="hidden md:block p-2 hover:bg-white/10 rounded-lg transition-colors mx-auto"
+              style={{ color: isDark ? '#A3A3A3' : '#737373' }}
               aria-label="Expandir barra lateral"
             >
               <Menu size={20} />
@@ -90,9 +99,12 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                   isOpen ? "gap-3" : "justify-center"
                 } ${
                   isActive
-                    ? "bg-[#F97316] text-white"
-                    : "bg-transparent text-gray-400 hover:text-white hover:bg-white/10"
+                    ? "bg-primary text-white"
+                    : "bg-transparent hover:bg-white/10"
                 }`}
+                style={{
+                  color: isActive ? '#FAFAFA' : (isDark ? '#A3A3A3' : '#737373')
+                }}
               >
                 <Icon size={20} className="flex-shrink-0" />
                 {isOpen && <span className="font-medium text-sm truncate">{item.label}</span>}
@@ -102,11 +114,12 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
         </nav>
 
         {/* Rodapé da Sidebar */}
-        <div className="mt-auto border-t border-gray-800 pt-4">
-          <button 
-            className={`flex items-center w-full text-gray-400 hover:text-white py-2 transition-colors ${
+        <div className="mt-auto border-t pt-4" style={{ borderColor: isDark ? 'rgba(255,255,255,0.1)' : '#E5E5E5' }}>
+          <button
+            className={`flex items-center py-2 transition-colors ${
               isOpen ? "gap-3 px-4" : "justify-center"
             }`}
+            style={{ color: isDark ? '#A3A3A3' : '#737373' }}
           >
             <Sun size={20} className="flex-shrink-0" />
             {isOpen && <span className="font-medium text-sm truncate">Modo Claro</span>}
