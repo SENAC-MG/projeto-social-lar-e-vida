@@ -6,7 +6,6 @@ import Sidebar from "../components/sideBar";
 import ModalNovoEmprestimo from "../components/modals/ModalNovoEmprestimo";
 import { get_Emprestimos } from "@modulos/emprestimos/controller/emprestimoController";
 import BotaoDeletarEmprestimo from "../components/BotaoDeletarEmprestimo";
-import ThemeChanger from "../components/ui/ThemeChanger";
 
 export default function EmprestimosPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -154,9 +153,6 @@ export default function EmprestimosPage() {
             </div>
           </div>
 
-          <div className="mt-4 flex justify-end">
-            <ThemeChanger />
-          </div>
         </div>
 
         {isModalOpen && (

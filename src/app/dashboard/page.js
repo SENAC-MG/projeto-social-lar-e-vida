@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import Sidebar from "../components/sideBar";
-import ThemeChanger from "../components/ui/ThemeChanger";
 
 import { useState, useRef, useEffect } from "react";
 import {
@@ -189,7 +188,6 @@ export default function DashboardPage() {
                 <Menu size={24} />
               </button>
 
-              <ThemeChanger />
             </div>
 
           </div>
