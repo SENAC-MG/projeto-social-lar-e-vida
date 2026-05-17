@@ -1,13 +1,22 @@
+"use client";
+
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 export default function ThemeChanger() {
-    const { resolvedTheme, setTheme } = useTheme();
-    const isDark = resolvedTheme === "dark";
+    const { theme, setTheme, resolvedTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
 
-    if (!resolvedTheme) {
-        return null
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return null;
     }
+
+    const isDark = resolvedTheme === "dark";
 
     return (
         <div className="flex items-center gap-4">
@@ -17,16 +26,18 @@ export default function ThemeChanger() {
                 aria-label={
                     isDark ? "Switch to light mode" : "Switch to dark mode"
                 }
-                className={`relative flex items-center w-20 h-10 rounded-full transition-all duration-500 ${isDark
-                    ? "bg-zinc-900"
-                    : "bg-zinc-300/30"
-                    }`}
+                className={`relative flex items-center w-20 h-10 rounded-full transition-all duration-500 ${
+                    isDark
+                        ? "bg-zinc-900"
+                        : "bg-zinc-300/30"
+                }`}
             >
                 <div
-                    className={`absolute flex items-center justify-center w-8 h-8 rounded-full transition-all duration-500 transform ${isDark
-                        ? "translate-x-10 bg-zinc-800"
-                        : "translate-x-1"
-                        }`}
+                    className={`absolute flex items-center justify-center w-8 h-8 rounded-full transition-all duration-500 transform ${
+                        isDark
+                            ? "translate-x-10 bg-zinc-800"
+                            : "translate-x-1"
+                    }`}
                 >
                     {isDark ? (
                         <Moon
