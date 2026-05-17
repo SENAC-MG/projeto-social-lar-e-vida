@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
   const pathname = usePathname();
@@ -18,16 +18,13 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
     setMounted(true);
   }, []);
 
-  const navItems = useMemo(
-    () => [
-      { path: "/dashboard", icon: LayoutGrid, label: "Dashboard" },
-      { path: "/funcionarios", icon: Hospital, label: "Funcionários" },
-      { path: "/pacientes", icon: Users, label: "Pacientes" },
-      { path: "/emprestimos", icon: Package, label: "Empréstimos" },
-      { path: "/servicos", icon: Wrench, label: "Serviços" },
-    ],
-    [],
-  );
+  const navItems = [
+    { path: "/dashboard", icon: LayoutGrid, label: "Dashboard" },
+    { path: "/funcionarios", icon: Hospital, label: "Funcionários" },
+    { path: "/pacientes", icon: Users, label: "Pacientes" },
+    { path: "/emprestimos", icon: Package, label: "Empréstimos" },
+    { path: "/servicos", icon: Wrench, label: "Serviços" },
+  ];
 
   return (
     <>
@@ -128,7 +125,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
         <div className="mt-auto border-t pt-4" style={{ borderColor: isDark ? 'rgba(255,255,255,0.1)' : '#E5E5E5' }}>
           <button
             type="button"
-            onClick={() => mounted && setTheme(nextTheme)}
+            onClick={() => setTheme(nextTheme)}
             disabled={!mounted}
             aria-label={mounted ? `Ativar ${toggleLabel.toLowerCase()}` : "Carregando tema"}
             className={`flex items-center py-2 transition-colors ${
