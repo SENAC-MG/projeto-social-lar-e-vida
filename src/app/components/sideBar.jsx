@@ -1,5 +1,5 @@
 "use client";
-import { LayoutGrid, Users, Package, Wrench, Sun, Hospital } from "lucide-react";
+import { LayoutGrid, Users, Package, Wrench, Hospital } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Sidebar from "../components/sideBar";
 import ThemeChanger from "../components/ui/ThemeChanger";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import {
     Upload,
@@ -74,6 +74,13 @@ export default function DashboardPage() {
         }, 200);
         intervalsRef.current[fileId] = interval;
     };
+
+    useEffect(() => {
+        return () => {
+            Object.values(intervalsRef.current).forEach(clearInterval);
+            intervalsRef.current = {};
+        };
+    }, []);
 
     const removeFile = (fileId) => {
         if (intervalsRef.current[fileId]) {
@@ -155,7 +162,7 @@ export default function DashboardPage() {
         <div className="min-h-screen bg-background transition-colors duration-300 flex">
             <Sidebar />
             <div className="flex-1 flex flex-col bg-background">
-                <header className="border-b bg-card-bg border-card-border sticky top-0 z-8">
+                <header className="border-b bg-card-bg border-card-border sticky top-0 z-10">
                     <div className="max-w-6xl px-4 py-4 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <div className="relative h-18 w-18 rounded-full bg-white/10 p-2 backdrop-blur-md border border-white/20">
