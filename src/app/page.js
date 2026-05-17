@@ -2,23 +2,23 @@
 import Image from "next/image";
 import { Mail, Lock, Eye } from "lucide-react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { login } from "../../actions/login";
+
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!email || !password) {
       alert("Favor Informar Usuário e Senha para Logar");
       return;
     }
+
     const result = await login(email, password);
-    if (result.success) {
-      router.push("/home");
-    } else {
+
+    if (!result?.success) {
       alert("Usuário ou senha incorretos. Tente novamente.");
     }
   };

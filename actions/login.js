@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 const SESSION_COOKIE = 'larvida_session';
 const SESSION_MAX_AGE = 60 * 60 * 8;
@@ -22,5 +23,5 @@ export async function login(email, senha) {
     maxAge: SESSION_MAX_AGE,
   });
 
-  return { success: true, message: 'Login bem-sucedido' };
+  redirect('/home');
 }
