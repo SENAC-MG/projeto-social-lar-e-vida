@@ -26,6 +26,7 @@ export default function RootLayout({ children }) {
                     attribute="class"
                     defaultTheme="light"
                     enableSystem={false}
+                    storageKey="lar-vida-theme"
                     disableTransitionOnChange
                 >
                     <ToastProvider />
