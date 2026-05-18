@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "./components/ui/ThemeProvider";
+import { ThemeProvider } from "@wrksz/themes/next";
 import ToastProvider from "./components/ToastProvider";
 
 const geistSans = Geist({
@@ -22,13 +22,7 @@ export default function RootLayout({ children }) {
     return (
         <html lang="pt-BR" className={`h-full ${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
             <body className="min-h-full flex flex-col antialiased">
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="light"
-                    enableSystem={false}
-                    storageKey="lar-vida-theme"
-                    disableTransitionOnChange
-                >
+                <ThemeProvider>
                     <ToastProvider />
                     {children}
                 </ThemeProvider>
