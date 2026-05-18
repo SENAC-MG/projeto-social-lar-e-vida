@@ -127,12 +127,6 @@ export default function Home() {
                 />
                 Lembrar-me
               </label>
-              <a
-                href="#"
-                className="text-[#F97316] font-medium hover:underline"
-              >
-                Esqueci minha senha
-              </a>
             </div>
 
             <button
@@ -142,14 +136,6 @@ export default function Home() {
               Entrar no Sistema
             </button>
           </form>
-
-          <p className="mt-6 text-center text-sm text-gray-500">
-            Precisa de ajuda?{" "}
-            <a href="#" className="text-[#F97316] font-bold">
-              Fale com o suporte
-            </a>
-          </p>
-
           <div className="mt-12 rounded-2xl bg-gray-50 p-6 border border-gray-100">
             <span className="text-4xl text-[#F97316] font-serif font-bold italic">
               “
