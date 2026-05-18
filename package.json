@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "playwright test --project=firefox",
-    "test:headed": "playwright test --project=firefox --headed",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
-    "test:debug": "playwright test --debug"
+    "test:debug": "playwright test --debug",
+    "test:smoke": "playwright test tests/e2e/auth/login.spec.js --project=chromium"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
