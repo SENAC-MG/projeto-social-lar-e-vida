@@ -112,7 +112,7 @@ export default function Home() {
                 type='button'
                 onClick={() => setShowPassword((prev) => !prev)}
                 className='absolute right-3 top-[36px] rounded p-1 text-gray-400 transition-colors hover:text-gray-600'
-                aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                aria-label={showPassword ? 'Ocultar' : 'Mostrar'}
               >
                 {showPassword ? <EyeOff className='h-4 w-4' /> : <Eye className='h-4 w-4' />}
               </button>

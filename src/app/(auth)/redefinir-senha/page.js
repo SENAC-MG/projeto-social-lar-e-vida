@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Lock, Eye, EyeOff } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -12,7 +12,7 @@ import {
 import Button from '@/shared/ui/Button';
 import { InputField } from '@/shared/ui/Input';
 
-export default function RedefinirSenhaPage() {
+function RedefinirSenhaContent() {
   const searchParams = useSearchParams();
   const token = useMemo(() => searchParams.get('token') || '', [searchParams]);
 
@@ -112,7 +112,7 @@ export default function RedefinirSenhaPage() {
               type='button'
               onClick={() => setShowPassword((prev) => !prev)}
               className='absolute right-3 top-[36px] rounded p-1 text-foreground/50 transition-colors hover:text-foreground'
-              aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+              aria-label={showPassword ? 'Ocultar' : 'Mostrar'}
             >
               {showPassword ? <EyeOff className='h-4 w-4' /> : <Eye className='h-4 w-4' />}
             </button>
@@ -128,5 +128,19 @@ export default function RedefinirSenhaPage() {
         </Link>
       </div>
     </main>
+  );
+}
+
+export default function RedefinirSenhaPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className='mx-auto flex min-h-screen w-full max-w-md items-center px-6'>
+          <p className='text-sm text-foreground/70'>Validando token de recuperação...</p>
+        </main>
+      }
+    >
+      <RedefinirSenhaContent />
+    </Suspense>
   );
 }

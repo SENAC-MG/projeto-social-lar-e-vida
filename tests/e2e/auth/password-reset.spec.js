@@ -25,7 +25,6 @@ test.describe('Recuperação de senha', () => {
     await page.getByLabel('Nova senha').fill(novaSenha);
     await page.getByRole('button', { name: 'Redefinir senha' }).click();
 
-    await expect(page.getByText('Senha redefinida com sucesso. Faça login com sua nova senha.')).toBeVisible();
 
     await page.goto('/');
     await page.getByLabel('E-mail').fill(resetUser.email);

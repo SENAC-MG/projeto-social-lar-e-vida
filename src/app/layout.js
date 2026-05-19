@@ -11,7 +11,7 @@ export default function RootLayout({ children }) {
     return (
         <html lang="pt-BR" className="h-full" suppressHydrationWarning>
             <body className="min-h-full flex flex-col antialiased">
-                <ThemeProvider>
+                <ThemeProvider storageKey="lar-vida-theme">
                     <ToastProvider />
                     {children}
                 </ThemeProvider>
