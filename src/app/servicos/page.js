@@ -4,16 +4,18 @@ import React, { useState, useEffect } from "react";
 import { Plus, Wrench, Search, Menu } from "lucide-react";
 import Sidebar from "../components/sideBar";
 import ModalNovoServico from "../components/modals/ModalNovoServico";
+import ModalEditarServico from "../components/update/servicos/ModalEditarServico";
 import { get_Servicos } from "@modulos/servicos/controller/servicoController";
 import BotaoDeletarServico from "../components/BotaoDeletarServico";
+import BotaoEditarServico from "../components/update/servicos/BotaoEditarServico";
 
 export default function ServicosPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [servicoEditando, setServicoEditando] = useState(null);
   const [servicos, setServicos] = useState([]);
   const [pesquisa, setPesquisa] = useState("");
 
-  // Força a sidebar a abrir em telas Desktop na montagem do componente
   useEffect(() => {
     if (window.innerWidth >= 768) {
       setIsSidebarOpen(true);
@@ -38,12 +40,7 @@ export default function ServicosPage() {
   };
 
   const servicosFiltrados = servicos.filter((servico) =>
-    [
-      servico.nome,
-      servico.cpf,
-      servico.tipoServico,
-      servico.unidade,
-    ]
+    [servico.nome, servico.cpf, servico.tipoServico, servico.unidade]
       .join(" ")
       .toLowerCase()
       .includes(pesquisa.toLowerCase())
@@ -62,6 +59,7 @@ export default function ServicosPage() {
 
               {/* ÍCONE DE TRÊS RISCOS: Visível apenas no Mobile */}
               <button
+                type="button"
                 onClick={toggleSidebar}
                 className="text-foreground/60 hover:text-foreground p-2 hover:bg-foreground/10 rounded-lg transition-colors md:hidden"
                 aria-label="Abrir menu"
@@ -93,7 +91,6 @@ export default function ServicosPage() {
             </button>
           </div>
 
-          {/* Pesquisa */}
           <div className="mb-6 flex gap-4">
             <div className="relative flex-1">
               <Search
@@ -123,7 +120,9 @@ export default function ServicosPage() {
                     <th className="px-6 py-4 font-semibold">Valor</th>
                     <th className="px-6 py-4 font-semibold">Unidade</th>
                     <th className="px-6 py-4 font-semibold">Tempo</th>
-                    <th className="px-6 py-4 text-center font-semibold">Ações</th>
+                    <th className="px-6 py-4 text-center font-semibold">
+                      Ações
+                    </th>
                   </tr>
                 </thead>
 
@@ -155,7 +154,11 @@ export default function ServicosPage() {
                         <td className="px-6 py-4 text-sm text-foreground/60">{servico.unidade}</td>
                         <td className="px-6 py-4 text-sm text-foreground/60">{servico.tempoServico}</td>
                         <td className="px-6 py-4">
-                          <div className="flex justify-center">
+                          <div className="flex justify-center gap-2">
+                            <BotaoEditarServico
+                              onClick={() => setServicoEditando(servico)}
+                            />
+
                             <BotaoDeletarServico
                               id={servico.id}
                               onDeleted={carregarServicos}
@@ -174,6 +177,14 @@ export default function ServicosPage() {
         {isModalOpen && (
           <ModalNovoServico
             onClose={() => setIsModalOpen(false)}
+            onSuccess={carregarServicos}
+          />
+        )}
+
+        {servicoEditando && (
+          <ModalEditarServico
+            servico={servicoEditando}
+            onClose={() => setServicoEditando(null)}
             onSuccess={carregarServicos}
           />
         )}

@@ -4,16 +4,21 @@ import React, { useState, useEffect } from "react";
 import { Plus, Box, Menu } from "lucide-react";
 import Sidebar from "../components/sideBar";
 import ModalNovoEmprestimo from "../components/modals/ModalNovoEmprestimo";
+import ModalEditarEmprestimo from "../components/update/emprestimos/ModalEditarEmprestimo";
+
 import { get_Emprestimos } from "@modulos/emprestimos/controller/emprestimoController";
+
 import BotaoDeletarEmprestimo from "../components/BotaoDeletarEmprestimo";
+import BotaoEditarEmprestimo from "../components/update/emprestimos/BotaoEditarEmprestimo";
 
 export default function EmprestimosPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [emprestimoEditando, setEmprestimoEditando] = useState(null);
+
   const [emprestimos, setEmprestimos] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Força a sidebar a abrir em telas Desktop na montagem do componente
   useEffect(() => {
     if (window.innerWidth >= 768) {
       setIsSidebarOpen(true);
@@ -54,6 +59,7 @@ export default function EmprestimosPage() {
 
               {/* ÍCONE DE TRÊS RISCOS: Visível apenas no Mobile */}
               <button
+                type="button"
                 onClick={toggleSidebar}
                 className="text-foreground/60 hover:text-foreground p-2 hover:bg-foreground/10 rounded-lg transition-colors md:hidden"
                 aria-label="Abrir menu"
@@ -74,6 +80,7 @@ export default function EmprestimosPage() {
             </div>
 
             <button
+              type="button"
               onClick={() => setIsModalOpen(true)}
               className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white transition-all px-4 sm:px-6 py-2.5 rounded-lg font-medium shadow-lg w-full sm:w-auto text-sm sm:text-base"
             >
@@ -134,11 +141,20 @@ export default function EmprestimosPage() {
                         <td className="px-6 py-4 text-sm text-foreground/60">{emprestimo.telefone1}</td>
                         <td className="px-6 py-4 text-sm text-foreground/60">
                           {emprestimo.dataEmprestimo
-                            ? new Date(emprestimo.dataEmprestimo).toLocaleDateString("pt-BR")
+                            ? new Date(
+                              emprestimo.dataEmprestimo
+                            ).toLocaleDateString("pt-BR")
                             : "-"}
                         </td>
+
                         <td className="px-6 py-4">
-                          <div className="flex justify-center">
+                          <div className="flex justify-center gap-2">
+                            <BotaoEditarEmprestimo
+                              onClick={() =>
+                                setEmprestimoEditando(emprestimo)
+                              }
+                            />
+
                             <BotaoDeletarEmprestimo
                               id={emprestimo.id}
                               onDeleted={carregarEmprestimos}
@@ -158,6 +174,14 @@ export default function EmprestimosPage() {
         {isModalOpen && (
           <ModalNovoEmprestimo
             onClose={() => setIsModalOpen(false)}
+            onSuccess={carregarEmprestimos}
+          />
+        )}
+
+        {emprestimoEditando && (
+          <ModalEditarEmprestimo
+            emprestimo={emprestimoEditando}
+            onClose={() => setEmprestimoEditando(null)}
             onSuccess={carregarEmprestimos}
           />
         )}

@@ -6,16 +6,21 @@ import { Toaster } from "sonner";
 
 import Sidebar from "../components/sideBar";
 import ModalNovoPaciente from "../components/modals/ModalNovoPaciente";
+import ModalEditarPaciente from "../components/update/pacientes/ModalEditarPaciente";
+
 import { get_Pacientes } from "@modulos/pacientes/controller/pacienteController";
+
 import BotaoDeletarPaciente from "../components/BotaoDeletarPaciente";
+import BotaoEditarPaciente from "../components/update/pacientes/BotaoEditarPaciente";
 
 export default function PacientesPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pacienteEditando, setPacienteEditando] = useState(null);
+
   const [pacientes, setPacientes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Força a sidebar a abrir em telas Desktop na montagem do componente
   useEffect(() => {
     if (window.innerWidth >= 768) {
       setIsSidebarOpen(true);
@@ -24,6 +29,7 @@ export default function PacientesPage() {
 
   const carregarPacientes = async () => {
     setLoading(true);
+
     try {
       const dados = await get_Pacientes();
       setPacientes(dados);
@@ -37,10 +43,6 @@ export default function PacientesPage() {
   useEffect(() => {
     carregarPacientes();
   }, []);
-
-  const handleModalSuccess = () => {
-    carregarPacientes();
-  };
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -61,6 +63,7 @@ export default function PacientesPage() {
 
               {/* ÍCONE DE TRÊS RISCOS: Visível apenas no Mobile */}
               <button
+                type="button"
                 onClick={toggleSidebar}
                 className="text-foreground/60 hover:text-foreground p-2 hover:bg-foreground/10 rounded-lg transition-colors md:hidden"
                 aria-label="Abrir menu"
@@ -81,6 +84,7 @@ export default function PacientesPage() {
             </div>
 
             <button
+              type="button"
               onClick={() => setIsModalOpen(true)}
               className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white transition-all px-4 sm:px-6 py-2.5 rounded-lg font-medium shadow-lg w-full sm:w-auto text-sm sm:text-base"
             >
@@ -89,13 +93,13 @@ export default function PacientesPage() {
             </button>
           </div>
 
-          {/* Barra de Busca */}
           <div className="mb-6 flex gap-4">
             <div className="relative flex-1">
               <Search
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40"
                 size={18}
               />
+
               <input
                 type="text"
                 placeholder="Pesquisar paciente..."
@@ -117,8 +121,12 @@ export default function PacientesPage() {
                     <th className="px-6 py-4 font-semibold">Cidade</th>
                     <th className="px-6 py-4 font-semibold">Telefone 1</th>
                     <th className="px-6 py-4 font-semibold">Telefone 2</th>
-                    <th className="px-6 py-4 font-semibold">Data de Cadastro</th>
-                    <th className="px-6 py-4 text-center font-semibold">Ações</th>
+                    <th className="px-6 py-4 font-semibold">
+                      Data de Cadastro
+                    </th>
+                    <th className="px-6 py-4 text-center font-semibold">
+                      Ações
+                    </th>
                   </tr>
                 </thead>
 
@@ -173,8 +181,13 @@ export default function PacientesPage() {
                             ? new Date(paciente.createdAt).toLocaleDateString("pt-BR")
                             : "-"}
                         </td>
+
                         <td className="px-6 py-4">
-                          <div className="flex justify-center">
+                          <div className="flex justify-center gap-2">
+                            <BotaoEditarPaciente
+                              onClick={() => setPacienteEditando(paciente)}
+                            />
+
                             <BotaoDeletarPaciente
                               id={paciente.id}
                               onDeleted={carregarPacientes}
@@ -193,7 +206,15 @@ export default function PacientesPage() {
         {isModalOpen && (
           <ModalNovoPaciente
             onClose={() => setIsModalOpen(false)}
-            onSuccess={handleModalSuccess}
+            onSuccess={carregarPacientes}
+          />
+        )}
+
+        {pacienteEditando && (
+          <ModalEditarPaciente
+            paciente={pacienteEditando}
+            onClose={() => setPacienteEditando(null)}
+            onSuccess={carregarPacientes}
           />
         )}
       </main>

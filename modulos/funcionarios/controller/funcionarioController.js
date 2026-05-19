@@ -68,19 +68,30 @@ export async function deletar_Funcionario(id) {
  * - Service garante que o funcionário existe
  */
 export async function updateFuncionarioAction(id, formData) {
-  const nome = formData.get('nome')?.toString().trim();
-  const email = formData.get('email')?.toString().trim();
-  const cargo = formData.get('cargo')?.toString().trim();
-  const telefone = formData.get('telefone')?.toString().trim();
+  const data = {};
+
+  const nome = formData.get("nome")?.toString().trim();
+  const email = formData.get("email")?.toString().trim();
+  const cargo = formData.get("cargo")?.toString().trim();
+  const telefone = formData.get("telefone")?.toString().trim();
+
+  if (nome) data.nome = nome;
+  if (email) data.email = email;
+  if (cargo) data.cargo = cargo;
+  if (telefone) data.telefone = telefone;
 
   try {
+    const funcionarioAtualizado = await updateFuncionarioService(id, data);
 
-    const funcionarioAtualizado = await updateFuncionarioService(id, { nome, email, cargo, telefone });
-    return { success: true, message: 'Funcionário atualizado com sucesso!', funcionario: funcionarioAtualizado };
+    return {
+      success: true,
+      message: "Funcionário atualizado com sucesso!",
+      funcionario: funcionarioAtualizado,
+    };
   } catch (err) {
     return {
       success: false,
-      error: err.message
+      error: err.message,
     };
   }
 }
