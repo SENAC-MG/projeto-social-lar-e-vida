@@ -7,8 +7,6 @@ import {
   Upload,
   File,
   X,
-  Sun,
-  Moon,
   Trash2,
   CheckCircle,
   AlertCircle,
@@ -27,12 +25,6 @@ export default function DashboardPage() {
     }
   }, []);
 
-  const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window === "undefined") {
-      return false;
-    }
-    return localStorage.getItem("theme") === "dark";
-  });
   const [files, setFiles] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadProgress, setUploadProgress] = useState({});
@@ -40,19 +32,11 @@ export default function DashboardPage() {
   const intervalsRef = useRef({});
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", darkMode);
-    localStorage.setItem("theme", darkMode ? "dark" : "light");
-  }, [darkMode]);
-
-  useEffect(() => {
     return () => {
       Object.values(intervalsRef.current).forEach(clearInterval);
+      intervalsRef.current = {};
     };
   }, []);
-
-  const toggleTheme = () => {
-    setDarkMode((prev) => !prev);
-  };
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -153,8 +137,8 @@ export default function DashboardPage() {
     switch (status) {
       case "pending":
         return {
-          icon: <File className="w-5 h-5 text-gray-400" />,
-          color: "text-gray-500",
+          icon: <File className="w-5 h-5 text-foreground/50" />,
+          color: "text-foreground/50",
           label: "Pendente",
         };
       case "uploading":
@@ -179,8 +163,8 @@ export default function DashboardPage() {
         };
       default:
         return {
-          icon: <File className="w-5 h-5 text-gray-400" />,
-          color: "text-gray-500",
+          icon: <File className="w-5 h-5 text-foreground/50" />,
+          color: "text-foreground/50",
           label: "Pendente",
         };
     }
@@ -189,22 +173,21 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-background transition-colors duration-300 flex overflow-x-hidden">
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      
-      <div className="flex-1 flex flex-col bg-gray-950 min-w-0 transition-all duration-300">
-        <header className=" bg-transparent sticky top-0 z-30 w-full">
+
+      <div className="flex-1 flex flex-col bg-background min-w-0 transition-all duration-300">
+        <header className="bg-transparent sticky top-0 z-30 w-full">
           <div className="max-w-6xl w-full mx-auto px-4 py-4 flex items-center justify-between">
-            
+
             <div className="flex items-center gap-3">
               {/* ÍCONE DE TRÊS RISCOS (MENU HAMBÚRGUER): Aparece apenas no Mobile */}
               <button
                 onClick={toggleSidebar}
-                className="bg-black text-gray-400 hover:text-white p-2 hover:bg-white/10 rounded-lg transition-colors md:hidden mr-1"
+                className="bg-card-bg text-foreground/60 hover:text-foreground p-2 hover:bg-foreground/10 rounded-lg transition-colors md:hidden mr-1"
                 aria-label="Abrir menu"
               >
                 <Menu size={24} />
               </button>
 
-            
             </div>
 
           </div>
@@ -265,7 +248,7 @@ export default function DashboardPage() {
                 </p>
                 <p className="text-sm mt-1">
                   ou{" "}
-                  <span className="text-[#F97316] font-medium">
+                  <span className="text-primary font-medium">
                     clique para selecionar arquivos
                   </span>
                 </p>

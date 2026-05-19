@@ -2,23 +2,23 @@
 import Image from "next/image";
 import { Mail, Lock, Eye } from "lucide-react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { login } from "../../actions/login";
+
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!email || !password) {
       alert("Favor Informar Usuário e Senha para Logar");
       return;
     }
+
     const result = await login(email, password);
-    if (result.success) {
-      router.push("/home");
-    } else {
+
+    if (!result?.success) {
       alert("Usuário ou senha incorretos. Tente novamente.");
     }
   };
@@ -127,12 +127,6 @@ export default function Home() {
                 />
                 Lembrar-me
               </label>
-              <a
-                href="#"
-                className="text-[#F97316] font-medium hover:underline"
-              >
-                Esqueci minha senha
-              </a>
             </div>
 
             <button
@@ -142,14 +136,6 @@ export default function Home() {
               Entrar no Sistema
             </button>
           </form>
-
-          <p className="mt-6 text-center text-sm text-gray-500">
-            Precisa de ajuda?{" "}
-            <a href="#" className="text-[#F97316] font-bold">
-              Fale com o suporte
-            </a>
-          </p>
-
           <div className="mt-12 rounded-2xl bg-gray-50 p-6 border border-gray-100">
             <span className="text-4xl text-[#F97316] font-serif font-bold italic">
               “

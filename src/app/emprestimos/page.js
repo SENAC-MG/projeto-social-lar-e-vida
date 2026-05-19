@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { Plus, Box, Menu } from "lucide-react";
-
 import Sidebar from "../components/sideBar";
 import ModalNovoEmprestimo from "../components/modals/ModalNovoEmprestimo";
 import ModalEditarEmprestimo from "../components/update/emprestimos/ModalEditarEmprestimo";
@@ -48,32 +47,33 @@ export default function EmprestimosPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0c10] flex overflow-x-hidden">
+    <div className="min-h-screen bg-background flex overflow-x-hidden">
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
-      <main className="flex-1 flex flex-col bg-gray-950 min-w-0 transition-all duration-300">
+      <main className="flex-1 flex flex-col bg-background min-w-0 transition-all duration-300">
         <div className="p-4 sm:p-8">
+
+          {/* Header Responsivo */}
           <div className="flex flex-col sm:flex-row gap-4 justify-between sm:items-center mb-8">
             <div className="flex items-center gap-3 sm:gap-4">
+
+              {/* ÍCONE DE TRÊS RISCOS: Visível apenas no Mobile */}
               <button
                 type="button"
                 onClick={toggleSidebar}
-                className="text-gray-400 hover:text-white p-2 hover:bg-white/10 rounded-lg transition-colors md:hidden"
+                className="text-foreground/60 hover:text-foreground p-2 hover:bg-foreground/10 rounded-lg transition-colors md:hidden"
                 aria-label="Abrir menu"
               >
                 <Menu size={24} />
               </button>
 
-              <div className="p-3 bg-[#F97316] border border-gray-800 rounded-xl shadow-sm flex-shrink-0">
+              <div className="p-3 bg-primary border border-transparent rounded-xl shadow-sm flex-shrink-0">
                 <Box className="text-white" size={24} />
               </div>
 
               <div className="min-w-0">
-                <h1 className="text-xl sm:text-2xl font-bold text-white truncate">
-                  Empréstimos
-                </h1>
-
-                <p className="text-gray-500 text-xs sm:text-sm">
+                <h1 className="text-xl sm:text-2xl font-bold text-foreground truncate">Empréstimos</h1>
+                <p className="text-foreground/50 text-xs sm:text-sm">
                   {emprestimos.length} registros
                 </p>
               </div>
@@ -82,18 +82,19 @@ export default function EmprestimosPage() {
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center justify-center gap-2 bg-[#F97316] hover:bg-[#e85a1a] text-white transition-all px-4 sm:px-6 py-2.5 rounded-lg font-medium shadow-lg shadow-orange-900/20 w-full sm:w-auto text-sm sm:text-base"
+              className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white transition-all px-4 sm:px-6 py-2.5 rounded-lg font-medium shadow-lg w-full sm:w-auto text-sm sm:text-base"
             >
               <Plus size={20} />
               Novo Empréstimo
             </button>
           </div>
 
-          <div className="bg-[#11141d] rounded-2xl border border-gray-800/50 overflow-hidden shadow-sm">
+          {/* Tabela Responsiva com Scroll Lateral */}
+          <div className="bg-card-bg rounded-2xl border border-card-border overflow-hidden shadow-sm">
             <div className="overflow-x-auto scrolling-touch">
               <table className="w-full text-left border-collapse min-w-[800px]">
-                <thead className="bg-[#1a1f2e] border-b border-gray-800/50">
-                  <tr className="text-[11px] uppercase tracking-wider text-gray-400 font-semibold">
+                <thead className="bg-card-bg border-b border-card-border">
+                  <tr className="text-[11px] uppercase tracking-wider text-foreground/50 font-semibold">
                     <th className="px-6 py-4">Nome</th>
                     <th className="px-6 py-4">Materiais</th>
                     <th className="px-6 py-4">CPF</th>
@@ -109,7 +110,7 @@ export default function EmprestimosPage() {
                     <tr>
                       <td
                         colSpan="7"
-                        className="py-24 text-center text-gray-500 italic text-sm"
+                        className="py-24 text-center text-foreground/40 italic text-sm"
                       >
                         Carregando empréstimos...
                       </td>
@@ -118,7 +119,7 @@ export default function EmprestimosPage() {
                     <tr>
                       <td
                         colSpan="7"
-                        className="py-24 text-center text-gray-600 italic text-sm"
+                        className="py-24 text-center text-foreground/40 italic text-sm"
                       >
                         Nenhum empréstimo cadastrado
                       </td>
@@ -127,32 +128,18 @@ export default function EmprestimosPage() {
                     emprestimos.map((emprestimo) => (
                       <tr
                         key={emprestimo.id}
-                        className="border-b border-gray-800 text-gray-300 hover:bg-white/[0.02] transition-colors"
+                        className="border-b border-card-border hover:bg-foreground/5 transition-colors"
                       >
-                        <td className="px-6 py-4 text-white font-medium text-sm">
+                        <td className="px-6 py-4 text-foreground font-medium text-sm">
                           {emprestimo.nome}
                         </td>
-
-                        <td
-                          className="px-6 py-4 text-sm max-w-[250px] truncate"
-                          title={emprestimo.materiaisEmprestados}
-                        >
+                        <td className="px-6 py-4 text-sm max-w-[250px] truncate text-foreground/60" title={emprestimo.materiaisEmprestados}>
                           {emprestimo.materiaisEmprestados}
                         </td>
-
-                        <td className="px-6 py-4 text-sm">
-                          {emprestimo.cpf}
-                        </td>
-
-                        <td className="px-6 py-4 text-sm">
-                          {emprestimo.cidade}
-                        </td>
-
-                        <td className="px-6 py-4 text-sm">
-                          {emprestimo.telefone1}
-                        </td>
-
-                        <td className="px-6 py-4 text-sm">
+                        <td className="px-6 py-4 text-sm text-foreground/60">{emprestimo.cpf}</td>
+                        <td className="px-6 py-4 text-sm text-foreground/60">{emprestimo.cidade}</td>
+                        <td className="px-6 py-4 text-sm text-foreground/60">{emprestimo.telefone1}</td>
+                        <td className="px-6 py-4 text-sm text-foreground/60">
                           {emprestimo.dataEmprestimo
                             ? new Date(
                               emprestimo.dataEmprestimo
@@ -181,6 +168,7 @@ export default function EmprestimosPage() {
               </table>
             </div>
           </div>
+
         </div>
 
         {isModalOpen && (
