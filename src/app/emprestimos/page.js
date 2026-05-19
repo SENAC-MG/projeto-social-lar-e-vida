@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Plus, Box, Menu } from "lucide-react";
-import Sidebar from "../components/sideBar";
+import AppShell from "@/shared/layouts/AppShell";
 import ModalNovoEmprestimo from "../components/modals/ModalNovoEmprestimo";
 import ModalEditarEmprestimo from "../components/update/emprestimos/ModalEditarEmprestimo";
 
@@ -10,20 +10,17 @@ import { get_Emprestimos } from "@modulos/emprestimos/controller/emprestimoContr
 
 import BotaoDeletarEmprestimo from "../components/BotaoDeletarEmprestimo";
 import BotaoEditarEmprestimo from "../components/update/emprestimos/BotaoEditarEmprestimo";
+import { useResponsiveSidebar } from "@/shared/hooks/useResponsiveSidebar";
+import Button from "@/shared/ui/Button";
+import { DataTable, EmptyTableState } from "@/shared/ui/Table";
 
 export default function EmprestimosPage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { isSidebarOpen, toggleSidebar } = useResponsiveSidebar();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [emprestimoEditando, setEmprestimoEditando] = useState(null);
 
   const [emprestimos, setEmprestimos] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (window.innerWidth >= 768) {
-      setIsSidebarOpen(true);
-    }
-  }, []);
 
   async function carregarEmprestimos() {
     try {
@@ -42,14 +39,8 @@ export default function EmprestimosPage() {
     carregarEmprestimos();
   }, []);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen((prev) => !prev);
-  };
-
   return (
-    <div className="min-h-screen bg-background flex overflow-x-hidden">
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-
+    <AppShell isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}>
       <main className="flex-1 flex flex-col bg-background min-w-0 transition-all duration-300">
         <div className="p-4 sm:p-8">
 
@@ -79,19 +70,17 @@ export default function EmprestimosPage() {
               </div>
             </div>
 
-            <button
-              type="button"
+            <Button
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white transition-all px-4 sm:px-6 py-2.5 rounded-lg font-medium shadow-lg w-full sm:w-auto text-sm sm:text-base"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base"
             >
               <Plus size={20} />
               Novo Empréstimo
-            </button>
+            </Button>
           </div>
 
           {/* Tabela Responsiva com Scroll Lateral */}
-          <div className="bg-card-bg rounded-2xl border border-card-border overflow-hidden shadow-sm">
-            <div className="overflow-x-auto scrolling-touch">
+          <DataTable>
               <table className="w-full text-left border-collapse min-w-[800px]">
                 <thead className="bg-card-bg border-b border-card-border">
                   <tr className="text-[11px] uppercase tracking-wider text-foreground/50 font-semibold">
@@ -107,23 +96,13 @@ export default function EmprestimosPage() {
 
                 <tbody>
                   {loading ? (
-                    <tr>
-                      <td
-                        colSpan="7"
-                        className="py-24 text-center text-foreground/40 italic text-sm"
-                      >
+                    <EmptyTableState colSpan="7">
                         Carregando empréstimos...
-                      </td>
-                    </tr>
+                    </EmptyTableState>
                   ) : emprestimos.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan="7"
-                        className="py-24 text-center text-foreground/40 italic text-sm"
-                      >
+                    <EmptyTableState colSpan="7">
                         Nenhum empréstimo cadastrado
-                      </td>
-                    </tr>
+                    </EmptyTableState>
                   ) : (
                     emprestimos.map((emprestimo) => (
                       <tr
@@ -166,8 +145,7 @@ export default function EmprestimosPage() {
                   )}
                 </tbody>
               </table>
-            </div>
-          </div>
+          </DataTable>
 
         </div>
 
@@ -186,6 +164,6 @@ export default function EmprestimosPage() {
           />
         )}
       </main>
-    </div>
+    </AppShell>
   );
 }

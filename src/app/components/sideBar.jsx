@@ -1,13 +1,8 @@
 "use client";
 
 import {
-  LayoutGrid,
-  Users,
-  Package,
-  Wrench,
   Sun,
   Moon,
-  Hospital,
   Menu,
 } from "lucide-react";
 import Image from "next/image";
@@ -15,6 +10,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "@wrksz/themes/client";
 import { useEffect, useState } from "react";
+import { mainNavigationItems } from "@/shared/layouts/navigation-config";
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
   const pathname = usePathname();
@@ -36,13 +32,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
   const logoBg = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)";
   const logoBorder = isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.1)";
 
-  const navItems = [
-    { path: "/dashboard", icon: LayoutGrid, label: "Dashboard" },
-    { path: "/funcionarios", icon: Hospital, label: "Funcionários" },
-    { path: "/pacientes", icon: Users, label: "Pacientes" },
-    { path: "/emprestimos", icon: Package, label: "Empréstimos" },
-    { path: "/servicos", icon: Wrench, label: "Serviços" },
-  ];
+  const navItems = mainNavigationItems;
 
   return (
     <>
@@ -171,6 +161,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
             type="button"
             onClick={() => mounted && setTheme(nextTheme)}
             disabled={!mounted}
+            data-testid="theme-toggle"
             aria-label={
               mounted
                 ? `Ativar ${toggleLabel.toLowerCase()}`
