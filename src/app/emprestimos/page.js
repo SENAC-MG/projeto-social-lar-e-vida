@@ -1,19 +1,25 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Plus, Box, Menu } from "lucide-react"; // Adicionado o ícone Menu
+import { Plus, Box, Menu } from "lucide-react";
+
 import Sidebar from "../components/sideBar";
 import ModalNovoEmprestimo from "../components/modals/ModalNovoEmprestimo";
+import ModalEditarEmprestimo from "../components/update/emprestimos/ModalEditarEmprestimo";
+
 import { get_Emprestimos } from "@modulos/emprestimos/controller/emprestimoController";
+
 import BotaoDeletarEmprestimo from "../components/BotaoDeletarEmprestimo";
+import BotaoEditarEmprestimo from "../components/update/emprestimos/BotaoEditarEmprestimo";
 
 export default function EmprestimosPage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Inicializa fechada para Mobile
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [emprestimoEditando, setEmprestimoEditando] = useState(null);
+
   const [emprestimos, setEmprestimos] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Força a sidebar a abrir em telas Desktop na montagem do componente
   useEffect(() => {
     if (window.innerWidth >= 768) {
       setIsSidebarOpen(true);
@@ -43,18 +49,14 @@ export default function EmprestimosPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0c10] flex overflow-x-hidden">
-      {/* Sidebar integrada ao controle de estado responsivo */}
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
       <main className="flex-1 flex flex-col bg-gray-950 min-w-0 transition-all duration-300">
         <div className="p-4 sm:p-8">
-          
-          {/* Header Responsivo */}
           <div className="flex flex-col sm:flex-row gap-4 justify-between sm:items-center mb-8">
             <div className="flex items-center gap-3 sm:gap-4">
-              
-              {/* ÍCONE DE TRÊS RISCOS: Visível apenas no Mobile */}
               <button
+                type="button"
                 onClick={toggleSidebar}
                 className="text-gray-400 hover:text-white p-2 hover:bg-white/10 rounded-lg transition-colors md:hidden"
                 aria-label="Abrir menu"
@@ -67,7 +69,10 @@ export default function EmprestimosPage() {
               </div>
 
               <div className="min-w-0">
-                <h1 className="text-xl sm:text-2xl font-bold text-white truncate">Empréstimos</h1>
+                <h1 className="text-xl sm:text-2xl font-bold text-white truncate">
+                  Empréstimos
+                </h1>
+
                 <p className="text-gray-500 text-xs sm:text-sm">
                   {emprestimos.length} registros
                 </p>
@@ -75,6 +80,7 @@ export default function EmprestimosPage() {
             </div>
 
             <button
+              type="button"
               onClick={() => setIsModalOpen(true)}
               className="flex items-center justify-center gap-2 bg-[#F97316] hover:bg-[#e85a1a] text-white transition-all px-4 sm:px-6 py-2.5 rounded-lg font-medium shadow-lg shadow-orange-900/20 w-full sm:w-auto text-sm sm:text-base"
             >
@@ -83,7 +89,6 @@ export default function EmprestimosPage() {
             </button>
           </div>
 
-          {/* Tabela Responsiva com Scroll Lateral */}
           <div className="bg-[#11141d] rounded-2xl border border-gray-800/50 overflow-hidden shadow-sm">
             <div className="overflow-x-auto scrolling-touch">
               <table className="w-full text-left border-collapse min-w-[800px]">
@@ -127,19 +132,42 @@ export default function EmprestimosPage() {
                         <td className="px-6 py-4 text-white font-medium text-sm">
                           {emprestimo.nome}
                         </td>
-                        <td className="px-6 py-4 text-sm max-w-[250px] truncate" title={emprestimo.materiaisEmprestados}>
+
+                        <td
+                          className="px-6 py-4 text-sm max-w-[250px] truncate"
+                          title={emprestimo.materiaisEmprestados}
+                        >
                           {emprestimo.materiaisEmprestados}
                         </td>
-                        <td className="px-6 py-4 text-sm">{emprestimo.cpf}</td>
-                        <td className="px-6 py-4 text-sm">{emprestimo.cidade}</td>
-                        <td className="px-6 py-4 text-sm">{emprestimo.telefone1}</td>
+
+                        <td className="px-6 py-4 text-sm">
+                          {emprestimo.cpf}
+                        </td>
+
+                        <td className="px-6 py-4 text-sm">
+                          {emprestimo.cidade}
+                        </td>
+
+                        <td className="px-6 py-4 text-sm">
+                          {emprestimo.telefone1}
+                        </td>
+
                         <td className="px-6 py-4 text-sm">
                           {emprestimo.dataEmprestimo
-                            ? new Date(emprestimo.dataEmprestimo).toLocaleDateString("pt-BR")
+                            ? new Date(
+                              emprestimo.dataEmprestimo
+                            ).toLocaleDateString("pt-BR")
                             : "-"}
                         </td>
+
                         <td className="px-6 py-4">
-                          <div className="flex justify-center">
+                          <div className="flex justify-center gap-2">
+                            <BotaoEditarEmprestimo
+                              onClick={() =>
+                                setEmprestimoEditando(emprestimo)
+                              }
+                            />
+
                             <BotaoDeletarEmprestimo
                               id={emprestimo.id}
                               onDeleted={carregarEmprestimos}
@@ -158,6 +186,14 @@ export default function EmprestimosPage() {
         {isModalOpen && (
           <ModalNovoEmprestimo
             onClose={() => setIsModalOpen(false)}
+            onSuccess={carregarEmprestimos}
+          />
+        )}
+
+        {emprestimoEditando && (
+          <ModalEditarEmprestimo
+            emprestimo={emprestimoEditando}
+            onClose={() => setEmprestimoEditando(null)}
             onSuccess={carregarEmprestimos}
           />
         )}

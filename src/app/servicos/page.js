@@ -1,19 +1,21 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Plus, Wrench, Search, Menu } from "lucide-react"; // Adicionado o ícone Menu
+import { Plus, Wrench, Search, Menu } from "lucide-react";
 import Sidebar from "../components/sideBar";
 import ModalNovoServico from "../components/modals/ModalNovoServico";
+import ModalEditarServico from "../components/update/servicos/ModalEditarServico";
 import { get_Servicos } from "@modulos/servicos/controller/servicoController";
 import BotaoDeletarServico from "../components/BotaoDeletarServico";
+import BotaoEditarServico from "../components/update/servicos/BotaoEditarServico";
 
 export default function ServicosPage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Inicializa fechada para Mobile
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [servicoEditando, setServicoEditando] = useState(null);
   const [servicos, setServicos] = useState([]);
   const [pesquisa, setPesquisa] = useState("");
 
-  // Força a sidebar a abrir em telas Desktop na montagem do componente
   useEffect(() => {
     if (window.innerWidth >= 768) {
       setIsSidebarOpen(true);
@@ -38,12 +40,7 @@ export default function ServicosPage() {
   };
 
   const servicosFiltrados = servicos.filter((servico) =>
-    [
-      servico.nome,
-      servico.cpf,
-      servico.tipoServico,
-      servico.unidade,
-    ]
+    [servico.nome, servico.cpf, servico.tipoServico, servico.unidade]
       .join(" ")
       .toLowerCase()
       .includes(pesquisa.toLowerCase())
@@ -51,18 +48,14 @@ export default function ServicosPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0c10] flex overflow-x-hidden">
-      {/* Sidebar integrada ao controle de estado responsivo */}
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
       <main className="flex-1 flex flex-col bg-gray-950 min-w-0 transition-all duration-300">
         <div className="p-4 sm:p-8">
-          
-          {/* Header Responsivo */}
           <div className="flex flex-col sm:flex-row gap-4 justify-between sm:items-center mb-8">
             <div className="flex items-center gap-3 sm:gap-4">
-              
-              {/* ÍCONE DE TRÊS RISCOS: Visível apenas no Mobile */}
               <button
+                type="button"
                 onClick={toggleSidebar}
                 className="text-gray-400 hover:text-white p-2 hover:bg-white/10 rounded-lg transition-colors md:hidden"
                 aria-label="Abrir menu"
@@ -94,7 +87,6 @@ export default function ServicosPage() {
             </button>
           </div>
 
-          {/* Pesquisa */}
           <div className="mb-6 flex gap-4">
             <div className="relative flex-1">
               <Search
@@ -111,7 +103,6 @@ export default function ServicosPage() {
             </div>
           </div>
 
-          {/* Tabela Responsiva com Scroll Lateral */}
           <div className="bg-[#11141d] rounded-2xl border border-gray-800/50 overflow-hidden shadow-sm">
             <div className="overflow-x-auto scrolling-touch">
               <table className="w-full text-left border-collapse min-w-[800px]">
@@ -124,7 +115,9 @@ export default function ServicosPage() {
                     <th className="px-6 py-4 font-semibold">Valor</th>
                     <th className="px-6 py-4 font-semibold">Unidade</th>
                     <th className="px-6 py-4 font-semibold">Tempo</th>
-                    <th className="px-6 py-4 text-center font-semibold">Ações</th>
+                    <th className="px-6 py-4 text-center font-semibold">
+                      Ações
+                    </th>
                   </tr>
                 </thead>
 
@@ -148,15 +141,23 @@ export default function ServicosPage() {
                           {servico.nome}
                         </td>
                         <td className="px-6 py-4 text-sm">{servico.cpf}</td>
-                        <td className="px-6 py-4 text-sm">{servico.tipoServico}</td>
+                        <td className="px-6 py-4 text-sm">
+                          {servico.tipoServico}
+                        </td>
                         <td className="px-6 py-4 text-sm">{servico.duracao}</td>
                         <td className="px-6 py-4 text-green-400 font-medium text-sm">
                           R$ {servico.valorServico}
                         </td>
                         <td className="px-6 py-4 text-sm">{servico.unidade}</td>
-                        <td className="px-6 py-4 text-sm">{servico.tempoServico}</td>
+                        <td className="px-6 py-4 text-sm">
+                          {servico.tempoServico}
+                        </td>
                         <td className="px-6 py-4">
-                          <div className="flex justify-center">
+                          <div className="flex justify-center gap-2">
+                            <BotaoEditarServico
+                              onClick={() => setServicoEditando(servico)}
+                            />
+
                             <BotaoDeletarServico
                               id={servico.id}
                               onDeleted={carregarServicos}
@@ -175,6 +176,14 @@ export default function ServicosPage() {
         {isModalOpen && (
           <ModalNovoServico
             onClose={() => setIsModalOpen(false)}
+            onSuccess={carregarServicos}
+          />
+        )}
+
+        {servicoEditando && (
+          <ModalEditarServico
+            servico={servicoEditando}
+            onClose={() => setServicoEditando(null)}
             onSuccess={carregarServicos}
           />
         )}

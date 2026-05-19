@@ -1,21 +1,26 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { UserPlus, Users, Search, Menu } from "lucide-react"; // Adicionado o ícone Menu
+import { UserPlus, Users, Search, Menu } from "lucide-react";
 import { Toaster } from "sonner";
 
 import Sidebar from "../components/sideBar";
 import ModalNovoPaciente from "../components/modals/ModalNovoPaciente";
+import ModalEditarPaciente from "../components/update/pacientes/ModalEditarPaciente";
+
 import { get_Pacientes } from "@modulos/pacientes/controller/pacienteController";
+
 import BotaoDeletarPaciente from "../components/BotaoDeletarPaciente";
+import BotaoEditarPaciente from "../components/update/pacientes/BotaoEditarPaciente";
 
 export default function PacientesPage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Inicializa fechada para Mobile
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pacienteEditando, setPacienteEditando] = useState(null);
+
   const [pacientes, setPacientes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Força a sidebar a abrir em telas Desktop na montagem do componente
   useEffect(() => {
     if (window.innerWidth >= 768) {
       setIsSidebarOpen(true);
@@ -24,6 +29,7 @@ export default function PacientesPage() {
 
   const carregarPacientes = async () => {
     setLoading(true);
+
     try {
       const dados = await get_Pacientes();
       setPacientes(dados);
@@ -38,10 +44,6 @@ export default function PacientesPage() {
     carregarPacientes();
   }, []);
 
-  const handleModalSuccess = () => {
-    carregarPacientes();
-  };
-
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
@@ -49,19 +51,15 @@ export default function PacientesPage() {
   return (
     <div className="min-h-screen bg-[#0a0c10] flex overflow-x-hidden">
       <Toaster richColors position="top-right" />
-      
-      {/* Sidebar integrada ao controle de toggle */}
+
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
       <main className="flex-1 flex flex-col bg-gray-950 min-w-0 transition-all duration-300">
         <div className="p-4 sm:p-8">
-          
-          {/* Cabeçalho do Painel Adaptável */}
           <div className="flex flex-col sm:flex-row gap-4 justify-between sm:items-center mb-8">
             <div className="flex items-center gap-3 sm:gap-4">
-              
-              {/* ÍCONE DE TRÊS RISCOS: Visível apenas no Mobile */}
               <button
+                type="button"
                 onClick={toggleSidebar}
                 className="text-gray-400 hover:text-white p-2 hover:bg-white/10 rounded-lg transition-colors md:hidden"
                 aria-label="Abrir menu"
@@ -74,7 +72,10 @@ export default function PacientesPage() {
               </div>
 
               <div className="min-w-0">
-                <h1 className="text-xl sm:text-2xl font-bold text-white truncate">Pacientes</h1>
+                <h1 className="text-xl sm:text-2xl font-bold text-white truncate">
+                  Pacientes
+                </h1>
+
                 <p className="text-gray-500 text-xs sm:text-sm">
                   {pacientes.length} registros
                 </p>
@@ -82,6 +83,7 @@ export default function PacientesPage() {
             </div>
 
             <button
+              type="button"
               onClick={() => setIsModalOpen(true)}
               className="flex items-center justify-center gap-2 bg-[#F97316] hover:bg-[#e85a1a] text-white transition-all px-4 sm:px-6 py-2.5 rounded-lg font-medium shadow-lg shadow-orange-900/20 w-full sm:w-auto text-sm sm:text-base"
             >
@@ -90,13 +92,13 @@ export default function PacientesPage() {
             </button>
           </div>
 
-          {/* Barra de Busca */}
           <div className="mb-6 flex gap-4">
             <div className="relative flex-1">
               <Search
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
                 size={18}
               />
+
               <input
                 type="text"
                 placeholder="Pesquisar paciente..."
@@ -105,7 +107,6 @@ export default function PacientesPage() {
             </div>
           </div>
 
-          {/* Tabela Isolada com Scroll Lateral */}
           <div className="bg-[#11141d] rounded-2xl border border-gray-800/50 overflow-hidden shadow-sm">
             <div className="overflow-x-auto scrolling-touch">
               <table className="w-full text-left border-collapse min-w-[900px]">
@@ -118,8 +119,12 @@ export default function PacientesPage() {
                     <th className="px-6 py-4 font-semibold">Cidade</th>
                     <th className="px-6 py-4 font-semibold">Telefone 1</th>
                     <th className="px-6 py-4 font-semibold">Telefone 2</th>
-                    <th className="px-6 py-4 font-semibold">Data de Cadastro</th>
-                    <th className="px-6 py-4 text-center font-semibold">Ações</th>
+                    <th className="px-6 py-4 font-semibold">
+                      Data de Cadastro
+                    </th>
+                    <th className="px-6 py-4 text-center font-semibold">
+                      Ações
+                    </th>
                   </tr>
                 </thead>
 
@@ -151,31 +156,45 @@ export default function PacientesPage() {
                         <td className="px-6 py-4 text-white font-medium text-sm">
                           {paciente.nome}
                         </td>
+
                         <td className="px-6 py-4 text-gray-400 text-sm">
                           {paciente.tipoCancer}
                         </td>
+
                         <td className="px-6 py-4 text-gray-400 text-sm">
-                          {paciente.status}
+                          {paciente.status ? "Ativo" : "Inativo"}
                         </td>
+
                         <td className="px-6 py-4 text-gray-400 text-sm">
                           {paciente.cpf}
                         </td>
+
                         <td className="px-6 py-4 text-gray-400 text-sm">
                           {paciente.cidade}
                         </td>
+
                         <td className="px-6 py-4 text-gray-400 text-sm">
                           {paciente.telefone1}
                         </td>
+
                         <td className="px-6 py-4 text-gray-400 text-sm">
                           {paciente.telefone2}
                         </td>
+
                         <td className="px-6 py-4 text-gray-400 text-sm">
-                          {paciente.createdAt
-                            ? new Date(paciente.createdAt).toLocaleDateString("pt-BR")
+                          {paciente.dataCadastro
+                            ? new Date(paciente.dataCadastro).toLocaleDateString(
+                              "pt-BR"
+                            )
                             : "-"}
                         </td>
+
                         <td className="px-6 py-4">
-                          <div className="flex justify-center">
+                          <div className="flex justify-center gap-2">
+                            <BotaoEditarPaciente
+                              onClick={() => setPacienteEditando(paciente)}
+                            />
+
                             <BotaoDeletarPaciente
                               id={paciente.id}
                               onDeleted={carregarPacientes}
@@ -194,7 +213,15 @@ export default function PacientesPage() {
         {isModalOpen && (
           <ModalNovoPaciente
             onClose={() => setIsModalOpen(false)}
-            onSuccess={handleModalSuccess}
+            onSuccess={carregarPacientes}
+          />
+        )}
+
+        {pacienteEditando && (
+          <ModalEditarPaciente
+            paciente={pacienteEditando}
+            onClose={() => setPacienteEditando(null)}
+            onSuccess={carregarPacientes}
           />
         )}
       </main>

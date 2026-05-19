@@ -115,32 +115,56 @@ export async function deletar_Paciente(id) {
  * - Service garante que o paciente existe
  */
 export async function updatePacienteAction(id, formData) {
-  const nome = formData.get('nome')?.toString().trim();
-  const status = formData.get('status')?.toString().trim();
-  const cpf = formData.get('cpf')?.toString().trim();
-  const rg = formData.get('rg')?.toString().trim();
-  const nascimento = formData.get('nascimento')?.toString().trim();
-  const profissao = formData.get('profissao')?.toString().trim();
-  const dataCadastro = formData.get('dataCadastro')?.toString().trim();
-  const tipoCancer = formData.get('tipoCancer')?.toString().trim();
-  const CIDprincipal = formData.get('CIDprincipal')?.toString().trim();
-  const CIDsecundario = formData.get('CIDsecundario')?.toString().trim();
-  const rua = formData.get('rua')?.toString().trim();
-  const numero = formData.get('numero')?.toString().trim();
-  const cep = formData.get('cep')?.toString().trim();
-  const bairro = formData.get('bairro')?.toString().trim();
-  const cidade = formData.get('cidade')?.toString().trim();
-  const telefone1 = formData.get('telefone1')?.toString().trim();
-  const telefone2 = formData.get('telefone2')?.toString().trim();
+  const data = {};
+
+  const nome = formData.get("nome")?.toString().trim();
+  const status = formData.get("status")?.toString();
+  const cpf = formData.get("cpf")?.toString().trim();
+  const rg = formData.get("rg")?.toString().trim();
+  const nascimento = formData.get("nascimento")?.toString();
+  const profissao = formData.get("profissao")?.toString().trim();
+  const dataCadastro = formData.get("dataCadastro")?.toString();
+  const tipoCancer = formData.get("tipoCancer")?.toString().trim();
+  const CIDprincipal = formData.get("CIDprincipal")?.toString().trim();
+  const CIDsecundario = formData.get("CIDsecundario")?.toString().trim();
+  const rua = formData.get("rua")?.toString().trim();
+  const numero = formData.get("numero")?.toString().trim();
+  const cep = formData.get("cep")?.toString().trim();
+  const bairro = formData.get("bairro")?.toString().trim();
+  const cidade = formData.get("cidade")?.toString().trim();
+  const telefone1 = formData.get("telefone1")?.toString().trim();
+  const telefone2 = formData.get("telefone2")?.toString().trim();
+
+  if (nome) data.nome = nome;
+  if (status) data.status = status === "Ativo";
+  if (cpf) data.cpf = cpf;
+  if (rg) data.rg = rg;
+  if (nascimento) data.nascimento = new Date(nascimento);
+  if (profissao) data.profissao = profissao;
+  if (dataCadastro) data.dataCadastro = new Date(dataCadastro);
+  if (tipoCancer) data.tipoCancer = tipoCancer;
+  if (CIDprincipal) data.CIDprincipal = CIDprincipal;
+  if (CIDsecundario) data.CIDsecundario = CIDsecundario;
+  if (rua) data.rua = rua;
+  if (numero) data.numero = numero;
+  if (cep) data.cep = cep;
+  if (bairro) data.bairro = bairro;
+  if (cidade) data.cidade = cidade;
+  if (telefone1) data.telefone1 = telefone1;
+  if (telefone2) data.telefone2 = telefone2;
 
   try {
+    const pacienteAtualizado = await updatePacienteService(id, data);
 
-    const PacienteAtualizado = await updatePacienteService(id, { nome, status, cpf, rg, nascimento, profissao, dataCadastro, tipoCancer, CIDprincipal, CIDsecundario, rua, numero, cep, bairro, cidade, telefone1, telefone2 });
-    return { success: true, message: 'Paciente atualizado com sucesso!', Paciente: PacienteAtualizado };
+    return {
+      success: true,
+      message: "Paciente atualizado com sucesso!",
+      paciente: pacienteAtualizado,
+    };
   } catch (err) {
     return {
       success: false,
-      error: err.message
+      error: err.message,
     };
   }
 }

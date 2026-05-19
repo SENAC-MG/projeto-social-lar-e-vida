@@ -71,22 +71,36 @@ export async function deletar_Servico(id) {
  * - Service garante que o serviço existe
  */
 export async function updateServicoAction(id, formData) {
-  const nome = formData.get('nome')?.toString().trim();
-  const cpf = formData.get('cpf')?.toString().trim();
-  const tipoServico = formData.get('tipoServico')?.toString().trim();
-  const duracao = formData.get('duracao')?.toString().trim();
-  const valorServico = Number(formData.get('valorServico'));
-  const unidade = formData.get('unidade')?.toString().trim();
-  const tempoServico = formData.get('tempoServico')?.toString().trim();
+  const data = {};
+
+  const nome = formData.get("nome")?.toString().trim();
+  const cpf = formData.get("cpf")?.toString().trim();
+  const tipoServico = formData.get("tipoServico")?.toString().trim();
+  const duracao = formData.get("duracao")?.toString().trim();
+  const valorServico = formData.get("valorServico")?.toString();
+  const unidade = formData.get("unidade")?.toString().trim();
+  const tempoServico = formData.get("tempoServico")?.toString().trim();
+
+  if (nome) data.nome = nome;
+  if (cpf) data.cpf = cpf;
+  if (tipoServico) data.tipoServico = tipoServico;
+  if (duracao) data.duracao = duracao;
+  if (valorServico) data.valorServico = Number(valorServico);
+  if (unidade) data.unidade = unidade;
+  if (tempoServico) data.tempoServico = tempoServico;
 
   try {
+    const servicoAtualizado = await updateServicoService(id, data);
 
-    const servicoAtualizado = await updateServicoService(id, { nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico });
-    return { success: true, message: 'Serviço atualizado com sucesso!', servico: servicoAtualizado };
+    return {
+      success: true,
+      message: "Serviço atualizado com sucesso!",
+      servico: servicoAtualizado,
+    };
   } catch (err) {
     return {
       success: false,
-      error: err.message
+      error: err.message,
     };
   }
 }

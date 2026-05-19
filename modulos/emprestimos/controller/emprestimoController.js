@@ -77,28 +77,48 @@ export async function deletar_Emprestimo(id) {
  * - Service garante que o empréstimo existe
  */
 export async function updateEmprestimoAction(id, formData) {
-  const nome = formData.get('nome')?.toString().trim();
-  const cpf = formData.get('cpf')?.toString().trim();
-  const rg = formData.get('rg')?.toString().trim();
-  const nascimento = new Date(formData.get('nascimento')?.toString().trim());
-  const dataEmprestimo = new Date(formData.get('dataEmprestimo')?.toString().trim());
-  const materiaisEmprestados = formData.get('materiaisEmprestados')?.toString().trim();
-  const rua = formData.get('rua')?.toString().trim();
-  const numero = formData.get('numero')?.toString().trim();
-  const cep = formData.get('cep')?.toString().trim();
-  const bairro = formData.get('bairro')?.toString().trim();
-  const cidade = formData.get('cidade')?.toString().trim();
-  const telefone1 = formData.get('telefone1')?.toString().trim();
-  const telefone2 = formData.get('telefone2')?.toString().trim();
+  const data = {};
+
+  const nome = formData.get("nome")?.toString().trim();
+  const cpf = formData.get("cpf")?.toString().trim();
+  const rg = formData.get("rg")?.toString().trim();
+  const nascimento = formData.get("nascimento")?.toString();
+  const dataEmprestimo = formData.get("dataEmprestimo")?.toString();
+  const materiaisEmprestados = formData.get("materiaisEmprestados")?.toString().trim();
+  const rua = formData.get("rua")?.toString().trim();
+  const numero = formData.get("numero")?.toString().trim();
+  const cep = formData.get("cep")?.toString().trim();
+  const bairro = formData.get("bairro")?.toString().trim();
+  const cidade = formData.get("cidade")?.toString().trim();
+  const telefone1 = formData.get("telefone1")?.toString().trim();
+  const telefone2 = formData.get("telefone2")?.toString().trim();
+
+  if (nome) data.nome = nome;
+  if (cpf) data.cpf = cpf;
+  if (rg) data.rg = rg;
+  if (nascimento) data.nascimento = new Date(nascimento);
+  if (dataEmprestimo) data.dataEmprestimo = new Date(dataEmprestimo);
+  if (materiaisEmprestados) data.materiaisEmprestados = materiaisEmprestados;
+  if (rua) data.rua = rua;
+  if (numero) data.numero = numero;
+  if (cep) data.cep = cep;
+  if (bairro) data.bairro = bairro;
+  if (cidade) data.cidade = cidade;
+  if (telefone1) data.telefone1 = telefone1;
+  if (telefone2) data.telefone2 = telefone2;
 
   try {
+    const emprestimoAtualizado = await updateEmprestimoService(id, data);
 
-    const emprestimoAtualizado = await updateEmprestimoService(id, { nome, cpf, rg, nascimento, dataEmprestimo, materiaisEmprestados, rua, numero, cep, bairro, cidade, telefone1, telefone2 });
-    return { success: true, message: 'Empréstimo atualizado com sucesso!', emprestimo: emprestimoAtualizado };
+    return {
+      success: true,
+      message: "Empréstimo atualizado com sucesso!",
+      emprestimo: emprestimoAtualizado,
+    };
   } catch (err) {
     return {
       success: false,
-      error: err.message
+      error: err.message,
     };
   }
 }
