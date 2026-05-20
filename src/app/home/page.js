@@ -44,7 +44,6 @@ export default function HomePage() {
               <h2 className="text-sm font-bold text-foreground -mt-1">Lar e Vida</h2>
             </div>
           </div>
-
         </header>
 
         {/* SEÇÃO HERO: Background total com Logo centralizada */}
@@ -52,14 +51,21 @@ export default function HomePage() {
 
           {/* Imagem de Fundo (Pacientes) */}
           <div className="absolute inset-0 z-0">
-            <Image src={pacientes} alt="Pacientes" fill priority className="object-cover object-center filter brightness-[0.25] dark:brightness-[0.15]" />
-            {/* Vinheta escura nas bordas para misturar a imagem com o fundo da aplicação */}
-            <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px]" />
+            {/* CORREÇÃO 1: Mantive o brilho fixo e baixo para a foto não estourar no modo claro */}
+            <Image 
+              src={pacientes} 
+              alt="Pacientes" 
+              fill 
+              priority 
+              className="object-cover object-center filter brightness-[0.20]" 
+            />
+            {/* CORREÇÃO 2: Troquei 'bg-background/20' por 'bg-black/40' fixo para manter a imagem sempre nítida e com contraste */}
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
           </div>
 
           {/* CONTAINER DA LOGO: Centralizada e Grande */}
           <div className="relative z-10 w-full max-w-[280px] h-[280px] sm:max-w-[480px] sm:h-[480px] drop-shadow-[0_20px_30px_rgba(0,0,0,0.7)] transform transition-transform duration-500 ease-out select-none">
-            <Image src={logo} alt="Logo" />
+            <Image src={logo} alt="Logo" fill className="object-contain" />
           </div>
 
         </div>
