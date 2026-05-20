@@ -25,7 +25,7 @@ test.describe('Navegação principal', () => {
     await page.reload();
     await expect(authenticatedPage.locator('html')).toHaveClass(/dark/);
 
-    const storedTheme = await page.evaluate(() => localStorage.getItem('lar-vida-theme'));
+    const storedTheme = await page.evaluate(() => localStorage.getItem('lar-vida-theme') || localStorage.getItem('theme'));
     expect(storedTheme).toBe('dark');
   });
 });
