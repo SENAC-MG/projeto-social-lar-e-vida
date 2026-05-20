@@ -3,6 +3,8 @@ import Image from "next/image";
 import { Mail, Lock, Eye } from "lucide-react";
 import { useState } from "react";
 import { login } from "../../actions/login";
+import background from '../../public/background.png';
+import logo from '../../public/logo.png';
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -26,25 +28,14 @@ export default function Home() {
   return (
     <main className="flex min-h-screen w-full font-sans">
       <div className="relative hidden w-[55%] lg:block">
-        <Image
-          src="/background.png"
-          alt="Background Lar e Vida"
-          fill
-          priority
-          className="object-cover"
-        />
+        <Image src={background} alt="Background Lar e Vida" fill priority className="object-cover" />
 
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50" />
 
         <div className="absolute inset-0 flex flex-col p-16 text-white">
           <div className="flex items-center gap-4">
             <div className="relative h-18 w-18 rounded-full bg-white/10 flex p-2 backdrop-blur-md border border-white/20">
-              <Image
-                src="/logo.png"
-                alt="Logo Lar e Vida"
-                fill
-                className="object-contain p-0"
-              />
+              <Image src={logo} alt="Logo" />
             </div>
             <div>
               <h2 className="text-xl font-bold leading-tight">Lar e Vida</h2>
@@ -146,7 +137,9 @@ export default function Home() {
               aumentou.
             </p>
             <div className="mt-4 flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-gray-300 overflow-hidden relative"></div>
+              <div className="h-10 w-10 rounded-full bg-gray-300 overflow-hidden relative">
+                {/* imagem do Carlos */}
+              </div>
               <div>
                 <p className="text-xs font-bold text-gray-900">Carlos</p>
                 <p className="text-[10px] text-gray-400">

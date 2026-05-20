@@ -11,6 +11,7 @@ import {
   Menu,
 } from "lucide-react";
 import Image from "next/image";
+import logo from '../../../public/logo.png';
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "@wrksz/themes/client";
@@ -85,14 +86,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                     backdropFilter: "blur(8px)",
                   }}
                 >
-                  <Image
-                    src="/logo.png"
-                    alt="Logo Lar e Vida"
-                    fill
-                    sizes="48px"
-                    priority
-                    className="object-contain p-0"
-                  />
+                 <Image src={logo} alt="Logo"/>
                 </div>
 
                 <div className="min-w-0">

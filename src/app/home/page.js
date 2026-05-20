@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import pacientes from '../../../public/pacientes-background.jpg';
+import logo from '../../../public/logo.png';
 import { Menu } from "lucide-react";
 import Sidebar from "../components/sideBar";
 
@@ -50,26 +52,14 @@ export default function HomePage() {
 
           {/* Imagem de Fundo (Pacientes) */}
           <div className="absolute inset-0 z-0">
-            <Image
-              src="/pacientes-background.jpg"
-              alt="Pacientes Background"
-              fill
-              priority
-              className="object-cover object-center filter brightness-[0.25] dark:brightness-[0.15]"
-            />
+            <Image src={pacientes} alt="Pacientes" className="object-cover object-center filter brightness-[0.25] dark:brightness-[0.15]" />
             {/* Vinheta escura nas bordas para misturar a imagem com o fundo da aplicação */}
             <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px]" />
           </div>
 
           {/* CONTAINER DA LOGO: Centralizada e Grande */}
           <div className="relative z-10 w-full max-w-[280px] h-[280px] sm:max-w-[480px] sm:h-[480px] drop-shadow-[0_20px_30px_rgba(0,0,0,0.7)] transform transition-transform duration-500 ease-out select-none">
-            <Image
-              src="/logo.png"
-              alt="Logo Lar e Vida"
-              fill
-              priority
-              className="object-contain"
-            />
+            <Image src={logo} alt="Logo" />
           </div>
 
         </div>
