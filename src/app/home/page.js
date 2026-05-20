@@ -52,7 +52,7 @@ export default function HomePage() {
 
           {/* Imagem de Fundo (Pacientes) */}
           <div className="absolute inset-0 z-0">
-            <Image src={pacientes} alt="Pacientes" className="object-cover object-center filter brightness-[0.25] dark:brightness-[0.15]" />
+            <Image src={pacientes} alt="Pacientes" fill priority className="object-cover object-center filter brightness-[0.25] dark:brightness-[0.15]" />
             {/* Vinheta escura nas bordas para misturar a imagem com o fundo da aplicação */}
             <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px]" />
           </div>
