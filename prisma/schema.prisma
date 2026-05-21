@@ -1,70 +1,90 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
-  url       = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
+}
+
+model AuthUser {
+  id                 Int                  @id @default(autoincrement())
+  email              String               @unique
+  passwordHash       String
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  passwordResetToken PasswordResetToken[]
+}
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+  user      AuthUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
 }
 
 model Pacientes {
-  id                Int      @id @default(autoincrement())
-  nome              String
-  status            Boolean
-  cpf               String   @unique
-  rg                String
-  nascimento        DateTime
-  profissao         String
-  dataCadastro      DateTime @default(now())
-  tipoCancer        String
-  CIDprincipal      String
-  CIDsecundario     String
-  rua               String
-  numero            String
-  cep               String
-  bairro            String
-  cidade            String
-  telefone1         String
-  telefone2         String
+  id            Int      @id @default(autoincrement())
+  nome          String
+  status        Boolean
+  cpf           String   @unique
+  rg            String
+  nascimento    DateTime
+  profissao     String
+  dataCadastro  DateTime @default(now())
+  tipoCancer    String
+  CIDprincipal  String
+  CIDsecundario String
+  rua           String
+  numero        String
+  cep           String
+  bairro        String
+  cidade        String
+  telefone1     String
+  telefone2     String
 }
 
 model Emprestimo {
-  id                Int      @id @default(autoincrement())
-  nome              String
-  cpf               String
-  rg                String
-  nascimento        DateTime
-  dataEmprestimo    DateTime @default(now())
+  id                   Int      @id @default(autoincrement())
+  nome                 String
+  cpf                  String
+  rg                   String
+  nascimento           DateTime
+  dataEmprestimo       DateTime @default(now())
   materiaisEmprestados String
-  rua               String
-  numero            String
-  cep               String
-  bairro            String
-  cidade            String
-  telefone1         String
-  telefone2         String
+  rua                  String
+  numero               String
+  cep                  String
+  bairro               String
+  cidade               String
+  telefone1            String
+  telefone2            String
 }
 
 model Servicos {
-  id                Int      @id @default(autoincrement())
-  nome              String
-  cpf               String
-  tipoServico       String
-  duracao           String
-  valorServico      Float
-  unidade           String
-  tempoServico      String
+  id           Int    @id @default(autoincrement())
+  nome         String
+  cpf          String
+  tipoServico  String
+  duracao      String
+  valorServico Float
+  unidade      String
+  tempoServico String
 }
 
 model Funcionarios {
-  id         Int      @id @default(autoincrement())
-  nome              String
-  email               String      @unique
-  cargo       String
-  telefone           String
+  id       Int    @id @default(autoincrement())
+  nome     String
+  email    String @unique
+  cargo    String
+  telefone String
 }

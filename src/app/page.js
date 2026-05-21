@@ -7,21 +7,22 @@ import background from '../../public/background.png';
 import logo from '../../public/logo.png';
 
 export default function Home() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     if (!email || !password) {
-      alert("Favor Informar Usuário e Senha para Logar");
+      alert('Favor Informar Usuário e Senha para Logar');
       return;
     }
 
     const result = await login(email, password);
 
     if (!result?.success) {
-      alert("Usuário ou senha incorretos. Tente novamente.");
+      alert('Usuário ou senha incorretos. Tente novamente.');
     }
   };
 
@@ -30,7 +31,7 @@ export default function Home() {
       <div className="relative hidden w-[55%] lg:block">
         <Image src={background} alt="Background Lar e Vida" fill priority className="object-cover" />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50" />
+        <div className='absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50' />
 
         <div className="absolute inset-0 flex flex-col p-16 text-white">
           <div className="flex items-center gap-4">
@@ -38,94 +39,94 @@ export default function Home() {
               <Image src={logo} alt="Logo" />
             </div>
             <div>
-              <h2 className="text-xl font-bold leading-tight">Lar e Vida</h2>
-              <p className="text-sm text-[#F97316] font-medium uppercase tracking-wider">
+              <h2 className='text-xl font-bold leading-tight'>Lar e Vida</h2>
+              <p className='text-sm text-[#F97316] font-medium uppercase tracking-wider'>
                 Sistema de Gestão Hospitalar com Analytics Integrado
               </p>
             </div>
           </div>
 
-          <div className="flex-1 flex flex-col justify-center">
-            <div className="mb-6 h-1.5 w-16 bg-[#F97316]" />
-            <h3 className="text-6xl font-serif font-medium leading-[1.1] mb-6 drop-shadow-lg">
+          <div className='flex-1 flex flex-col justify-center'>
+            <div className='mb-6 h-1.5 w-16 bg-[#F97316]' />
+            <h3 className='text-6xl font-serif font-medium leading-[1.1] mb-6 drop-shadow-lg'>
               Um futuro mais <br />
-              <span className="text-[#F97316]">organizado</span>
+              <span className='text-[#F97316]'>organizado</span>
             </h3>
-            <p className="max-w-md text-xl text-gray-100 leading-relaxed drop-shadow-md">
-              O Lar e Vida é um sistema de gestão hospitalar desenvolvido para
-              otimizar o gerenciamento de doações, voluntariado e recursos,
-              garantindo que cada contribuição faça a maior diferença possível
-              para nossos residentes.
+            <p className='max-w-md text-xl text-gray-100 leading-relaxed drop-shadow-md'>
+              O Lar e Vida é um sistema de gestão hospitalar desenvolvido para otimizar o
+              gerenciamento de doações, voluntariado e recursos, garantindo que cada
+              contribuição faça a maior diferença possível para nossos residentes.
             </p>
           </div>
 
-          <div className="h-14" />
+          <div className='h-14' />
         </div>
       </div>
 
-      <div className="flex w-full flex-col items-center justify-center bg-white px-12 lg:w-[45%]">
-        <div className="w-full max-w-md">
-          <div className="mb-10">
-            <div className="mb-4 h-1.5 w-14 bg-[#F97316]" />
-            <h1 className="text-4xl font-bold text-gray-900">Bem-vindo</h1>
-            <p className="mt-2 text-gray-500">
+      <div className='flex w-full flex-col items-center justify-center bg-white px-12 lg:w-[45%]'>
+        <div className='w-full max-w-md'>
+          <div className='mb-10'>
+            <div className='mb-4 h-1.5 w-14 bg-[#F97316]' />
+            <h1 className='text-4xl font-bold text-gray-900'>Bem-vindo</h1>
+            <p className='mt-2 text-gray-500'>
               Acesse sua conta para continuar cuidando de suas doações.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-1.5">
-              <label htmlFor="email" className="text-sm font-medium text-gray-700">
-                E-mail
-              </label>
-              <div className="relative flex items-center">
-                <Mail className="absolute left-4 h-5 w-5 text-gray-400" />
-                <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="seu@gmail.com"
-                  className="w-full text-black rounded-xl border border-gray-300 py-3.5 pl-12 pr-4 outline-none focus:border-[#F97316] transition-all"
-                  autoFocus
-                />
-              </div>
+          <form onSubmit={handleSubmit} className='space-y-6'>
+            <div className='relative'>
+              <Mail className='absolute left-3 top-[38px] h-4 w-4 text-gray-400' />
+              <InputField
+                id='email'
+                type='email'
+                label='E-mail'
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder='seu@gmail.com'
+                inputClassName='pl-9 text-gray-700 border-gray-300 bg-white'
+                inputMode='email'
+                autoFocus
+              />
             </div>
 
-            <div className="space-y-1.5">
-              <label htmlFor="password" className="text-sm font-medium text-gray-700">
-                Senha
-              </label>
-              <div className="relative flex items-center">
-                <Lock className="absolute left-4 h-5 w-5 text-gray-400" />
-                <input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="**********"
-                  className="w-full text-black rounded-xl border border-gray-300 py-3.5 pl-12 pr-12 outline-none focus:border-[#F97316] transition-all"
-                />
-                <Eye className="absolute right-4 h-5 w-5 text-gray-400 cursor-pointer" />
-              </div>
+            <div className='relative'>
+              <Lock className='absolute left-3 top-[38px] h-4 w-4 text-gray-400' />
+              <InputField
+                id='password'
+                type={showPassword ? 'text' : 'password'}
+                label='Senha'
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder='**********'
+                inputClassName='pl-9 pr-9 text-gray-700 border-gray-300 bg-white'
+              />
+              <button
+                type='button'
+                onClick={() => setShowPassword((prev) => !prev)}
+                className='absolute right-3 top-[36px] rounded p-1 text-gray-400 transition-colors hover:text-gray-600'
+                aria-label={showPassword ? 'Ocultar' : 'Mostrar'}
+              >
+                {showPassword ? <EyeOff className='h-4 w-4' /> : <Eye className='h-4 w-4' />}
+              </button>
             </div>
 
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 text-gray-500 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="rounded border-gray-300 accent-[#F97316]"
-                />
+            <div className='flex items-center justify-between text-sm'>
+              <label className='flex items-center gap-2 text-gray-500 cursor-pointer'>
+                <input type='checkbox' className='rounded border-gray-300 accent-[#F97316]' />
                 Lembrar-me
               </label>
+
+              <Link
+                href='/recuperar-senha'
+                className='font-medium text-[#F97316] transition-colors hover:text-[#ea580c]'
+              >
+                Esqueci minha senha
+              </Link>
             </div>
 
-            <button
-              type="submit"
-              className="w-full rounded-xl bg-[#F97316] py-4 font-bold text-white shadow-lg shadow-orange-200 hover:bg-[#ea580c] transition-all"
-            >
+            <Button type='submit' className='w-full rounded-xl py-3.5'>
               Entrar no Sistema
-            </button>
+            </Button>
           </form>
           <div className="mt-12 rounded-2xl bg-gray-50 p-6 border border-gray-100">
             <span className="text-4xl text-[#F97316] font-serif font-bold italic">

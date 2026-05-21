@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
+import { SESSION_COOKIE } from '@/features/auth/constants/auth-constants';
 
-const SESSION_COOKIE = 'larvida_session';
-const PUBLIC_PATHS = ['/'];
+const PUBLIC_PATHS = ['/', '/recuperar-senha', '/redefinir-senha'];
 
 export function middleware(request) {
   const { pathname } = request.nextUrl;

@@ -2,25 +2,23 @@
 
 import React, { useState, useEffect } from "react";
 import { Plus, Wrench, Search, Menu } from "lucide-react";
-import Sidebar from "../components/sideBar";
+import AppShell from "@/shared/layouts/AppShell";
 import ModalNovoServico from "../components/modals/ModalNovoServico";
 import ModalEditarServico from "../components/update/servicos/ModalEditarServico";
 import { get_Servicos } from "@modulos/servicos/controller/servicoController";
 import BotaoDeletarServico from "../components/BotaoDeletarServico";
 import BotaoEditarServico from "../components/update/servicos/BotaoEditarServico";
+import { useResponsiveSidebar } from "@/shared/hooks/useResponsiveSidebar";
+import Button from "@/shared/ui/Button";
+import { Input } from "@/shared/ui/Input";
+import { DataTable, EmptyTableState } from "@/shared/ui/Table";
 
 export default function ServicosPage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { isSidebarOpen, toggleSidebar } = useResponsiveSidebar();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [servicoEditando, setServicoEditando] = useState(null);
   const [servicos, setServicos] = useState([]);
   const [pesquisa, setPesquisa] = useState("");
-
-  useEffect(() => {
-    if (window.innerWidth >= 768) {
-      setIsSidebarOpen(true);
-    }
-  }, []);
 
   async function carregarServicos() {
     try {
@@ -35,10 +33,6 @@ export default function ServicosPage() {
     carregarServicos();
   }, []);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen((prev) => !prev);
-  };
-
   const servicosFiltrados = servicos.filter((servico) =>
     [servico.nome, servico.cpf, servico.tipoServico, servico.unidade]
       .join(" ")
@@ -47,9 +41,7 @@ export default function ServicosPage() {
   );
 
   return (
-    <div className="min-h-screen bg-background flex overflow-x-hidden">
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-
+    <AppShell isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}>
       <main className="flex-1 flex flex-col bg-background min-w-0 transition-all duration-300">
         <div className="p-4 sm:p-8">
 
@@ -81,14 +73,13 @@ export default function ServicosPage() {
               </div>
             </div>
 
-            <button
-              type="button"
+            <Button
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white transition-all px-4 sm:px-6 py-2.5 rounded-lg font-medium shadow-lg active:scale-95 w-full sm:w-auto text-sm sm:text-base"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base"
             >
               <Plus size={20} />
               Novo Serviço
-            </button>
+            </Button>
           </div>
 
           <div className="mb-6 flex gap-4">
@@ -97,19 +88,18 @@ export default function ServicosPage() {
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40"
                 size={18}
               />
-              <input
+              <Input
                 type="text"
                 value={pesquisa}
                 onChange={(e) => setPesquisa(e.target.value)}
                 placeholder="Pesquisar serviço..."
-                className="w-full bg-card-bg border border-card-border rounded-lg pl-10 pr-4 py-2 text-sm text-foreground focus:outline-none focus:border-primary/50"
+                className="pl-10"
               />
             </div>
           </div>
 
           {/* Tabela Responsiva com Scroll Lateral */}
-          <div className="bg-card-bg rounded-2xl border border-card-border overflow-hidden shadow-sm">
-            <div className="overflow-x-auto scrolling-touch">
+          <DataTable>
               <table className="w-full text-left border-collapse min-w-[800px]">
                 <thead className="bg-card-bg border-b border-card-border">
                   <tr className="text-[11px] uppercase tracking-wider text-foreground/50">
@@ -128,14 +118,9 @@ export default function ServicosPage() {
 
                 <tbody>
                   {servicosFiltrados.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan="8"
-                        className="py-24 text-center text-foreground/40 italic text-sm"
-                      >
+                    <EmptyTableState colSpan="8">
                         Nenhum serviço cadastrado
-                      </td>
-                    </tr>
+                    </EmptyTableState>
                   ) : (
                     servicosFiltrados.map((servico) => (
                       <tr
@@ -170,8 +155,7 @@ export default function ServicosPage() {
                   )}
                 </tbody>
               </table>
-            </div>
-          </div>
+          </DataTable>
         </div>
 
         {isModalOpen && (
@@ -189,6 +173,6 @@ export default function ServicosPage() {
           />
         )}
       </main>
-    </div>
+    </AppShell>
   );
 }

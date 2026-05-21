@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import Sidebar from "../components/sideBar";
+import AppShell from "@/shared/layouts/AppShell";
 
 import { useState, useRef, useEffect } from "react";
 import {
@@ -12,18 +12,12 @@ import {
   AlertCircle,
   Menu, // Adicionado para o ícone de três riscos no cabeçalho mobile
 } from "lucide-react";
+import { useResponsiveSidebar } from "@/shared/hooks/useResponsiveSidebar";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export default function DashboardPage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Começa fechada para não quebrar o mobile
-
-  // Forçar a sidebar a começar aberta se for Desktop na primeira renderização
-  useEffect(() => {
-    if (window.innerWidth >= 768) {
-      setIsSidebarOpen(true);
-    }
-  }, []);
+  const { isSidebarOpen, toggleSidebar } = useResponsiveSidebar();
 
   const [files, setFiles] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -37,10 +31,6 @@ export default function DashboardPage() {
       intervalsRef.current = {};
     };
   }, []);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen((prev) => !prev);
-  };
 
   const handleFiles = (newFiles) => {
     const fileArray = Array.from(newFiles);
@@ -171,9 +161,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background transition-colors duration-300 flex overflow-x-hidden">
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-
+    <AppShell isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}>
       <div className="flex-1 flex flex-col bg-background min-w-0 transition-all duration-300">
         <header className="bg-transparent sticky top-0 z-30 w-full">
           <div className="max-w-6xl w-full mx-auto px-4 py-4 flex items-center justify-between">
@@ -352,6 +340,6 @@ export default function DashboardPage() {
           )}
         </main>
       </div>
-    </div>
+    </AppShell>
   );
 }

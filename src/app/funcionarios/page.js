@@ -5,11 +5,13 @@ import React, { useState, useEffect } from "react";
 
 import { UserPlus, Hospital, Search, Menu } from "lucide-react";
 
-import { Toaster } from "sonner";
-
-import Sidebar from "../components/sideBar";
+import AppShell from "@/shared/layouts/AppShell";
 import ModalNovoFuncionario from "../components/modals/ModalNovoFuncionario";
 import ModalEditarFuncionario from "../components/update/funcionarios/ModalEditarFuncionario";
+import { useResponsiveSidebar } from "@/shared/hooks/useResponsiveSidebar";
+import Button from "@/shared/ui/Button";
+import { Input } from "@/shared/ui/Input";
+import { DataTable, EmptyTableState } from "@/shared/ui/Table";
 
 import { get_Funcionarios } from "@modulos/funcionarios/controller/funcionarioController";
 
@@ -17,20 +19,13 @@ import BotaoDeletar from "../components/BotaoDeletar";
 import BotaoEditarFuncionario from "../components/update/funcionarios/BotaoEditarFuncionario";
 
 export default function FuncionariosPage() {
-
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { isSidebarOpen, toggleSidebar } = useResponsiveSidebar();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [funcionarioEditando, setFuncionarioEditando] = useState(null);
 
   const [funcionarios, setFuncionarios] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (window.innerWidth >= 768) {
-      setIsSidebarOpen(true);
-    }
-  }, []);
 
   const carregarFuncionarios = async () => {
     setLoading(true);
@@ -49,22 +44,8 @@ export default function FuncionariosPage() {
     carregarFuncionarios();
   }, []);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen((prev) => !prev);
-  };
-
   return (
-
-    <div className="min-h-screen bg-background flex overflow-x-hidden">
-
-      <Toaster richColors position="top-right" />
-
-
-
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-
-
-
+    <AppShell isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}>
       <main className="flex-1 flex flex-col bg-background min-w-0 transition-all duration-300">
 
         <div className="p-4 sm:p-8">
@@ -109,16 +90,13 @@ export default function FuncionariosPage() {
               </div>
             </div>
 
-            <button
-              type="button"
+            <Button
               onClick={() => setIsModalOpen(true)}
-
-              className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white transition-all px-4 sm:px-6 py-2.5 rounded-lg font-medium shadow-lg w-full sm:w-auto text-sm sm:text-base"
-
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base"
             >
               <UserPlus size={20} />
               Novo Funcionário
-            </button>
+            </Button>
           </div>
 
           <div className="mb-6 flex gap-4">
@@ -130,12 +108,10 @@ export default function FuncionariosPage() {
                 size={18}
               />
 
-              <input
+              <Input
                 type="text"
                 placeholder="Pesquisar funcionários..."
-
-                className="w-full bg-card-bg border border-card-border rounded-lg pl-10 pr-4 py-2 text-sm text-foreground focus:outline-none focus:border-primary/50"
-
+                className="pl-10"
               />
             </div>
           </div>
@@ -144,9 +120,7 @@ export default function FuncionariosPage() {
 
           {/* Tabela Responsiva com Scroll Horizontal Isolado */}
 
-          <div className="bg-card-bg rounded-2xl border border-card-border overflow-hidden shadow-sm">
-
-            <div className="overflow-x-auto scrolling-touch">
+          <DataTable>
               <table className="w-full text-left border-collapse min-w-[600px]">
 
                 <thead className="bg-card-bg border-b border-card-border">
@@ -165,27 +139,13 @@ export default function FuncionariosPage() {
 
                 <tbody>
                   {loading ? (
-                    <tr>
-                      <td
-                        colSpan="5"
-
-                        className="py-24 text-center text-foreground/40 italic text-sm"
-
-                      >
+                    <EmptyTableState colSpan="5">
                         Carregando...
-                      </td>
-                    </tr>
+                    </EmptyTableState>
                   ) : funcionarios.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan="5"
-
-                        className="py-24 text-center text-foreground/40 italic text-sm"
-
-                      >
+                    <EmptyTableState colSpan="5">
                         Nenhum funcionário cadastrado
-                      </td>
-                    </tr>
+                    </EmptyTableState>
                   ) : (
                     funcionarios.map((funcionario) => (
                       <tr
@@ -234,8 +194,7 @@ export default function FuncionariosPage() {
                   )}
                 </tbody>
               </table>
-            </div>
-          </div>
+          </DataTable>
         </div>
 
         {isModalOpen && (
@@ -253,7 +212,7 @@ export default function FuncionariosPage() {
           />
         )}
       </main>
-    </div>
+    </AppShell>
   );
 
 }

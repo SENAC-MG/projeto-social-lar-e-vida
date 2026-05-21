@@ -1,30 +1,18 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import pacientes from '../../../public/pacientes-background.jpg';
 import logo from '../../../public/logo.png';
 import { Menu } from "lucide-react";
-import Sidebar from "../components/sideBar";
+import AppShell from "@/shared/layouts/AppShell";
+import { useResponsiveSidebar } from "@/shared/hooks/useResponsiveSidebar";
 
 export default function HomePage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  // Forçar a sidebar a começar aberta se for Desktop
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.innerWidth >= 768) {
-      setIsSidebarOpen(true);
-    }
-  }, []);
-
-  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
+  const { isSidebarOpen, toggleSidebar } = useResponsiveSidebar();
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300 flex overflow-x-hidden">
-      {/* Sidebar integrada ao controle responsivo */}
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-
-      {/* Container principal que ocupa o resto da tela */}
+    <AppShell isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}>
       <main className="flex-1 flex flex-col min-w-0 bg-background h-screen relative overflow-hidden">
 
         {/* CABEÇALHO SUPERIOR (Alinhado com a identidade das outras páginas) */}
@@ -71,6 +59,6 @@ export default function HomePage() {
         </div>
 
       </main>
-    </div>
+    </AppShell>
   );
 }
