@@ -1,26 +1,20 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-    variable: "--font-geist-sans",
-    subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
-    subsets: ["latin"],
-});
+import { ThemeProvider } from "@wrksz/themes/next";
+import ToastProvider from "./components/ToastProvider";
 
 export const metadata = {
     title: "Lar e Vida",
-    description: "Hospital de Câncer Lar e Vida",
+    description: "Sistema de Gestão Hospitalar com Analytics Integrado",
 };
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="pt-BR" className={`h-full ${geistSans.variable} ${geistMono.variable}`}>
+        <html lang="pt-BR" className="h-full" suppressHydrationWarning>
             <body className="min-h-full flex flex-col antialiased">
-                {children}
+                <ThemeProvider storageKey="lar-vida-theme">
+                    <ToastProvider />
+                    {children}
+                </ThemeProvider>
             </body>
         </html>
     );
