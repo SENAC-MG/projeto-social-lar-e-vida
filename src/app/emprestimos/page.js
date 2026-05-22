@@ -40,7 +40,7 @@ export default function EmprestimosPage() {
     carregarEmprestimos();
   }, []);
 
-    const emprestimosFiltrados = emprestimos.filter((emprestimo) =>
+  const emprestimosFiltrados = emprestimos.filter((emprestimo) =>
     [emprestimo.nome, emprestimo.cpf, emprestimo.materiais, emprestimo.cidade]
       .join(" ")
       .toLowerCase()
