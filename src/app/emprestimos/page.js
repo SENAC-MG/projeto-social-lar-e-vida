@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Plus, Box, Menu, Wrench, Search, } from "lucide-react";
+import { Plus, Box, Menu, Search, } from "lucide-react";
 import AppShell from "@/shared/layouts/AppShell";
 import ModalNovoEmprestimo from "../components/modals/ModalNovoEmprestimo";
 import ModalEditarEmprestimo from "../components/update/emprestimos/ModalEditarEmprestimo";
