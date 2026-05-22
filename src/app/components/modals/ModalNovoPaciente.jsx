@@ -36,23 +36,23 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
   }
 
   const inputClass =
-    "w-full bg-card-bg border border-card-border rounded-lg px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all placeholder:text-foreground/40";
+    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#0F766E] rounded-lg px-4 py-2 text-white focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] outline-none transition-all placeholder:text-gray-600";
 
   return (
     <Modal title="Novo Paciente" onClose={onClose}>
         <form
           onSubmit={handleSubmit}
-          className="p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
+          className="bg-[#F7F9FC] dark:bg-[#081120] p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
         >
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <User size={14} /> Dados Pessoais
             </h3>
 
             <div className="grid grid-cols-12 gap-4">
               <div className="col-span-12 md:col-span-8 flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-foreground/70">
-                  Nome Completo <span className="text-[#F97316]">*</span>
+                  Nome Completo <span className="text-[#0F766E]">*</span>
                 </label>
                 <input
                   name="nome"
@@ -64,7 +64,7 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
 
               <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-foreground/70">
-                  Status <span className="text-[#F97316]">*</span>
+                  Status <span className="text-[#0F766E]">*</span>
                 </label>
                 <select
                   name="status"
@@ -128,7 +128,7 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <Stethoscope size={14} /> Informações Clínicas
             </h3>
 
@@ -172,7 +172,7 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <MapPin size={14} /> Endereço
             </h3>
 
@@ -211,7 +211,7 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <Phone size={14} /> Contato
             </h3>
 
@@ -235,7 +235,7 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
             <Button
               type="submit"
               disabled={loading}
-              className="px-8"
+              className="px-8 !bg-[#0F766E] hover:!bg-[#0F766E] cursor-pointer"
             >
               <Save size={18} />
               {loading ? "Salvando..." : "Salvar"}
@@ -245,7 +245,7 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
               type="reset"
               variant="secondary"
               disabled={loading}
-              className="px-8"
+              className="px-8 hover:!bg-[#5B6B7C] cursor-pointer"
             >
               <RotateCcw size={18} />
               Limpar
@@ -255,3 +255,4 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
     </Modal>
   );
 }
+

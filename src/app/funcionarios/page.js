@@ -46,7 +46,7 @@ export default function FuncionariosPage() {
 
   return (
     <AppShell isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}>
-      <main className="flex-1 flex flex-col bg-background min-w-0 transition-all duration-300">
+      <main className="flex-1 flex flex-col bg-[#EEF2F7] dark:bg-[#081120] min-w-0 transition-all duration-300">
 
         <div className="p-4 sm:p-8">
 
@@ -54,7 +54,7 @@ export default function FuncionariosPage() {
 
           {/* Cabeçalho Responsivo */}
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-between sm:items-center mb-8">
+          <div className=" flex flex-col sm:flex-row gap-4 justify-between sm:items-center mb-8">
             <div className="flex items-center gap-3 sm:gap-4">
 
 
@@ -74,7 +74,7 @@ export default function FuncionariosPage() {
 
 
 
-              <div className="p-3 bg-primary border border-transparent rounded-xl shadow-sm flex-shrink-0">
+              <div className="p-3 bg-[#0F766E] border border-transparent rounded-xl shadow-sm flex-shrink-0">
 
                 <Hospital className="text-white" size={24} />
               </div>
@@ -92,15 +92,15 @@ export default function FuncionariosPage() {
 
             <Button
               onClick={() => setIsModalOpen(true)}
-              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base !bg-[#0F766E] hover:!bg-[#0b685e]"
             >
               <UserPlus size={20} />
               Novo Funcionário
             </Button>
           </div>
 
-          <div className="mb-6 flex gap-4">
-            <div className="relative flex-1">
+          <div className="mb-6 flex gap-4 bg-[#F9FBFD] dark:bg-[#1E1E24]">
+            <div className="relative flex-1 bg-[#F9FBFD] dark:bg-[#1E1E24]">
               <Search
 
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40"
@@ -121,9 +121,9 @@ export default function FuncionariosPage() {
           {/* Tabela Responsiva com Scroll Horizontal Isolado */}
 
           <DataTable>
-              <table className="w-full text-left border-collapse min-w-[600px]">
+              <table className="bg-[#F9FBFD] dark:bg-[#1E1E24] w-full text-left border-collapse min-w-[600px]">
 
-                <thead className="bg-card-bg border-b border-card-border">
+                <thead className="bg-[#F9FBFD] dark:bg-[#1E1E24] border-b border-card-border">
 
                   <tr className="text-[11px] uppercase tracking-wider text-foreground/50">
 

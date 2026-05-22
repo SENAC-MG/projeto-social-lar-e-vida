@@ -162,7 +162,7 @@ export default function DashboardPage() {
 
   return (
     <AppShell isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}>
-      <div className="flex-1 flex flex-col bg-background min-w-0 transition-all duration-300">
+      <div className="bg-[#EEF2F7] dark:bg-[#081120] flex-1 flex flex-col min-w-0 transition-all duration-300">
         <header className="bg-transparent sticky top-0 z-30 w-full">
           <div className="max-w-6xl w-full mx-auto px-4 py-4 flex items-center justify-between">
 
@@ -197,7 +197,7 @@ export default function DashboardPage() {
             tabIndex={0}
             aria-label="Área de upload. Arraste e solte arquivos aqui ou pressione Enter para selecionar arquivos"
             className={`
-            relative border-2 border-dashed rounded-xl p-8 sm:p-12 text-center cursor-pointer
+            relative border-2 border-dashed !border-[#0F766E] rounded-xl p-8 sm:p-12 text-center cursor-pointer
             transition-all duration-300 ease-in-out
             ${
               isDragging
@@ -236,7 +236,7 @@ export default function DashboardPage() {
                 </p>
                 <p className="text-sm mt-1">
                   ou{" "}
-                  <span className="text-primary font-medium">
+                  <span className="text-[#0F766E] font-medium">
                     clique para selecionar arquivos
                   </span>
                 </p>

@@ -22,8 +22,8 @@ html {
   --card-foreground: #1D1C1A;
   --popover: #FAFAFA;
   --popover-foreground: #1D1C1A;
-  --primary: #F97316;
-  --primary-hover: #EA580C;
+  --primary: #FF7517;
+  --primary-hover: #FF7517;
   --primary-foreground: #FAFAFA;
   --secondary: #E5E5E5;
   --secondary-foreground: #1D1C1A;
@@ -34,7 +34,7 @@ html {
   --destructive: #EF4444;
   --border: #E5E5E5;
   --input: #D4D4D4;
-  --ring: #F97316;
+  --ring: #FF7517;
   --upload-area: #F5F5F5;
   --upload-border: #D4D4D4;
   --upload-hover: #E5E5E5;
@@ -58,8 +58,8 @@ html {
   --card-foreground: #FAFAFA;
   --popover: #2A2927;
   --popover-foreground: #FAFAFA;
-  --primary: #F97316;
-  --primary-hover: #EA580C;
+  --primary: #FF7517;
+  --primary-hover: #FF7517;
   --primary-foreground: #1D1C1A;
   --secondary: #404040;
   --secondary-foreground: #FAFAFA;
@@ -70,7 +70,7 @@ html {
   --destructive: #DC2626;
   --border: rgba(255, 255, 255, 0.1);
   --input: rgba(255, 255, 255, 0.15);
-  --ring: #F97316;
+  --ring: #FF7517;
   --upload-area: #2A2927;
   --upload-border: #404040;
   --upload-hover: #3A3937;
@@ -138,7 +138,7 @@ html, body, * {
 @layer components {
   .input-field {
     @apply bg-[#11141d] border border-gray-800 rounded-lg px-4 py-3 text-sm
-    focus:outline-none focus:border-[#F97316]/50 focus:ring-1 focus:ring-[#F97316]/50
+    focus:outline-none focus:border-[#FF7517]/50 focus:ring-1 focus:ring-[#FF7517]/50
            transition-all placeholder:text-gray-600 text-gray-200 w-full;
   }
 
@@ -153,3 +153,4 @@ html, body, * {
     border-radius: 10px;
   }
 }
+
