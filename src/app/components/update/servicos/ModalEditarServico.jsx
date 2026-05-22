@@ -14,7 +14,7 @@ export default function ModalEditarServico({ servico, onClose, onSuccess }) {
   const unidades = ["Hora", "Dia", "Mês", "Sessão"];
 
   const inputClass =
-    "w-full bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] outline-none transition-all placeholder:text-gray-600";
+    "w-full bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-[#FF7517] focus:ring-1 focus:ring-[#FF7517] outline-none transition-all placeholder:text-gray-600";
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -127,7 +127,7 @@ export default function ModalEditarServico({ servico, onClose, onSuccess }) {
                     onClick={() => setUnidadeSelecionada(unidade)}
                     className={`px-6 py-2 rounded-full text-sm font-bold transition-all shadow-sm active:scale-95 ${
                       isSelecionada
-                        ? "bg-[#F97316] text-white"
+                        ? "bg-[#FF7517] text-white"
                         : "bg-white text-gray-900 hover:bg-gray-200"
                     }`}
                   >
@@ -143,7 +143,7 @@ export default function ModalEditarServico({ servico, onClose, onSuccess }) {
               min="1"
               defaultValue={servico.tempoServico}
               placeholder="Tempo / quantidade"
-              className="w-[160px] bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] outline-none transition-all placeholder:text-gray-600"
+              className="w-[160px] bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-[#FF7517] focus:ring-1 focus:ring-[#FF7517] outline-none transition-all placeholder:text-gray-600"
             />
           </div>
 
@@ -151,7 +151,7 @@ export default function ModalEditarServico({ servico, onClose, onSuccess }) {
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 bg-[#F97316] hover:bg-[#e85a1a] text-white px-8 py-2.5 rounded-lg font-bold transition-all disabled:opacity-50"
+              className="flex items-center gap-2 bg-[#FF7517] hover:bg-[#FF7517] text-white px-8 py-2.5 rounded-lg font-bold transition-all disabled:opacity-50"
             >
               <Save size={18} />
               {loading ? "Salvando..." : "Salvar alterações"}
@@ -162,3 +162,4 @@ export default function ModalEditarServico({ servico, onClose, onSuccess }) {
     </div>
   );
 }
+

@@ -4,37 +4,65 @@ import { deletar_Funcionario } from "@modulos/funcionarios/controller/funcionari
 import { toast } from "sonner";
 import { Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 export default function BotaoDeletar({ id, onDeleted }) {
   const [loading, setLoading] = useState(false);
 
-  async function handleDelete() {
-    const confirmar = window.confirm(
-      "Tem certeza que deseja deletar este funcionário?",
-    );
+   const router = useRouter();
 
-    if (!confirmar) return;
+  async function handleDelete() {
+    const result = await Swal.fire({
+      title: "Digite 123 para confirmar exclusão",
+      input: "text",
+      text: "Essa ação não poderá ser desfeita",
+      inputPlaceholder: "Digite 123",
+      showCancelButton: true,
+      confirmButtonText: "Deletar",
+      confirmButtonColor: "#d33",
+
+      preConfirm: (valorDigitado) => {
+        if (valorDigitado !== "123") {
+          Swal.showValidationMessage(
+            "Código incorreto. Digite 123 para deletar.",
+          );
+
+          return false;
+        }
+
+        return true;
+      },
+
+      allowOutsideClick: () => !Swal.isLoading(),
+    });
+
+    if (!result.isConfirmed) {
+      return;
+    }
+
+    setLoading(true);
 
     try {
-      setLoading(true);
-
       const res = await deletar_Funcionario(id);
 
-      if (res?.success) {
-        toast.success(res.message || "Funcionário deletado com sucesso!");
+      if (res.success) {
+        toast.success(res.message);
 
-        if (onDeleted) {
-          await onDeleted();
-        }
+        Swal.fire({
+          icon: "success",
+          title: "Registro deletado com sucesso!",
+          timer: 2000,
+          showConfirmButton: false,
+        });
       } else {
-        toast.error(res?.error || "Erro ao deletar funcionário.");
+        toast.error(res.error || "Erro ao deletar funcionário.");
       }
     } catch (error) {
-      console.error("Erro ao deletar funcionário:", error);
-
-      toast.error("Erro inesperado ao deletar.");
+      toast.error(error?.message || "Erro inesperado ao deletar funcionário.");
     } finally {
       setLoading(false);
+      router.refresh();
     }
   }
 

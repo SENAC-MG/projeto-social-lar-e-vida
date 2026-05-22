@@ -33,21 +33,21 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
   };
 
   const inputClass =
-    "w-full bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] outline-none transition-all placeholder:text-gray-600";
+    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#0F766E] rounded-lg px-4 py-2 focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] outline-none transition-all placeholder:text-gray-600";
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
       onClick={handleOverlayClick}
     >
-      <div className="w-full max-w-4xl bg-[#11141d] border border-gray-800 rounded-xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
-        <div className="flex justify-between items-center px-6 py-4 border-b border-gray-800 bg-[#11141d]">
-          <h2 className="text-white font-bold text-lg">Novo Empréstimo</h2>
+      <div className="w-full max-w-4xl bg-[#F7F9FC] dark:bg-[#081120] border border-gray-800 rounded-xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
+        <div className="flex justify-between items-center px-6 py-4 border-b border-gray-800 bg-[#F7F9FC] dark:bg-[#081120]">
+          <h2 className="text-[#0F766E] font-bold text-lg">Novo Empréstimo</h2>
 
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors p-1 hover:bg-gray-800 rounded-md"
+            className="cursor-pointer text-gray-400 transition-colors p-1 rounded-md hover:bg-foreground/10 hover:text-foreground"
           >
             <X size={22} />
           </button>
@@ -58,18 +58,19 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
           className="p-6 space-y-8 overflow-y-auto max-h-[85vh] custom-scrollbar"
         >
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-wider mb-4">
               Dados Pessoais
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-2">
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Nome *
+                  Nome <span className="text-[#0F766E]">*</span>
                 </label>
                 <input
                   name="nome"
                   type="text"
+                  placeholder="Nome completo"
                   required
                   className={inputClass}
                 />
@@ -77,7 +78,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  CPF *
+                  CPF <span className="text-[#0F766E]">*</span>
                 </label>
                 <input
                   name="cpf"
@@ -90,7 +91,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  RG *
+                  RG <span className="text-[#0F766E]">*</span>
                 </label>
                 <input
                   name="rg"
@@ -103,7 +104,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Nascimento *
+                  Nascimento <span className="text-[#0F766E]">*</span>
                 </label>
                 <input
                   name="nascimento"
@@ -115,7 +116,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Data do Empréstimo *
+                  Data do Empréstimo <span className="text-[#0F766E]">*</span>
                 </label>
                 <input
                   name="dataEmprestimo"
@@ -128,8 +129,8 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4">
-              Materiais Emprestados *
+            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-wider mb-4">
+              Materiais Emprestados <span className="text-[#0F766E]">*</span>
             </h3>
 
             <textarea
@@ -146,21 +147,21 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-wider mb-4">
               Endereço
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="md:col-span-2">
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Rua *
+                  Rua <span className="text-[#0F766E]">*</span>
                 </label>
                 <input name="rua" type="text" required className={inputClass} />
               </div>
 
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Número *
+                  Número <span className="text-[#0F766E]">*</span>
                 </label>
                 <input
                   name="numero"
@@ -172,7 +173,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  CEP *
+                  CEP <span className="text-[#0F766E]">*</span>
                 </label>
                 <input
                   name="cep"
@@ -185,7 +186,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div className="md:col-span-2">
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Bairro *
+                  Bairro <span className="text-[#0F766E]">*</span>
                 </label>
                 <input
                   name="bairro"
@@ -197,7 +198,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div className="md:col-span-2">
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Cidade *
+                  Cidade <span className="text-[#0F766E]">*</span>
                 </label>
                 <input
                   name="cidade"
@@ -210,14 +211,14 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-wider mb-4">
               Contato
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Telefone 1 *
+                  Telefone 1 <span className="text-[#0F766E]">*</span>
                 </label>
                 <input
                   name="telefone1"
@@ -230,7 +231,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Telefone 2 *
+                  Telefone 2 <span className="text-[#0F766E]">*</span>
                 </label>
                 <input
                   name="telefone2"
@@ -243,11 +244,11 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
             </div>
           </section>
 
-          <div className="flex gap-3 pt-4 border-t border-gray-800">
+          <div className="flex gap-3 pt-4 border-t border-[#0F766E]">
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 bg-[#F97316] hover:bg-[#e85a1a] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-orange-900/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="cursor-pointer flex items-center gap-2 bg-[#0F766E] hover:bg-[#0F766E] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-[#0F766E]/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Save size={18} />
               {loading ? "Salvando..." : "Salvar"}
@@ -256,7 +257,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
             <button
               type="reset"
               disabled={loading}
-              className="flex items-center gap-2 border border-gray-700 text-white px-8 py-2.5 rounded-lg font-bold hover:bg-gray-800 transition-all active:scale-95 disabled:opacity-50"
+              className="cursor-pointer flex items-center gap-2 bg-[#5B6B7C] border border-gray-700 text-white px-8 py-2.5 rounded-lg font-bold hover:bg-gray-800 transition-all active:scale-95 disabled:opacity-50"
             >
               <RotateCcw size={18} />
               Limpar
@@ -267,3 +268,4 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
     </div>
   );
 }
+

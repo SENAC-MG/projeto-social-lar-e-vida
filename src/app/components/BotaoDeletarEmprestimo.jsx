@@ -5,31 +5,63 @@ import { toast } from "sonner";
 import { deletar_Emprestimo } from "@modulos/emprestimos/controller/emprestimoController";
 
 export default function BotaoDeletarEmprestimo({ id, onDeleted }) {
-  async function handleDelete() {
-    const confirmar = window.confirm(
-      "Tem certeza que deseja excluir este empréstimo?",
-    );
-
-    if (!confirmar) return;
-
-    try {
-      const resultado = await deletar_Emprestimo(id);
-
-      if (resultado.success) {
-        toast.success("Empréstimo deletado com sucesso!");
-
-        if (onDeleted) {
-          onDeleted();
-        }
-      } else {
-        toast.error(resultado.error || "Erro ao deletar empréstimo.");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Erro inesperado ao deletar.");
-    }
-  }
-
+  const [, setLoading] = useState(false);
+ 
+    const router = useRouter();
+ 
+   async function handleDelete() {
+     const result = await Swal.fire({
+       title: "Digite 123 para confirmar exclusão",
+       input: "text",
+       text: "Essa ação não poderá ser desfeita",
+       inputPlaceholder: "Digite 123",
+       showCancelButton: true,
+       confirmButtonText: "Deletar",
+       confirmButtonColor: "#d33",
+ 
+       preConfirm: (valorDigitado) => {
+         if (valorDigitado !== "123") {
+           Swal.showValidationMessage(
+             "Código incorreto. Digite 123 para deletar.",
+           );
+ 
+           return false;
+         }
+ 
+         return true;
+       },
+ 
+       allowOutsideClick: () => !Swal.isLoading(),
+     });
+ 
+     if (!result.isConfirmed) {
+       return;
+     }
+ 
+     setLoading(true);
+ 
+     try {
+       const res = await deletar_Funcionario(id);
+ 
+       if (res.success) {
+         toast.success(res.message);
+ 
+         Swal.fire({
+           icon: "success",
+           title: "Registro deletado com sucesso!",
+           timer: 2000,
+           showConfirmButton: false,
+         });
+       } else {
+         toast.error(res.error || "Erro ao deletar funcionário.");
+       }
+     } catch (error) {
+       toast.error(error?.message || "Erro inesperado ao deletar funcionário.");
+     } finally {
+       setLoading(false);
+       router.refresh();
+     }
+   }
   return (
     <button
       onClick={handleDelete}

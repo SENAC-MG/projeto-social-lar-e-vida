@@ -42,7 +42,7 @@ export default function ServicosPage() {
 
   return (
     <AppShell isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}>
-      <main className="flex-1 flex flex-col bg-background min-w-0 transition-all duration-300">
+      <main className="bg-[#EEF2F7] dark:bg-[#081120] flex-1 flex flex-col min-w-0 transition-all duration-300">
         <div className="p-4 sm:p-8">
 
           {/* Header Responsivo */}
@@ -59,7 +59,7 @@ export default function ServicosPage() {
                 <Menu size={24} />
               </button>
 
-              <div className="p-3 bg-primary border border-transparent rounded-xl shadow-sm flex-shrink-0">
+              <div className="p-3 bg-[#0F766E] border border-transparent rounded-xl shadow-sm flex-shrink-0">
                 <Wrench className="text-white" size={24} />
               </div>
 
@@ -75,7 +75,7 @@ export default function ServicosPage() {
 
             <Button
               onClick={() => setIsModalOpen(true)}
-              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base !bg-[#0F766E] hover:!bg-[#0b685e]"
             >
               <Plus size={20} />
               Novo Serviço
@@ -100,8 +100,8 @@ export default function ServicosPage() {
 
           {/* Tabela Responsiva com Scroll Lateral */}
           <DataTable>
-              <table className="w-full text-left border-collapse min-w-[800px]">
-                <thead className="bg-card-bg border-b border-card-border">
+              <table className="bg-[#F9FBFD] dark:bg-[#1E1E24] w-full text-left border-collapse min-w-[800px]">
+                <thead className="bg-[#F9FBFD] dark:bg-[#1E1E24] border-b border-card-border">
                   <tr className="text-[11px] uppercase tracking-wider text-foreground/50">
                     <th className="px-6 py-4 font-semibold">Nome</th>
                     <th className="px-6 py-4 font-semibold">CPF</th>

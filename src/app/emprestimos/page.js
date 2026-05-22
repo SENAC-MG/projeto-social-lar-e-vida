@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Plus, Box, Menu } from "lucide-react";
+import { Plus, Box, Menu, Search, } from "lucide-react";
 import AppShell from "@/shared/layouts/AppShell";
 import ModalNovoEmprestimo from "../components/modals/ModalNovoEmprestimo";
 import ModalEditarEmprestimo from "../components/update/emprestimos/ModalEditarEmprestimo";
@@ -12,13 +12,14 @@ import BotaoDeletarEmprestimo from "../components/BotaoDeletarEmprestimo";
 import BotaoEditarEmprestimo from "../components/update/emprestimos/BotaoEditarEmprestimo";
 import { useResponsiveSidebar } from "@/shared/hooks/useResponsiveSidebar";
 import Button from "@/shared/ui/Button";
+import { Input } from "@/shared/ui/Input";
 import { DataTable, EmptyTableState } from "@/shared/ui/Table";
 
 export default function EmprestimosPage() {
   const { isSidebarOpen, toggleSidebar } = useResponsiveSidebar();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [emprestimoEditando, setEmprestimoEditando] = useState(null);
-
+  const [pesquisa, setPesquisa] = useState("");
   const [emprestimos, setEmprestimos] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,9 +40,15 @@ export default function EmprestimosPage() {
     carregarEmprestimos();
   }, []);
 
+  const emprestimosFiltrados = emprestimos.filter((emprestimo) =>
+    [emprestimo.nome, emprestimo.cpf, emprestimo.materiais, emprestimo.cidade]
+      .join(" ")
+      .toLowerCase()
+      .includes(pesquisa.toLowerCase())
+  );
   return (
     <AppShell isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}>
-      <main className="flex-1 flex flex-col bg-background min-w-0 transition-all duration-300">
+      <main className="bg-[#EEF2F7] dark:bg-[#081120] flex-1 flex flex-col min-w-0 transition-all duration-300">
         <div className="p-4 sm:p-8">
 
           {/* Header Responsivo */}
@@ -58,7 +65,7 @@ export default function EmprestimosPage() {
                 <Menu size={24} />
               </button>
 
-              <div className="p-3 bg-primary border border-transparent rounded-xl shadow-sm flex-shrink-0">
+              <div className="p-3 border border-transparent rounded-xl shadow-sm flex-shrink-0 bg-[#0F766E]">
                 <Box className="text-white" size={24} />
               </div>
 
@@ -72,17 +79,33 @@ export default function EmprestimosPage() {
 
             <Button
               onClick={() => setIsModalOpen(true)}
-              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base"
+              className=" w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base !bg-[#0F766E] hover:!bg-[#0b685e]"
             >
               <Plus size={20} />
               Novo Empréstimo
             </Button>
           </div>
 
+           <div className="mb-6 flex gap-4">
+            <div className="relative flex-1">
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40"
+                size={18}
+              />
+              <Input
+                type="text"
+                value={pesquisa}
+                onChange={(e) => setPesquisa(e.target.value)}
+                placeholder="Pesquisar empréstimo..."
+                className="pl-10"
+              />
+            </div>
+          </div>
+
           {/* Tabela Responsiva com Scroll Lateral */}
           <DataTable>
-              <table className="w-full text-left border-collapse min-w-[800px]">
-                <thead className="bg-card-bg border-b border-card-border">
+              <table className="bg-[#F9FBFD] dark:bg-[#1E1E24] w-full text-left border-collapse min-w-[800px]">
+                <thead className="bg-[#F9FBFD] dark:bg-[#1E1E24] border-b border-card-border">
                   <tr className="text-[11px] uppercase tracking-wider text-foreground/50 font-semibold">
                     <th className="px-6 py-4">Nome</th>
                     <th className="px-6 py-4">Materiais</th>
