@@ -11,7 +11,7 @@ import { authenticate } from '@/features/auth/services/auth-service';
 
 import { generateJwtToken } from '@/features/auth/utils/jwt';
 
-export async function loginAction(email, senha) {
+export async function loginAction(email, senha, rememberMe = false) {
   const result = await authenticate(email, senha);
 
   if (!result.success) {
@@ -31,7 +31,9 @@ export async function loginAction(email, senha) {
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
     path: '/',
-    maxAge: SESSION_MAX_AGE,
+    maxAge: rememberMe
+      ? 60 * 60 * 24 * 30 // 30 dias,
+      : SESSION_MAX_AGE, // 1 dia
   });
 
   redirect('/home');
@@ -63,4 +65,12 @@ export async function resetPasswordAction(formData) {
       error: error?.message || 'Não foi possível redefinir a senha.',
     };
   }
+}
+
+export async function logoutAction() {
+  const cookieStore = await cookies();
+
+  cookieStore.delete(SESSION_COOKIE);
+
+  redirect('/');
 }

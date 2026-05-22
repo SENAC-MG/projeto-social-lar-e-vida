@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { login } from "../../actions/login";
 import background from '../../public/background.png';
 import logo from '../../public/logo.png';
@@ -13,6 +13,7 @@ export default function Home() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,12 +23,64 @@ export default function Home() {
       return;
     }
 
-    const result = await login(email, password);
+    // salva ou remove email
+    if (rememberMe) {
+      localStorage.setItem(
+        "rememberedEmail",
+        email
+      );
+
+      localStorage.setItem(
+        "rememberedPassword",
+        password
+      );
+    } else {
+      localStorage.removeItem(
+        "rememberedEmail"
+      );
+
+      localStorage.removeItem(
+        "rememberedPassword"
+      );
+    }
+
+    const result = await login(
+      email,
+      password,
+      rememberMe
+    );
 
     if (!result?.success) {
       alert('Usuário ou senha incorretos. Tente novamente.');
     }
   };
+
+  useEffect(() => {
+    const savedEmail =
+      localStorage.getItem(
+        "rememberedEmail"
+      );
+
+    const savedPassword =
+      localStorage.getItem(
+        "rememberedPassword"
+      );
+
+    if (savedEmail) {
+      setEmail(savedEmail);
+    }
+
+    if (savedPassword) {
+      setPassword(savedPassword);
+    }
+
+    if (
+      savedEmail ||
+      savedPassword
+    ) {
+      setRememberMe(true);
+    }
+  }, []);
 
   return (
     <main className="flex min-h-screen w-full font-sans">
@@ -115,8 +168,8 @@ export default function Home() {
 
             <div className='flex items-center justify-between text-sm'>
               <label className='flex items-center gap-2 text-gray-500 cursor-pointer'>
-                <input type='checkbox' className='rounded border-gray-300 accent-[#F97316]' />
-                Lembrar-me
+                <input type='checkbox' checked={rememberMe} onChange={(event) => setRememberMe(event.target.checked)} className='rounded border-gray-300 accent-[#F97316]' />
+                Lembrar da minha senha
               </label>
 
               <Link
