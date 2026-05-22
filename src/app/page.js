@@ -93,7 +93,6 @@ export default function Home() {
               para nossos residentes.
             </p>
           </div>
-
           <div className="h-14" />
         </div>
       </div>
@@ -121,7 +120,7 @@ export default function Home() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 placeholder="seu@gmail.com"
-                inputClassName="pl-9 pr-9 text-black !border-[#0F766E] bg-white focus:!border-[#0F766E] focus:!ring-1 focus:!ring-[#0F766E] placeholder:text-gray-600"
+                inputClassName="pl-9 pr-9 !text-black !border-[#0F766E] bg-white focus:!border-[#0F766E] focus:!ring-1 focus:!ring-[#0F766E] placeholder:text-gray-600"
                 inputMode="email"
                 autoFocus
               />
@@ -137,7 +136,7 @@ export default function Home() {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder="**********"
-                inputClassName="pl-9 pr-9 text-black !border-[#0F766E] bg-white focus:!border-[#0F766E] focus:!ring-1 focus:!ring-[#0F766E] placeholder:text-gray-600"
+                inputClassName="pl-9 pr-9 !text-black !border-[#0F766E] bg-white focus:!border-[#0F766E] focus:!ring-1 focus:!ring-[#0F766E] placeholder:text-gray-600"
               />
 
               <button
