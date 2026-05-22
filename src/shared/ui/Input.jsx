@@ -9,7 +9,7 @@ export function Input({ className, ...props }) {
       )}
       {...props}
     />
-  );
+  );  
 }
 
 export function InputField({
@@ -25,7 +25,7 @@ export function InputField({
       {label && (
         <label htmlFor={id} className='text-sm font-medium text-foreground/70'>
           {label}
-          {required && <span className='ml-1 text-primary'>*</span>}
+          {required && <span className='ml-1 text-[#0F766E]'>*</span>}
         </label>
       )}
       <Input id={id} required={required} className={inputClassName} {...props} />

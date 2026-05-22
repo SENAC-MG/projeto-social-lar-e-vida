@@ -16,12 +16,12 @@ export default function Modal({ open = true, onClose, title, children, className
           className,
         )}
       >
-        <div className='flex items-center justify-between border-b border-card-border bg-background/70 px-6 py-4'>
-          <h2 className='text-lg font-bold text-foreground'>{title}</h2>
+        <div className='bg-[#F7F9FC] dark:bg-[#081120] flex items-center justify-between border-b border-card-border px-6 py-4'>
+          <h2 className='text-lg text-[#0F766E] font-bold'>{title}</h2>
           <button
             type='button'
             onClick={onClose}
-            className='rounded-md p-1 text-foreground/60 transition-colors hover:bg-foreground/10 hover:text-foreground'
+            className='cursor-pointer rounded-md p-1 text-foreground/60 transition-colors hover:bg-foreground/10 hover:text-foreground'
             aria-label='Fechar modal'
           >
             <X size={20} />
