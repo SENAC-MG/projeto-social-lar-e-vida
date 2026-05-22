@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { login } from "../../actions/login";
 import background from '../../public/background.png';
 import logo from '../../public/logo.png';
@@ -154,7 +154,49 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-        </main>
-    );
+
+            <div className='flex items-center justify-between text-sm'>
+              <label className='flex items-center gap-2 text-gray-500 cursor-pointer'>
+                <input type='checkbox' checked={rememberMe} onChange={(event) => setRememberMe(event.target.checked)} className='rounded border-gray-300 accent-[#F97316]' />
+                Lembrar da minha senha
+              </label>
+
+              <Link
+                href='/recuperar-senha'
+                className='font-medium text-[#F97316] transition-colors hover:text-[#ea580c]'
+              >
+                Esqueci minha senha
+              </Link>
+            </div>
+
+            <Button type='submit' className='w-full rounded-xl py-3.5'>
+              Entrar no Sistema
+            </Button>
+          </form>
+          <div className="mt-12 rounded-2xl bg-gray-50 p-6 border border-gray-100">
+            <span className="text-4xl text-[#F97316] font-serif font-bold italic">
+              “
+            </span>
+            <p className="text-xs italic text-gray-500 leading-relaxed -mt-2">
+              O sistema mudou completamente a forma como gerenciamos nossas
+              doações. Tudo ficou mais organizado e a ajuda a nossos residentes
+              aumentou.
+            </p>
+            <div className="mt-4 flex items-center gap-3">
+              <div className="h-10 w-10 rounded-full bg-gray-300 overflow-hidden relative">
+                {/* imagem do Carlos */}
+              </div>
+              <div>
+                <p className="text-xs font-bold text-gray-900">Carlos</p>
+                <p className="text-[10px] text-gray-400">
+                  Diretor - Lar e Vida
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
 }
 

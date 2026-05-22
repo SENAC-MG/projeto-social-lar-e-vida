@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  Sun,
-  Moon,
-  Menu,
-} from "lucide-react";
+import { Sun, Moon, Menu, LogOut } from "lucide-react";
 import Image from "next/image";
 import logo from "../../../public/logo.png";
 import Link from "next/link";
@@ -12,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "@wrksz/themes/client";
 import { useEffect, useState } from "react";
 import { mainNavigationItems } from "@/shared/layouts/navigation-config";
+import { logoutAction } from "@/features/auth/actions/auth-actions";
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
   const pathname = usePathname();
@@ -57,8 +54,9 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
         }}
       >
         <div
-          className={`flex items-center mb-10 min-h-[72px] ${isOpen ? "justify-between ml-2" : "justify-center"
-            }`}
+          className={`flex items-center mb-10 min-h-[72px] ${
+            isOpen ? "justify-between ml-2" : "justify-center"
+          }`}
         >
           {isOpen ? (
             <>
@@ -137,7 +135,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                   } ${isActive
                     ? "bg-[#0F766E] text-white"
                     : "bg-transparent hover:bg-white/10"
-                  }`}
+                }`}
                 style={{
                   color: isActive ? "#FAFAFA" : textColor,
                 }}
@@ -181,12 +179,44 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
               )}
             </span>
 
-            {isOpen && (
-              <span className="font-medium text-sm truncate">
-                {toggleLabel}
+            {/* Toggle tema */}
+            <button
+              type="button"
+              onClick={() => mounted && setTheme(nextTheme)}
+              disabled={!mounted}
+              data-testid="theme-toggle"
+              aria-label={
+                mounted
+                  ? `Ativar ${toggleLabel.toLowerCase()}`
+                  : "Carregando tema"
+              }
+              className={`flex items-center py-2 transition-colors rounded-lg
+      ${isOpen ? "gap-3 px-4" : "justify-center"}
+      ${mounted ? "cursor-pointer" : "cursor-default opacity-70"}
+    `}
+              style={{ color: textColor }}
+            >
+              <span className="relative flex h-6 w-11 flex-shrink-0 items-center rounded-full bg-foreground/15 transition-colors duration-300">
+                <span
+                  className={`absolute h-5 w-5 rounded-full bg-primary transition-transform duration-300 ease-out
+          ${isDark ? "translate-x-5" : "translate-x-1"}
+        `}
+                />
+
+                {isDark ? (
+                  <Moon size={12} className="absolute left-1 text-white/80" />
+                ) : (
+                  <Sun size={12} className="absolute right-1 text-white/80" />
+                )}
               </span>
-            )}
-          </button>
+
+              {isOpen && (
+                <span className="font-medium text-sm truncate">
+                  {toggleLabel}
+                </span>
+              )}
+            </button>
+          </div>
         </div>
       </aside>
     </>
