@@ -7,7 +7,7 @@ import background from '../../public/background.png';
 import logo from '../../public/logo.png';
 import Button from "@/shared/ui/Button";
 import { InputField } from "@/shared/ui/Input";
-
+import Link from "next/link";
 export default function Home() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
