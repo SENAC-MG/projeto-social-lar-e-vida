@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { deletar_Emprestimo } from "@modulos/emprestimos/controller/emprestimoController";
 
 export default function BotaoDeletarEmprestimo({ id, onDeleted }) {
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
  
     const router = useRouter();
  
