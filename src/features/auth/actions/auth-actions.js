@@ -6,12 +6,10 @@ import {
   SESSION_COOKIE,
   SESSION_MAX_AGE,
 } from '@/features/auth/constants/auth-constants';
-import {
-  authenticate,
-  isResetTokenValid,
-  requestPasswordReset,
-  resetPassword,
-} from '@/features/auth/services/auth-service';
+
+import { authenticate } from '@/features/auth/services/auth-service';
+
+import { generateJwtToken } from '@/features/auth/utils/jwt';
 
 export async function loginAction(email, senha) {
   const result = await authenticate(email, senha);
@@ -20,8 +18,15 @@ export async function loginAction(email, senha) {
     return result;
   }
 
+  // cria JWT
+  const token = await generateJwtToken({
+    userId: result.userId,
+  });
+
   const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE, String(result.userId), {
+
+  // salva JWT no cookie
+  cookieStore.set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
