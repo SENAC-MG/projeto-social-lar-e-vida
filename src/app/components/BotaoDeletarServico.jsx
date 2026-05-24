@@ -4,13 +4,8 @@ import { deletar_Servico } from "@modulos/servicos/controller/servicoController"
 import { toast } from "sonner";
 import { Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
-<<<<<<< HEAD
-import Swal from "sweetalert2";
-import { useRouter } from "next/navigation";
-=======
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
->>>>>>> 28bd967c19790e58ebd792fb2224e1f9de840acf
 
 export default function BotaoDeletarServico({ id, onDeleted }) {
   const [loading, setLoading] = useState(false);

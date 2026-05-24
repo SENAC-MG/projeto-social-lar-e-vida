@@ -4,88 +4,11 @@ import { deletar_Paciente } from "@modulos/pacientes/controller/pacienteControll
 import { toast } from "sonner";
 import { Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
-<<<<<<< HEAD
-import Swal from "sweetalert2";
-import { useRouter } from "next/navigation";
-=======
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
->>>>>>> 28bd967c19790e58ebd792fb2224e1f9de840acf
 
 export default function BotaoDeletarPaciente({ id, onDeleted }) {
   const [loading, setLoading] = useState(false);
-<<<<<<< HEAD
- 
-    const router = useRouter();
- 
-   async function handleDelete() {
-     const result = await Swal.fire({
-       title: "Digite 123 para confirmar exclusão",
-       input: "text",
-       text: "Essa ação não poderá ser desfeita",
-       inputPlaceholder: "Digite 123",
-       showCancelButton: true,
-       confirmButtonText: "Deletar",
-       confirmButtonColor: "#d33",
- 
-       preConfirm: (valorDigitado) => {
-         if (valorDigitado !== "123") {
-           Swal.showValidationMessage(
-             "Código incorreto. Digite 123 para deletar.",
-           );
- 
-           return false;
-         }
- 
-         return true;
-       },
- 
-       allowOutsideClick: () => !Swal.isLoading(),
-     });
- 
-     if (!result.isConfirmed) {
-       return;
-     }
- 
-     setLoading(true);
- 
-    try {
-      const res = await deletar_Paciente(id);
- 
-       if (res.success) {
-         toast.success(res.message);
- 
-         Swal.fire({
-           icon: "success",
-           title: "Registro deletado com sucesso!",
-           timer: 2000,
-           showConfirmButton: false,
-         });
-       } else {
-        toast.error(res.error || "Erro ao deletar paciente.");
-       }
-     } catch (error) {
-      toast.error(error?.message || "Erro inesperado ao deletar paciente.");
-    } finally {
-      setLoading(false);
-      // If a callback to reload data was provided by the parent, call it
-      try {
-        if (onDeleted && typeof onDeleted === "function") {
-          await onDeleted();
-        }
-      } catch (e) {
-        // ignore errors from parent callback
-      }
-
-      // Refresh Next.js cache as a fallback to ensure RSCs are updated
-      try {
-        router.refresh();
-      } catch (e) {
-        // ignore
-      }
-    }
-   }
-=======
   const router = useRouter();
 
   async function handleDelete() {
@@ -143,7 +66,6 @@ export default function BotaoDeletarPaciente({ id, onDeleted }) {
       router.refresh();
     }
   }
->>>>>>> 28bd967c19790e58ebd792fb2224e1f9de840acf
 
   return (
     <button
