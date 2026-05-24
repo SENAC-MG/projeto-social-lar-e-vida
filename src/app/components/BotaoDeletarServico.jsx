@@ -4,13 +4,17 @@ import { deletar_Servico } from "@modulos/servicos/controller/servicoController"
 import { toast } from "sonner";
 import { Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
+<<<<<<< HEAD
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+=======
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
+>>>>>>> 28bd967c19790e58ebd792fb2224e1f9de840acf
 
 export default function BotaoDeletarServico({ id, onDeleted }) {
- const [loading, setLoading] = useState(false);
-
-   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function handleDelete() {
     const result = await Swal.fire({
@@ -20,6 +24,7 @@ export default function BotaoDeletarServico({ id, onDeleted }) {
       inputPlaceholder: "Digite 123",
       showCancelButton: true,
       confirmButtonText: "Deletar",
+      cancelButtonText: "Cancelar",
       confirmButtonColor: "#d33",
 
       preConfirm: (valorDigitado) => {
@@ -27,7 +32,6 @@ export default function BotaoDeletarServico({ id, onDeleted }) {
           Swal.showValidationMessage(
             "Código incorreto. Digite 123 para deletar.",
           );
-
           return false;
         }
 
@@ -37,9 +41,7 @@ export default function BotaoDeletarServico({ id, onDeleted }) {
       allowOutsideClick: () => !Swal.isLoading(),
     });
 
-    if (!result.isConfirmed) {
-      return;
-    }
+    if (!result.isConfirmed) return;
 
     setLoading(true);
 
@@ -47,14 +49,18 @@ export default function BotaoDeletarServico({ id, onDeleted }) {
       const res = await deletar_Servico(id);
 
       if (res.success) {
-        toast.success(res.message);
+        toast.success(res.message || "Serviço deletado com sucesso!");
 
         Swal.fire({
           icon: "success",
-          title: "Registro deletado com sucesso!",
+          title: "Serviço deletado com sucesso!",
           timer: 2000,
           showConfirmButton: false,
         });
+
+        if (onDeleted) {
+          await onDeleted();
+        }
       } else {
         toast.error(res.error || "Erro ao deletar serviço.");
       }
@@ -80,6 +86,7 @@ export default function BotaoDeletarServico({ id, onDeleted }) {
 
   return (
     <button
+      type="button"
       onClick={handleDelete}
       disabled={loading}
       title="Deletar serviço"
