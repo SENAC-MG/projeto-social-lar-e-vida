@@ -3,6 +3,9 @@
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { deletar_Emprestimo } from "@modulos/emprestimos/controller/emprestimoController";
+import Swal from "sweetalert2";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function BotaoDeletarEmprestimo({ id, onDeleted }) {
   const [loading, setLoading] = useState(false);
@@ -40,8 +43,8 @@ export default function BotaoDeletarEmprestimo({ id, onDeleted }) {
  
      setLoading(true);
  
-     try {
-       const res = await deletar_Funcionario(id);
+    try {
+      const res = await deletar_Emprestimo(id);
  
        if (res.success) {
          toast.success(res.message);
@@ -53,14 +56,26 @@ export default function BotaoDeletarEmprestimo({ id, onDeleted }) {
            showConfirmButton: false,
          });
        } else {
-         toast.error(res.error || "Erro ao deletar funcionário.");
+        toast.error(res.error || "Erro ao deletar empréstimo.");
        }
      } catch (error) {
-       toast.error(error?.message || "Erro inesperado ao deletar funcionário.");
-     } finally {
-       setLoading(false);
-       router.refresh();
-     }
+      toast.error(error?.message || "Erro inesperado ao deletar empréstimo.");
+    } finally {
+      setLoading(false);
+      try {
+        if (onDeleted && typeof onDeleted === "function") {
+          await onDeleted();
+        }
+      } catch (e) {
+        // ignore
+      }
+
+      try {
+        router.refresh();
+      } catch (e) {
+        // ignore
+      }
+    }
    }
   return (
     <button

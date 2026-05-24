@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Plus, Box, Menu, Wrench, Search, } from "lucide-react";
+import { Plus, Box, Menu, Search, Package } from "lucide-react";
 import AppShell from "@/shared/layouts/AppShell";
 import ModalNovoEmprestimo from "../components/modals/ModalNovoEmprestimo";
 import ModalEditarEmprestimo from "../components/update/emprestimos/ModalEditarEmprestimo";
@@ -79,9 +79,9 @@ export default function EmprestimosPage() {
 
             <Button
               onClick={() => setIsModalOpen(true)}
-              className=" w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base !bg-[#0F766E] hover:!bg-[#0b685e]"
+              className="cursor-pointer w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base !bg-[#0F766E] hover:!bg-[#0b685e]"
             >
-              <Plus size={20} />
+              <Package size={20} />
               Novo Empréstimo
             </Button>
           </div>

@@ -101,7 +101,7 @@ export default function Home() {
                                 value={password}
                                 onChange={(event) => setPassword(event.target.value)}
                                 placeholder='**********'
-                                inputClassName='pl-9 pr-9 text-black !border-[#0F766E] bg-white focus:!border-[#0F766E] focus:!ring-1 focus:!ring-[#0F766E] placeholder:text-gray-600'
+                                inputClassName='pl-9 pr-9 !text-black !border-[#0F766E] bg-white focus:!border-[#0F766E] focus:!ring-1 focus:!ring-[#0F766E] placeholder:text-gray-600'
                             />
                             <button
                                 type='button'

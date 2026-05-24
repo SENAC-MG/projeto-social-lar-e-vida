@@ -4,6 +4,8 @@ import { deletar_Servico } from "@modulos/servicos/controller/servicoController"
 import { toast } from "sonner";
 import { Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 export default function BotaoDeletarServico({ id, onDeleted }) {
  const [loading, setLoading] = useState(false);
@@ -42,7 +44,7 @@ export default function BotaoDeletarServico({ id, onDeleted }) {
     setLoading(true);
 
     try {
-      const res = await deletar_Funcionario(id);
+      const res = await deletar_Servico(id);
 
       if (res.success) {
         toast.success(res.message);
@@ -54,13 +56,25 @@ export default function BotaoDeletarServico({ id, onDeleted }) {
           showConfirmButton: false,
         });
       } else {
-        toast.error(res.error || "Erro ao deletar funcionário.");
+        toast.error(res.error || "Erro ao deletar serviço.");
       }
     } catch (error) {
-      toast.error(error?.message || "Erro inesperado ao deletar funcionário.");
+      toast.error(error?.message || "Erro inesperado ao deletar serviço.");
     } finally {
       setLoading(false);
-      router.refresh();
+      try {
+        if (onDeleted && typeof onDeleted === "function") {
+          await onDeleted();
+        }
+      } catch (e) {
+        // ignore
+      }
+
+      try {
+        router.refresh();
+      } catch (e) {
+        // ignore
+      }
     }
   }
 

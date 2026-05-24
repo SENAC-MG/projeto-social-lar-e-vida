@@ -4,6 +4,8 @@ import { deletar_Paciente } from "@modulos/pacientes/controller/pacienteControll
 import { toast } from "sonner";
 import { Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 export default function BotaoDeletar({ id, onDeleted }) {
   const [loading, setLoading] = useState(false);
@@ -41,8 +43,8 @@ export default function BotaoDeletar({ id, onDeleted }) {
  
      setLoading(true);
  
-     try {
-       const res = await deletar_Funcionario(id);
+    try {
+      const res = await deletar_Paciente(id);
  
        if (res.success) {
          toast.success(res.message);
@@ -54,14 +56,28 @@ export default function BotaoDeletar({ id, onDeleted }) {
            showConfirmButton: false,
          });
        } else {
-         toast.error(res.error || "Erro ao deletar funcionário.");
+        toast.error(res.error || "Erro ao deletar paciente.");
        }
      } catch (error) {
-       toast.error(error?.message || "Erro inesperado ao deletar funcionário.");
-     } finally {
-       setLoading(false);
-       router.refresh();
-     }
+      toast.error(error?.message || "Erro inesperado ao deletar paciente.");
+    } finally {
+      setLoading(false);
+      // If a callback to reload data was provided by the parent, call it
+      try {
+        if (onDeleted && typeof onDeleted === "function") {
+          await onDeleted();
+        }
+      } catch (e) {
+        // ignore errors from parent callback
+      }
+
+      // Refresh Next.js cache as a fallback to ensure RSCs are updated
+      try {
+        router.refresh();
+      } catch (e) {
+        // ignore
+      }
+    }
    }
 
   return (

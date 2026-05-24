@@ -204,7 +204,7 @@ export default function DashboardPage() {
                 ? "border-primary bg-upload-hover scale-[1.01]"
                 : "border-upload-border bg-upload-area hover:border-primary hover:bg-upload-hover"
             }
-          `}
+          `}  
           >
             <input
               data-testid="file-input"
@@ -268,14 +268,14 @@ export default function DashboardPage() {
               </div>
 
               <div className="space-y-3">
-                {files.map((fileObj) => {
+                 {files.map((fileObj) => {
                   const statusInfo = getStatusInfo(fileObj.status);
                   const progress = uploadProgress[fileObj.id] || 0;
 
                   return (
                     <div
                       key={fileObj.id}
-                      className="flex items-center gap-4 p-4 rounded-lg bg-card-bg border border-card-border transition-all hover:border-primary/50"
+                      className="flex items-center gap-4 p-4 rounded-lg bg-card-bg border border-card-border transition-all hover:border-[#0F766E]"
                     >
                       <div className="flex-shrink-0">{statusInfo.icon}</div>
 
@@ -305,7 +305,7 @@ export default function DashboardPage() {
                           {fileObj.status === "uploading" && (
                             <div className="w-full sm:w-32 h-1.5 bg-card-border rounded-full overflow-hidden mt-1 sm:mt-0">
                               <div
-                                className="h-full bg-primary transition-all duration-200"
+                                className="h-full bg-[#0F766E] transition-all duration-200"
                                 style={{ width: `${progress}%` }}
                               />
                             </div>

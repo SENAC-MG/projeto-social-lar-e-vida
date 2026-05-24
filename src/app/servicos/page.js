@@ -75,9 +75,9 @@ export default function ServicosPage() {
 
             <Button
               onClick={() => setIsModalOpen(true)}
-              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base !bg-[#0F766E] hover:!bg-[#0b685e]"
+              className="cursor-pointer w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base !bg-[#0F766E] hover:!bg-[#0b685e]"
             >
-              <Plus size={20} />
+              <Wrench size={20} />
               Novo Serviço
             </Button>
           </div>

@@ -62,7 +62,19 @@ export default function BotaoDeletar({ id, onDeleted }) {
       toast.error(error?.message || "Erro inesperado ao deletar funcionário.");
     } finally {
       setLoading(false);
-      router.refresh();
+      try {
+        if (onDeleted && typeof onDeleted === "function") {
+          await onDeleted();
+        }
+      } catch (e) {
+        // ignore
+      }
+
+      try {
+        router.refresh();
+      } catch (e) {
+        // ignore
+      }
     }
   }
 
