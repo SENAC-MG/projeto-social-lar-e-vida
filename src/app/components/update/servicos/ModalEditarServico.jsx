@@ -127,7 +127,7 @@ export default function ModalEditarServico({ servico, onClose, onSuccess }) {
                     onClick={() => setUnidadeSelecionada(unidade)}
                     className={`px-6 py-2 rounded-full text-sm font-bold transition-all shadow-sm active:scale-95 ${
                       isSelecionada
-                        ? "bg-[#FF7517] text-white"
+                        ? "bg-[#5C7A53] text-white"
                         : "bg-white text-gray-900 hover:bg-gray-200"
                     }`}
                   >
@@ -143,7 +143,7 @@ export default function ModalEditarServico({ servico, onClose, onSuccess }) {
               min="1"
               defaultValue={servico.tempoServico}
               placeholder="Tempo / quantidade"
-              className="w-[160px] bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-[#FF7517] focus:ring-1 focus:ring-[#FF7517] outline-none transition-all placeholder:text-gray-600"
+              className="w-[160px] bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-[#5C7A53] focus:ring-1 focus:ring-[#5C7A53] outline-none transition-all placeholder:text-gray-600"
             />
           </div>
 
