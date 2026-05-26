@@ -197,7 +197,7 @@ export default function DashboardPage() {
             tabIndex={0}
             aria-label="Área de upload. Arraste e solte arquivos aqui ou pressione Enter para selecionar arquivos"
             className={`
-            relative border-2 border-dashed !border-[#0F766E] rounded-xl p-8 sm:p-12 text-center cursor-pointer
+            relative border-2 border-dashed !border-[#5C7A53] rounded-xl p-8 sm:p-12 text-center cursor-pointer
             transition-all duration-300 ease-in-out
             ${
               isDragging
@@ -236,7 +236,7 @@ export default function DashboardPage() {
                 </p>
                 <p className="text-sm mt-1">
                   ou{" "}
-                  <span className="text-[#0F766E] font-medium">
+                  <span className="text-[#5C7A53] font-medium">
                     clique para selecionar arquivos
                   </span>
                 </p>
@@ -275,7 +275,7 @@ export default function DashboardPage() {
                   return (
                     <div
                       key={fileObj.id}
-                      className="flex items-center gap-4 p-4 rounded-lg bg-card-bg border border-card-border transition-all hover:border-[#0F766E]"
+                      className="flex items-center gap-4 p-4 rounded-lg bg-card-bg border border-card-border transition-all hover:border-[#5C7A53]"
                     >
                       <div className="flex-shrink-0">{statusInfo.icon}</div>
 
@@ -305,7 +305,7 @@ export default function DashboardPage() {
                           {fileObj.status === "uploading" && (
                             <div className="w-full sm:w-32 h-1.5 bg-card-border rounded-full overflow-hidden mt-1 sm:mt-0">
                               <div
-                                className="h-full bg-[#0F766E] transition-all duration-200"
+                                className="h-full bg-[#5C7A53] transition-all duration-200"
                                 style={{ width: `${progress}%` }}
                               />
                             </div>

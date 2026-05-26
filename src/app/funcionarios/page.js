@@ -74,7 +74,7 @@ export default function FuncionariosPage() {
 
 
 
-              <div className="p-3 bg-[#0F766E] border border-transparent rounded-xl shadow-sm flex-shrink-0">
+              <div className="p-3 bg-[#5C7A53] border border-transparent rounded-xl shadow-sm flex-shrink-0">
 
                 <Hospital className="text-white" size={24} />
               </div>
@@ -92,7 +92,7 @@ export default function FuncionariosPage() {
 
             <Button
               onClick={() => setIsModalOpen(true)}
-              className="cursor-pointer w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base !bg-[#0F766E] hover:!bg-[#0b685e]"
+              className="cursor-pointer w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base !bg-[#5C7A53] hover:!bg-[#4F6847]"
             >
               <UserPlus size={20} />
               Novo Funcionário

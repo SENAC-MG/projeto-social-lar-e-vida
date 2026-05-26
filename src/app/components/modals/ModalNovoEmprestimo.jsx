@@ -11,7 +11,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
   const [loading, setLoading] = useState(false);
 
   const inputClass =
-    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#0F766E] rounded-lg px-4 py-2 !text-black dark:!text-white focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] outline-none transition-all placeholder:text-gray-600";
+    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#5C7A53] rounded-lg px-4 py-2 !text-black dark:!text-white focus:border-[#5C7A53] focus:ring-1 focus:ring-[#5C7A53] outline-none transition-all placeholder:text-gray-600";
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -38,14 +38,14 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
           className="bg-[#F7F9FC] dark:bg-[#081120] p-6 space-y-8 overflow-y-auto max-h-[85vh] custom-scrollbar"
         >
           <section>
-            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-[#5C7A53] text-xs font-bold uppercase tracking-wider mb-4">
               Dados Pessoais
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-2">
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Nome <span className="text-[#0F766E]">*</span>
+                  Nome <span className="text-[#5C7A53]">*</span>
                 </label>
                 <input
                   name="nome"
@@ -58,7 +58,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  CPF <span className="text-[#0F766E]">*</span>
+                  CPF <span className="text-[#5C7A53]">*</span>
                 </label>
                 <input
                   name="cpf"
@@ -71,7 +71,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  RG <span className="text-[#0F766E]">*</span>
+                  RG <span className="text-[#5C7A53]">*</span>
                 </label>
                 <input
                   name="rg"
@@ -84,7 +84,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Nascimento <span className="text-[#0F766E]">*</span>
+                  Nascimento <span className="text-[#5C7A53]">*</span>
                 </label>
                 <input
                   name="nascimento"
@@ -96,7 +96,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Data do Empréstimo <span className="text-[#0F766E]">*</span>
+                  Data do Empréstimo <span className="text-[#5C7A53]">*</span>
                 </label>
                 <input
                   name="dataEmprestimo"
@@ -109,8 +109,8 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-wider mb-4">
-              Materiais Emprestados <span className="text-[#0F766E]">*</span>
+            <h3 className="text-[#5C7A53] text-xs font-bold uppercase tracking-wider mb-4">
+              Materiais Emprestados <span className="text-[#5C7A53]">*</span>
             </h3>
 
             <textarea
@@ -127,21 +127,21 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-[#5C7A53] text-xs font-bold uppercase tracking-wider mb-4">
               Endereço
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="md:col-span-2">
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Rua <span className="text-[#0F766E]">*</span>
+                  Rua <span className="text-[#5C7A53]">*</span>
                 </label>
                 <input name="rua" type="text" required className={inputClass} />
               </div>
 
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Número <span className="text-[#0F766E]">*</span>
+                  Número <span className="text-[#5C7A53]">*</span>
                 </label>
                 <input
                   name="numero"
@@ -153,7 +153,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  CEP <span className="text-[#0F766E]">*</span>
+                  CEP <span className="text-[#5C7A53]">*</span>
                 </label>
                 <input
                   name="cep"
@@ -166,7 +166,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div className="md:col-span-2">
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Bairro <span className="text-[#0F766E]">*</span>
+                  Bairro <span className="text-[#5C7A53]">*</span>
                 </label>
                 <input
                   name="bairro"
@@ -178,7 +178,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div className="md:col-span-2">
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Cidade <span className="text-[#0F766E]">*</span>
+                  Cidade <span className="text-[#5C7A53]">*</span>
                 </label>
                 <input
                   name="cidade"
@@ -191,14 +191,14 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-[#5C7A53] text-xs font-bold uppercase tracking-wider mb-4">
               Contato
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Telefone 1 <span className="text-[#0F766E]">*</span>
+                  Telefone 1 <span className="text-[#5C7A53]">*</span>
                 </label>
                 <input
                   name="telefone1"
@@ -211,7 +211,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
               <div>
                 <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                  Telefone 2 <span className="text-[#0F766E]">*</span>
+                  Telefone 2 <span className="text-[#5C7A53]">*</span>
                 </label>
                 <input
                   name="telefone2"
@@ -224,11 +224,11 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
             </div>
           </section>
 
-          <div className="flex gap-3 pt-4 border-t border-[#0F766E]">
+          <div className="flex gap-3 pt-4 border-t border-[#5C7A53]">
             <button
               type="submit"
               disabled={loading}
-              className="cursor-pointer flex items-center gap-2 bg-[#0F766E] hover:bg-[#0F766E] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-[#0F766E]/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="cursor-pointer flex items-center gap-2 bg-[#5C7A53] hover:bg-[#5C7A53] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-[#5C7A53]/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Save size={18} />
               {loading ? "Salvando..." : "Salvar"}

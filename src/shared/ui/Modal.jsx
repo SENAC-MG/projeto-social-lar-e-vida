@@ -17,7 +17,7 @@ export default function Modal({ open = true, onClose, title, children, className
         )}
       >
         <div className='bg-[#F7F9FC] dark:bg-[#081120] flex items-center justify-between border-b border-card-border px-6 py-4'>
-          <h2 className='text-lg text-[#0F766E] font-bold'>{title}</h2>
+          <h2 className='text-lg text-[#5C7A53] font-bold'>{title}</h2>
           <button
             type='button'
             onClick={onClose}

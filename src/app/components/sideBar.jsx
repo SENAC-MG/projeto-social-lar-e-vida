@@ -26,8 +26,8 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
   const toggleLabel = isDark ? "Modo Claro" : "Modo Escuro";
 
   const textColor = isDark ? "#A3A3A3" : "#737373";
-  const titleColor = isDark ? "#FAFAFA" : "#1D1C1A";
-  const borderColor = isDark ? "rgba(255,255,255,0.1)" : "#E5E5E5";
+  const titleColor = isDark ? "#F2F2F2" : "#121212";
+  const borderColor = isDark ? "#333333" : "#E3E3E3";
   const logoBg = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)";
   const logoBorder = isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.1)";
 
@@ -44,7 +44,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
 
       <aside
         className={`fixed md:sticky top-0 left-0 h-screen flex flex-col p-4 transition-all duration-300 z-50
-    bg-[#F7F9FC] dark:bg-[#0A0F1A]
+    bg-background dark:bg-background
     ${
       isOpen
         ? "w-64 translate-x-0"
@@ -137,11 +137,11 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                   isOpen ? "gap-3" : "justify-center"
                 } ${
                   isActive
-                    ? "bg-[#0F766E] text-white"
+                    ? "bg-[#5C7A53] text-white"
                     : "bg-transparent hover:bg-white/10"
                 }`}
                 style={{
-                  color: isActive ? "#FAFAFA" : textColor,
+                  color: isActive ? "#F2F2F2" : textColor,
                 }}
               >
                 <Icon size={20} className="flex-shrink-0" />
@@ -172,7 +172,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
           >
             <span className="relative flex h-6 w-11 flex-shrink-0 items-center rounded-full bg-foreground/15 transition-colors duration-300">
               <span
-                className={`absolute h-5 w-5 rounded-full bg-[#0F766E] transition-transform duration-300 ease-out ${
+                className={`absolute h-5 w-5 rounded-full bg-[#5C7A53] transition-transform duration-300 ease-out ${
                   isDark ? "translate-x-5" : "translate-x-1"
                 }`}
               />

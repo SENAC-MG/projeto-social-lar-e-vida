@@ -13,7 +13,7 @@ export default function ModalEditarFuncionario({
   const [loading, setLoading] = useState(false);
 
   const inputClass =
-    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#0F766E] rounded-lg px-4 py-2 !text-black dark:!text-white focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] outline-none transition-all placeholder:text-gray-600";
+    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#5C7A53] rounded-lg px-4 py-2 !text-black dark:!text-white focus:border-[#5C7A53] focus:ring-1 focus:ring-[#5C7A53] outline-none transition-all placeholder:text-gray-600";
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -44,7 +44,7 @@ export default function ModalEditarFuncionario({
     >
       <div className="bg-[#F7F9FC] dark:bg-[#081120] w-full max-w-4xl rounded-2xl shadow-2xl border border-gray-800 overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
         <div className="bg-[#F7F9FC] dark:bg-[#081120] flex justify-between items-center p-6 border-b border-gray-800 bg-[#1a1f2e]">
-          <h2 className="text-xl font-bold text-[#0F766E]">Editar Funcionário</h2>
+          <h2 className="text-xl font-bold text-[#5C7A53]">Editar Funcionário</h2>
 
           <button
             type="button"
@@ -60,7 +60,7 @@ export default function ModalEditarFuncionario({
           className="bg-[#F7F9FC] dark:bg-[#081120] p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
         >
           <section>
-            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h3 className="text-[#5C7A53] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <User size={14} /> Dados do Funcionário
             </h3>
 
@@ -123,7 +123,7 @@ export default function ModalEditarFuncionario({
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 !bg-[#0F766E] hover:!bg-[#0F766E] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-[#0F766E]/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 !bg-[#5C7A53] hover:!bg-[#5C7A53] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-[#5C7A53]/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Save size={18} />
               {loading ? "Salvando..." : "Salvar alterações"}
