@@ -9,7 +9,7 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
   const [loading, setLoading] = useState(false);
 
   const inputClass =
-    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#0F766E] rounded-lg px-4 py-2 !text-black dark:!text-white focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] outline-none transition-all placeholder:text-gray-600";
+    "bg-card w-full border border-border rounded-lg px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground";
 
   const formatDate = (date) => {
     if (!date) return "";
@@ -61,7 +61,7 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
           className="p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
         >
           <section>
-            <h3 className="text-[#FF7517] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <User size={14} /> Dados Pessoais
             </h3>
 
@@ -156,7 +156,7 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#FF7517] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <Stethoscope size={14} /> Informações Clínicas
             </h3>
 
@@ -203,7 +203,7 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#FF7517] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <MapPin size={14} /> Endereço
             </h3>
 
@@ -251,7 +251,7 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#FF7517] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <Phone size={14} /> Contato
             </h3>
 
@@ -278,7 +278,7 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 !bg-[#0F766E] hover:!bg-[#0F766E] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-[#FF7517]/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 !bg-[#5C7A53] hover:!bg-[#5C7A53] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-[#5C7A53]/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Save size={18} />
               {loading ? "Salvando..." : "Salvar alterações"}

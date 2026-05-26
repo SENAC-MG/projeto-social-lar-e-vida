@@ -73,18 +73,18 @@ export default function Home() {
 
             <div>
               <h2 className="text-xl font-bold leading-tight">Lar e Vida</h2>
-              <p className="text-sm text-[#0F766E] font-medium uppercase tracking-wider">
+              <p className="text-sm text-[#5C7A53] font-medium uppercase tracking-wider">
                 Sistema de Gestão Hospitalar com Analytics Integrado
               </p>
             </div>
           </div>
 
           <div className="flex-1 flex flex-col justify-center">
-            <div className="mb-6 h-1.5 w-16 bg-[#0F766E]" />
+            <div className="mb-6 h-1.5 w-16 bg-[#5C7A53]" />
 
             <h3 className="text-6xl font-serif font-medium leading-[1.1] mb-6 drop-shadow-lg">
               Um futuro mais <br />
-              <span className="text-[#0F766E]">organizado</span>
+              <span className="text-[#5C7A53]">organizado</span>
             </h3>
 
             <p className="max-w-md text-xl text-gray-100 leading-relaxed drop-shadow-md">
@@ -101,7 +101,7 @@ export default function Home() {
       <div className="flex w-full flex-col items-center justify-center bg-white px-12 lg:w-[45%]">
         <div className="w-full max-w-md">
           <div className="mb-10">
-            <div className="mb-4 h-1.5 w-14 bg-[#0F766E]" />
+            <div className="mb-4 h-1.5 w-14 bg-[#5C7A53]" />
 
             <h1 className="text-4xl font-bold text-gray-900">Bem-vindo</h1>
 
@@ -121,7 +121,7 @@ export default function Home() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 placeholder="seu@gmail.com"
-                inputClassName="pl-9 pr-9 !text-black !border-[#0F766E] bg-white focus:!border-[#0F766E] focus:!ring-1 focus:!ring-[#0F766E] placeholder:text-gray-600"
+                inputClassName="pl-9 pr-9 !text-black !border-[#5C7A53] bg-white focus:!border-[#5C7A53] focus:!ring-1 focus:!ring-[#5C7A53] placeholder:text-gray-600"
                 inputMode="email"
                 autoFocus
               />
@@ -137,7 +137,7 @@ export default function Home() {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder="**********"
-                inputClassName="pl-9 pr-9 !text-black !border-[#0F766E] bg-white focus:!border-[#0F766E] focus:!ring-1 focus:!ring-[#0F766E] placeholder:text-gray-600"
+                inputClassName="pl-9 pr-9 !text-black !border-[#5C7A53] bg-white focus:!border-[#5C7A53] focus:!ring-1 focus:!ring-[#5C7A53] placeholder:text-gray-600"
               />
 
               <button
@@ -160,14 +160,14 @@ export default function Home() {
                   type="checkbox"
                   checked={rememberSession}
                   onChange={(e) => setRememberSession(e.target.checked)}
-                  className="rounded border-gray-300 accent-[#0F766E]"
+                  className="rounded border-gray-300 accent-[#5C7A53]"
                 />
                 Lembrar Sessão
               </label>
 
               <Link
                 href="/recuperar-senha"
-                className="font-medium text-[#0F766E] transition-colors hover:text-[#0F766E]/80"
+                className="font-medium text-[#5C7A53] transition-colors hover:text-[#5C7A53]/80"
               >
                 Esqueci minha senha
               </Link>
@@ -175,14 +175,14 @@ export default function Home() {
 
             <Button
               type="submit"
-              className="cursor-pointer w-full rounded-xl py-3.5 !bg-[#0F766E] hover:!bg-[#0F766E]/70 text-white font-bold transition-all shadow-lg shadow-[#0F766E]/20 active:scale-95"
+              className="cursor-pointer w-full rounded-xl py-3.5 !bg-[#5C7A53] hover:!bg-[#5C7A53]/70 text-white font-bold transition-all shadow-lg shadow-[#5C7A53]/20 active:scale-95"
             >
               Entrar no Sistema
             </Button>
           </form>
 
           <div className="mt-12 rounded-2xl bg-gray-50 p-6 border border-gray-100">
-            <span className="text-4xl text-[#0F766E] font-serif font-bold italic">
+            <span className="text-4xl text-[#5C7A53] font-serif font-bold italic">
               “
             </span>
 

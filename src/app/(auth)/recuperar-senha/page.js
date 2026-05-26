@@ -44,17 +44,17 @@ export default function RecuperarSenhaPage() {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               placeholder='seu@email.com'
-              inputClassName='pl-9 pr-9 text-black !border-[#0F766E] focus:!border-[#0F766E] focus:!ring-1 focus:!ring-[#0F766E] placeholder:text-gray-600'
+              inputClassName='pl-9 pr-9 text-black !border-[#5C7A53] focus:!border-[#5C7A53] focus:!ring-1 focus:!ring-[#5C7A53] placeholder:text-gray-600'
               required
             />
           </div>
 
-          <Button type='submit' className='w-full !bg-[#0F766E] hover:!bg-[#0F766E]/70 text-white font-bold transition-all shadow-lg shadow-[#0F766E]/20 active:scale-95' disabled={loading}>
+          <Button type='submit' className='w-full !bg-[#5C7A53] hover:!bg-[#5C7A53]/70 text-white font-bold transition-all shadow-lg shadow-[#5C7A53]/20 active:scale-95' disabled={loading}>
             {loading ? 'Enviando...' : 'Enviar instruções'}
           </Button>
         </form>
 
-        <Link href='/' className='mt-4 inline-flex text-sm font-medium text-[#0F766E] hover:underline'>
+        <Link href='/' className='mt-4 inline-flex text-sm font-medium text-[#5C7A53] hover:underline'>
           Voltar para login
         </Link>
       </div>

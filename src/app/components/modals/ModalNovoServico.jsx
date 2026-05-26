@@ -34,7 +34,7 @@ export default function ModalNovoServico({ onClose, onSuccess }) {
   }
 
   const inputClass =
-    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#0F766E] rounded-lg px-4 py-2 !text-black dark:!text-white focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] outline-none transition-all placeholder:text-gray-600";
+    "bg-card w-full border border-border rounded-lg px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground";
 
   return (
     <Modal title="Novo Serviço" onClose={onClose} className="max-w-2xl">
@@ -45,7 +45,7 @@ export default function ModalNovoServico({ onClose, onSuccess }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-foreground/70 text-sm mb-2 font-medium">
-                Nome <span className="text-[#0F766E]">*</span>
+                Nome <span className="text-primary">*</span>
               </label>
               <input
                 name="nome"
@@ -58,7 +58,7 @@ export default function ModalNovoServico({ onClose, onSuccess }) {
 
             <div>
               <label className="block text-foreground/70 text-sm mb-2 font-medium">
-                CPF <span className="text-[#0F766E]">*</span>
+                CPF <span className="text-primary">*</span>
               </label>
               <input
                 name="cpf"
@@ -75,7 +75,7 @@ export default function ModalNovoServico({ onClose, onSuccess }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
               <label className="block text-foreground/70 text-sm mb-2 font-medium">
-                Tipo de Serviço <span className="text-[#0F766E]">*</span>
+                Tipo de Serviço <span className="text-primary">*</span>
               </label>
               <input
                 name="tipoServico"
@@ -88,7 +88,7 @@ export default function ModalNovoServico({ onClose, onSuccess }) {
 
             <div>
               <label className="block text-foreground/70 text-sm mb-2 font-medium">
-                Duração <span className="text-[#0F766E]">*</span>
+                Duração <span className="text-primary">*</span>
               </label>
               <input
                 name="duracao"
@@ -101,7 +101,7 @@ export default function ModalNovoServico({ onClose, onSuccess }) {
 
             <div>
               <label className="block text-foreground/70 text-sm mb-2 font-medium">
-                Valor Sugerido (R$) <span className="text-[#0F766E]">*</span>
+                Valor Sugerido (R$) <span className="text-primary">*</span>
               </label>
               <input
                 name="valorServico"
@@ -115,7 +115,7 @@ export default function ModalNovoServico({ onClose, onSuccess }) {
 
           <div>
             <label className="block text-foreground/70 text-sm mb-3 font-medium">
-              Unidade de Medida <span className="text-[#0F766E]">*</span>
+              Unidade de Medida <span className="text-primary">*</span>
             </label>
 
             <div className="flex flex-wrap gap-3 mb-4">
@@ -129,7 +129,7 @@ export default function ModalNovoServico({ onClose, onSuccess }) {
                     onClick={() => setUnidadeSelecionada(unidade)}
                     className={`px-6 py-2 rounded-full text-sm font-bold transition-all shadow-sm active:scale-95 ${
                       isSelecionada
-                        ? "bg-[#0F766E] text-white"
+                        ? "bg-primary text-primary-foreground"
                         : "bg-card-bg border border-card-border text-foreground hover:bg-foreground/5"
                     }`}
                   >
@@ -171,7 +171,7 @@ export default function ModalNovoServico({ onClose, onSuccess }) {
             <Button
               type="submit"
               disabled={loading || !unidadeSelecionada}
-              className="px-8 !bg-[#0F766E] hover:!bg-[#0F766E] cursor-pointer"
+              className="px-8 !bg-primary hover:!bg-primary/90 cursor-pointer text-primary-foreground"
             >
               <Save size={18} />
               {loading ? "Salvando..." : "Salvar Serviço"}
@@ -192,4 +192,3 @@ export default function ModalNovoServico({ onClose, onSuccess }) {
     </Modal>
   );
 }
-
