@@ -13,7 +13,7 @@ export default function ModalEditarEmprestimo({
   const [loading, setLoading] = useState(false);
 
   const inputClass =
-    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#5C7A53] rounded-lg px-4 py-2 !text-black dark:!text-white focus:border-[#5C7A53] focus:ring-1 focus:ring-[#5C7A53] outline-none transition-all placeholder:text-gray-600";
+    "bg-card w-full border border-border rounded-lg px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground";
 
   const formatDate = (date) => {
     if (!date) return "";
@@ -65,7 +65,7 @@ export default function ModalEditarEmprestimo({
           className="p-6 space-y-8 overflow-y-auto max-h-[85vh] custom-scrollbar"
         >
           <section>
-            <h3 className="text-[#5C7A53] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-wider mb-4">
               Dados Pessoais
             </h3>
 
@@ -111,7 +111,7 @@ export default function ModalEditarEmprestimo({
           </section>
 
           <section>
-            <h3 className="text-[#5C7A53] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-wider mb-4">
               Materiais Emprestados
             </h3>
 
@@ -125,7 +125,7 @@ export default function ModalEditarEmprestimo({
           </section>
 
           <section>
-            <h3 className="text-[#5C7A53] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-wider mb-4">
               Endereço
             </h3>
 
@@ -173,7 +173,7 @@ export default function ModalEditarEmprestimo({
           </section>
 
           <section>
-            <h3 className="text-[#5C7A53] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-wider mb-4">
               Contato
             </h3>
 

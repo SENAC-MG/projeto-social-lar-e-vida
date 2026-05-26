@@ -14,7 +14,7 @@ export default function ModalEditarServico({ servico, onClose, onSuccess }) {
   const unidades = ["Hora", "Dia", "Mês", "Sessão"];
 
   const inputClass =
-    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#5C7A53] rounded-lg px-4 py-2 !text-black dark:!text-white focus:border-[#5C7A53] focus:ring-1 focus:ring-[#5C7A53] outline-none transition-all placeholder:text-gray-600";
+    "bg-card w-full border border-border rounded-lg px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground";
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -48,14 +48,14 @@ export default function ModalEditarServico({ servico, onClose, onSuccess }) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
       onClick={handleOverlayClick}
     >
-      <div className="w-full max-w-2xl bg-[#11141d] border border-gray-800 rounded-xl shadow-2xl overflow-hidden flex flex-col">
-        <div className="flex justify-between items-center px-6 py-4 border-b border-gray-800 bg-[#11141d]">
-          <h2 className="text-white font-bold text-lg">Editar Serviço</h2>
+      <div className="w-full max-w-2xl bg-card border border-border rounded-xl shadow-2xl overflow-hidden flex flex-col">
+        <div className="flex justify-between items-center px-6 py-4 border-b border-border bg-card">
+          <h2 className="text-foreground font-bold text-lg">Editar Serviço</h2>
 
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors p-1 hover:bg-gray-800 rounded-md"
+            className="text-muted-foreground hover:text-foreground transition-colors p-1 hover:bg-muted rounded-md"
           >
             <X size={22} />
           </button>
@@ -83,7 +83,7 @@ export default function ModalEditarServico({ servico, onClose, onSuccess }) {
             />
           </div>
 
-          <hr className="border-gray-800" />
+          <hr className="border-border" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <input
@@ -127,8 +127,8 @@ export default function ModalEditarServico({ servico, onClose, onSuccess }) {
                     onClick={() => setUnidadeSelecionada(unidade)}
                     className={`px-6 py-2 rounded-full text-sm font-bold transition-all shadow-sm active:scale-95 ${
                       isSelecionada
-                        ? "bg-[#5C7A53] text-white"
-                        : "bg-white text-gray-900 hover:bg-gray-200"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-foreground hover:bg-accent"
                     }`}
                   >
                     {unidade}
@@ -143,15 +143,15 @@ export default function ModalEditarServico({ servico, onClose, onSuccess }) {
               min="1"
               defaultValue={servico.tempoServico}
               placeholder="Tempo / quantidade"
-              className="w-[160px] bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-[#5C7A53] focus:ring-1 focus:ring-[#5C7A53] outline-none transition-all placeholder:text-gray-600"
+              className="w-[160px] bg-card border border-border rounded-lg px-4 py-2.5 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground"
             />
           </div>
 
-          <div className="flex gap-3 pt-4 border-t border-gray-800">
+          <div className="flex gap-3 pt-4 border-t border-border">
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 !bg-[#5C7A53] hover:!bg-[#5C7A53] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-[#5C7A53]/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 !bg-primary hover:!bg-primary/90 text-primary-foreground px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-primary/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Save size={18} />
               {loading ? "Salvando..." : "Salvar alterações"}
@@ -162,4 +162,3 @@ export default function ModalEditarServico({ servico, onClose, onSuccess }) {
     </div>
   );
 }
-
