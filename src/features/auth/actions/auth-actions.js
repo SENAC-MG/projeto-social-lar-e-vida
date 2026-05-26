@@ -11,7 +11,7 @@ import { authenticate } from '@/features/auth/services/auth-service';
 
 import { generateJwtToken } from '@/features/auth/utils/jwt';
 
-export async function loginAction(email, senha, rememberMe = false) {
+export async function loginAction(email, senha, rememberSession = false) {
   const result = await authenticate(email, senha);
 
   if (!result.success) {
@@ -31,8 +31,8 @@ export async function loginAction(email, senha, rememberMe = false) {
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
     path: '/',
-    maxAge: rememberMe
-      ? 60 * 60 * 24 * 30 // 30 dias,
+    maxAge: rememberSession
+      ? 60 * 60 * 24 * 365 * 10 // 10 anos,
       : SESSION_MAX_AGE, // 1 dia
   });
 
@@ -41,7 +41,7 @@ export async function loginAction(email, senha, rememberMe = false) {
 
 export async function requestPasswordResetAction(formData) {
   const email = formData.get('email')?.toString();
-  return requestPasswordReset(email);
+  return requestPasswordResetAction(email);
 }
 
 export async function validateResetTokenAction(token) {
