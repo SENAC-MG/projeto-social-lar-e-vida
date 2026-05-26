@@ -41,7 +41,7 @@ export async function loginAction(email, senha, rememberSession = false) {
 
 export async function requestPasswordResetAction(formData) {
   const email = formData.get('email')?.toString();
-  return requestPasswordResetAction(email);
+  return requestPasswordReset(email);
 }
 
 export async function validateResetTokenAction(token) {
