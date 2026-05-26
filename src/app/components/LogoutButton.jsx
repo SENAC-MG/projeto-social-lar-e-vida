@@ -4,12 +4,12 @@ import { LogOut } from "lucide-react";
 import { logoutAction } from "@/features/auth/actions/auth-actions";
 
 export default function LogoutButton() {
-  return (
-    <form action={logoutAction}>
-      <button
-        type="submit"
-        title="Sair"
-        className="
+    return (
+        <form action={logoutAction}>
+            <button
+                type="submit"
+                title="Sair"
+                className="
           w-12 h-12
           flex items-center justify-center
           rounded-xl
@@ -17,10 +17,12 @@ export default function LogoutButton() {
           hover:text-red-500
           hover:bg-red-500/10
           transition-all
+          cursor-pointer
+          active:scale-95
         "
-      >
-        <LogOut size={22} />
-      </button>
-    </form>
-  );
+            >
+                <LogOut size={22} />
+            </button>
+        </form>
+    );
 }
