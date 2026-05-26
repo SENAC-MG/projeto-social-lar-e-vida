@@ -14,17 +14,14 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberSession, setRememberSession] = useState(false);
 
   useEffect(() => {
-    const savedEmail = localStorage.getItem("rememberedEmail");
-    const savedPassword = localStorage.getItem("rememberedPassword");
+    const savedRememberSession =
+      localStorage.getItem("rememberSession");
 
-    if (savedEmail) setEmail(savedEmail);
-    if (savedPassword) setPassword(savedPassword);
-
-    if (savedEmail || savedPassword) {
-      setRememberMe(true);
+    if (savedRememberSession === "true") {
+      setRememberSession(true);
     }
   }, []);
 
@@ -36,18 +33,22 @@ export default function Home() {
       return;
     }
 
-    if (rememberMe) {
-      localStorage.setItem("rememberedEmail", email);
-      localStorage.setItem("rememberedPassword", password);
-    } else {
-      localStorage.removeItem("rememberedEmail");
-      localStorage.removeItem("rememberedPassword");
-    }
+    // salvar preferência da sessão
+    localStorage.setItem(
+      "rememberSession",
+      rememberSession
+    );
 
-    const result = await login(email, password);
+    const result = await login(
+      email,
+      password,
+      rememberSession
+    );
 
     if (!result?.success) {
-      alert("Usuário ou senha incorretos. Tente novamente.");
+      alert(
+        "Usuário ou senha incorretos. Tente novamente."
+      );
     }
   };
 
@@ -157,11 +158,11 @@ export default function Home() {
               <label className="flex items-center gap-2 text-gray-500 cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={rememberMe}
-                  onChange={(event) => setRememberMe(event.target.checked)}
+                  checked={rememberSession}
+                  onChange={(e) => setRememberSession(e.target.checked)}
                   className="rounded border-gray-300 accent-[#0F766E]"
                 />
-                Lembrar da minha senha
+                Lembrar Sessão
               </label>
 
               <Link
