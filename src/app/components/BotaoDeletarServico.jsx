@@ -63,7 +63,19 @@ export default function BotaoDeletarServico({ id, onDeleted }) {
       toast.error(error?.message || "Erro inesperado ao deletar serviço.");
     } finally {
       setLoading(false);
-      router.refresh();
+      try {
+        if (onDeleted && typeof onDeleted === "function") {
+          await onDeleted();
+        }
+      } catch (e) {
+        // ignore
+      }
+
+      try {
+        router.refresh();
+      } catch (e) {
+        // ignore
+      }
     }
   }
 

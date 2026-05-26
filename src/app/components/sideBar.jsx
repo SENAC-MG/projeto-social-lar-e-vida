@@ -113,7 +113,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
             <button
               type="button"
               onClick={toggleSidebar}
-              className="hidden md:block p-2 hover:bg-white/10 rounded-lg transition-colors mx-auto"
+              className="cursor-pointer hidden md:block p-2 hover:bg-white/10 rounded-lg transition-colors mx-auto"
               style={{ color: textColor }}
               aria-label="Expandir barra lateral"
             >

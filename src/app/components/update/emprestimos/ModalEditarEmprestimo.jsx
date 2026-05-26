@@ -13,7 +13,7 @@ export default function ModalEditarEmprestimo({
   const [loading, setLoading] = useState(false);
 
   const inputClass =
-    "w-full bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-[#FF7517] focus:ring-1 focus:ring-[#FF7517] outline-none transition-all placeholder:text-gray-600";
+    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#0F766E] rounded-lg px-4 py-2 !text-black dark:!text-white focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] outline-none transition-all placeholder:text-gray-600";
 
   const formatDate = (date) => {
     if (!date) return "";
@@ -65,7 +65,7 @@ export default function ModalEditarEmprestimo({
           className="p-6 space-y-8 overflow-y-auto max-h-[85vh] custom-scrollbar"
         >
           <section>
-            <h3 className="text-[#FF7517] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-wider mb-4">
               Dados Pessoais
             </h3>
 
@@ -111,7 +111,7 @@ export default function ModalEditarEmprestimo({
           </section>
 
           <section>
-            <h3 className="text-[#FF7517] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-wider mb-4">
               Materiais Emprestados
             </h3>
 
@@ -125,7 +125,7 @@ export default function ModalEditarEmprestimo({
           </section>
 
           <section>
-            <h3 className="text-[#FF7517] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-wider mb-4">
               Endereço
             </h3>
 
@@ -173,7 +173,7 @@ export default function ModalEditarEmprestimo({
           </section>
 
           <section>
-            <h3 className="text-[#FF7517] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-wider mb-4">
               Contato
             </h3>
 
@@ -200,7 +200,7 @@ export default function ModalEditarEmprestimo({
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 bg-[#FF7517] hover:bg-[#FF7517] text-white px-8 py-2.5 rounded-lg font-bold transition-all disabled:opacity-50"
+              className="flex items-center gap-2 !bg-[#0F766E] hover:!bg-[#0F766E] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-[#0F766E]/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Save size={18} />
               {loading ? "Salvando..." : "Salvar alterações"}

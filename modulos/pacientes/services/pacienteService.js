@@ -40,31 +40,61 @@ export async function gravarPaciente(
 ) {
 
   // Validação: campos obrigatórios
-  if (!nome || !status || !cpf || !rg || !nascimento || !profissao || !dataCadastro || !tipoCancer || !CIDprincipal || !CIDsecundario || !rua || !numero || !cep || !bairro || !cidade || !telefone1 || !telefone2) {
+  // Observação: `status` é booleano — deve aceitar `false` (Inativo)
+  if (
+    !nome ||
+    typeof status !== 'boolean' ||
+    !cpf ||
+    !rg ||
+    !nascimento ||
+    !profissao ||
+    !dataCadastro ||
+    !tipoCancer ||
+    !CIDprincipal ||
+    !CIDsecundario ||
+    !rua ||
+    !numero ||
+    !cep ||
+    !bairro ||
+    !cidade ||
+    !telefone1 ||
+    !telefone2
+  ) {
     throw new Error('Todos os campos são obrigatórios!');
   }
 
 
   // Se passou por todas regras pode salvar -> pode salvar
-  return await post_Paciente({
-    nome,
-    status,
-    cpf,
-    rg,
-    nascimento,
-    profissao,
-    dataCadastro,
-    tipoCancer,
-    CIDprincipal,
-    CIDsecundario,
-    rua,
-    numero,
-    cep,
-    bairro,
-    cidade,
-    telefone1,
-    telefone2
-  });
+  try {
+    return await post_Paciente({
+      nome,
+      status,
+      cpf,
+      rg,
+      nascimento,
+      profissao,
+      dataCadastro,
+      tipoCancer,
+      CIDprincipal,
+      CIDsecundario,
+      rua,
+      numero,
+      cep,
+      bairro,
+      cidade,
+      telefone1,
+      telefone2
+    });
+  } catch (err) {
+    // Tratamento de erro do Prisma para unique constraint
+    if (err && err.code === 'P2002') {
+      // Identifica qual campo causou o conflito, se possível
+      const target = err.meta && err.meta.target ? err.meta.target.join(', ') : 'campo único';
+      throw new Error(`Violação de unicidade: ${target} já cadastrado.`);
+    }
+    // Repassa outros erros
+    throw err;
+  }
 }
 
 /**

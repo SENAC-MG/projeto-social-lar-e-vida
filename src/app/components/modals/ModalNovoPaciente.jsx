@@ -36,7 +36,7 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
   }
 
   const inputClass =
-    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#0F766E] rounded-lg px-4 py-2 text-white focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] outline-none transition-all placeholder:text-gray-600";
+    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#0F766E] rounded-lg px-4 py-2 !text-black dark:!text-white focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] outline-none transition-all placeholder:text-gray-600";
 
   return (
     <Modal title="Novo Paciente" onClose={onClose}>

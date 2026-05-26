@@ -52,10 +52,19 @@ export async function post_Paciente(data) {
  * - Cuidado: Operação irreversível
  */
 export async function del_Paciente(id) {
-  const result = await prisma.Pacientes.delete({
+  // Use deleteMany to avoid Prisma throwing P2025 when the record doesn't exist.
+  // deleteMany returns a count of deleted records which we can check.
+  const result = await prisma.Pacientes.deleteMany({
     where: { id },
   });
-  return result;
+
+  if (!result || result.count === 0) {
+    throw new Error('Registro não encontrado para exclusão.');
+  }
+
+  // Return a simple object resembling the deleted record behaviour
+  // (the controller/service only needs to know it succeeded).
+  return { id, deleted: result.count };
 }
 
 /**

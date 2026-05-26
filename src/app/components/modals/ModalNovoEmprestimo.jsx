@@ -1,61 +1,41 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Save, RotateCcw } from "lucide-react";
+import { Save, RotateCcw, User } from "lucide-react";
 import { toast } from "sonner";
 import { cadastrar_Emprestimo } from "@modulos/emprestimos/controller/emprestimoController";
+import Modal from "@/shared/ui/Modal";
+import Button from "@/shared/ui/Button";
 
 export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
   const [loading, setLoading] = useState(false);
+
+  const inputClass =
+    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#0F766E] rounded-lg px-4 py-2 !text-black dark:!text-white focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] outline-none transition-all placeholder:text-gray-600";
 
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const res = await cadastrar_Emprestimo(formData);
+    const result = await cadastrar_Emprestimo(formData);
 
-    if (res.success) {
-      toast.success(res.message);
+    if (result.success) {
+      toast.success(result.message || "Empréstimo cadastrado com sucesso!");
       onSuccess?.();
       onClose();
     } else {
-      toast.error(res.error);
+      toast.error(result.error || "Erro ao cadastrar empréstimo.");
     }
 
     setLoading(false);
   }
 
-  const handleOverlayClick = (e) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
-  const inputClass =
-    "bg-[#F9FBFD] dark:bg-[#1E1E24] w-full border border-[#0F766E] rounded-lg px-4 py-2 focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] outline-none transition-all placeholder:text-gray-600";
-
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
-      onClick={handleOverlayClick}
-    >
-      <div className="w-full max-w-4xl bg-[#F7F9FC] dark:bg-[#081120] border border-gray-800 rounded-xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
-        <div className="flex justify-between items-center px-6 py-4 border-b border-gray-800 bg-[#F7F9FC] dark:bg-[#081120]">
-          <h2 className="text-[#0F766E] font-bold text-lg">Novo Empréstimo</h2>
-
-          <button
-            type="button"
-            onClick={onClose}
-            className="cursor-pointer text-gray-400 transition-colors p-1 rounded-md hover:bg-foreground/10 hover:text-foreground"
-          >
-            <X size={22} />
-          </button>
-        </div>
-
-        <form
+    <Modal title="Novo Empréstimo" onClose={onClose}>
+         <form
           onSubmit={handleSubmit}
-          className="p-6 space-y-8 overflow-y-auto max-h-[85vh] custom-scrollbar"
+          className="bg-[#F7F9FC] dark:bg-[#081120] p-6 space-y-8 overflow-y-auto max-h-[85vh] custom-scrollbar"
         >
           <section>
             <h3 className="text-[#0F766E] text-xs font-bold uppercase tracking-wider mb-4">
@@ -264,8 +244,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
             </button>
           </div>
         </form>
-      </div>
-    </div>
+    </Modal>
   );
 }
 
