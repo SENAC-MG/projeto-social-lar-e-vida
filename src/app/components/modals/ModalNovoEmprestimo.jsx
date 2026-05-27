@@ -35,7 +35,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
     <Modal title="Novo Empréstimo" onClose={onClose}>
          <form
           onSubmit={handleSubmit}
-          className="bg-[#F7F9FC] dark:bg-[#081120] p-6 space-y-8 overflow-y-auto max-h-[85vh] custom-scrollbar"
+          className="bg-[#F7F9FC] dark:bg-background p-6 space-y-8 overflow-y-auto max-h-[85vh] custom-scrollbar"
         >
           <section>
             <h3 className="text-primary text-xs font-bold uppercase tracking-wider mb-4">
@@ -247,4 +247,3 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
     </Modal>
   );
 }
-
