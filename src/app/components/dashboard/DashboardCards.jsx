@@ -1,113 +1,63 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
 import { Users, Package, Wrench, Hospital } from "lucide-react";
-import { get_Pacientes } from "@modulos/pacientes/controller/pacienteController";
-import { get_Emprestimos } from "@modulos/emprestimos/controller/emprestimoController";
-import { get_Servicos } from "@modulos/servicos/controller/servicoController";
-import { get_Funcionarios } from "@modulos/funcionarios/controller/funcionarioController";
 
-export default function DashboardCards() {
-  const [dados, setDados] = useState({
-    totalPacientes: 0,
-    pacientesAtivos: 0,
-    totalEmprestimos: 0,
-    emprestimosAtivos: 0,
-    totalServicos: 0,
-    servicosPendentes: 0,
-    totalFuncionarios: 0,
-    funcionariosAtivos: 0,
-  });
-
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function carregarDados() {
-      try {
-        const [pacientes, emprestimos, servicos, funcionarios] =
-          await Promise.all([
-            get_Pacientes(),
-            get_Emprestimos(),
-            get_Servicos(),
-            get_Funcionarios(),
-          ]);
-
-        setDados({
-          totalPacientes: pacientes.length,
-          pacientesAtivos: pacientes.filter((p) => p.status === "ativo").length,
-          totalEmprestimos: emprestimos.length,
-          emprestimosAtivos: emprestimos.filter((e) => e.status === "ativo")
-            .length,
-          totalServicos: servicos.length,
-          servicosPendentes: servicos.filter((s) => s.status === "pendente")
-            .length,
-          totalFuncionarios: funcionarios.length,
-          funcionariosAtivos: funcionarios.filter((f) => f.status === "ativo")
-            .length,
-        });
-      } catch (error) {
-        console.error("Erro ao carregar dados do dashboard:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    carregarDados();
-  }, []);
+export default function DashboardCards({ dados }) {
+  const loading = !dados;
 
   const cards = [
     {
       titulo: "Pacientes",
-      valor: dados.totalPacientes,
+      valor: dados?.totalPacientes ?? 0,
       descricao: "Cadastrados",
       icone: Users,
       corBorda: "#5C7A53",
     },
     {
       titulo: "Pacientes Ativos",
-      valor: dados.pacientesAtivos,
+      valor: dados?.pacientesAtivos ?? 0,
       descricao: "Em atendimento",
       icone: Users,
       corBorda: "#3D5A80",
     },
     {
       titulo: "Empréstimos",
-      valor: dados.totalEmprestimos,
+      valor: dados?.totalEmprestimos ?? 0,
       descricao: "Registrados",
       icone: Package,
       corBorda: "#D88C42",
     },
     {
       titulo: "Empréstimos Ativos",
-      valor: dados.emprestimosAtivos,
+      valor: dados?.emprestimosAtivos ?? 0,
       descricao: "Em aberto",
       icone: Package,
       corBorda: "#A6477B",
     },
     {
       titulo: "Serviços",
-      valor: dados.totalServicos,
+      valor: dados?.totalServicos ?? 0,
       descricao: "Cadastrados",
       icone: Wrench,
       corBorda: "#5C7A53",
     },
     {
       titulo: "Serviços Pendentes",
-      valor: dados.servicosPendentes,
+      valor: dados?.servicosPendentes ?? 0,
       descricao: "Aguardando",
       icone: Wrench,
       corBorda: "#3D5A80",
     },
     {
       titulo: "Funcionários",
-      valor: dados.totalFuncionarios,
+      valor: dados?.totalFuncionarios ?? 0,
       descricao: "Cadastrados",
       icone: Hospital,
       corBorda: "#D88C42",
     },
     {
       titulo: "Funcionários Ativos",
-      valor: dados.funcionariosAtivos,
+      valor: dados?.funcionariosAtivos ?? 0,
       descricao: "Ativos",
       icone: Hospital,
       corBorda: "#A6477B",
