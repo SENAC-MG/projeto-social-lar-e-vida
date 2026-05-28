@@ -2,6 +2,7 @@
 
 // import { revalidatePath } from 'next/cache';
 import { apaga_Paciente, gravarPaciente, pegar_Pacientes, updatePacienteService } from "../services/pacienteService";
+import { formatError } from "../../../lib/formatError";
 /**
  * Buscar todos os pacientes
  *
@@ -18,12 +19,11 @@ export async function get_Pacientes() {
 export async function cadastrar_Paciente(formData) {
   // Extração e Limpeza dos dados
   const nome = formData.get('nome')?.toString().trim();
-  const status = formData.get('status')?.toString()?.toString().trim();
+  const status = formData.get('status')?.toString().trim();
   const cpf = formData.get('cpf')?.toString().trim();
   const rg = formData.get('rg')?.toString().trim();
   const nascimento = new Date(formData.get('nascimento')?.toString().trim());
   const profissao = formData.get('profissao')?.toString().trim();
-  const dataCadastro = new Date(formData.get('dataCadastro')?.toString().trim());
   const tipoCancer = formData.get('tipoCancer')?.toString().trim();
   const CIDprincipal = formData.get('CIDprincipal')?.toString().trim();
   const CIDsecundario = formData.get('CIDsecundario')?.toString().trim();
@@ -44,7 +44,6 @@ export async function cadastrar_Paciente(formData) {
     rg,
     nascimento,
     profissao,
-    dataCadastro,
     tipoCancer,
     CIDprincipal,
     CIDsecundario,
@@ -67,7 +66,6 @@ export async function cadastrar_Paciente(formData) {
       rg,
       nascimento,
       profissao,
-      dataCadastro,
       tipoCancer,
       CIDprincipal,
       CIDsecundario,
@@ -81,7 +79,7 @@ export async function cadastrar_Paciente(formData) {
       sexo,
       prioridade
     );
-    //Voltando com a resposta conrolada para o frontend
+    //Voltando com a resposta controlada para o frontend
     return {
       success: true,
       message: 'Paciente cadastrado com sucesso!',
@@ -90,7 +88,7 @@ export async function cadastrar_Paciente(formData) {
     // Retorna erro controlado para o frontend
     return {
       success: false,
-      error: err.message
+      error: formatError(err)
     };
   }
 }
@@ -109,7 +107,7 @@ export async function deletar_Paciente(id) {
   } catch (err) {
     return {
       success: false,
-      error: err.message,
+      error: formatError(err),
     };
   }
 }
@@ -130,7 +128,6 @@ export async function updatePacienteAction(id, formData) {
   const rg = formData.get("rg")?.toString().trim();
   const nascimento = formData.get("nascimento")?.toString();
   const profissao = formData.get("profissao")?.toString().trim();
-  const dataCadastro = formData.get("dataCadastro")?.toString();
   const tipoCancer = formData.get("tipoCancer")?.toString().trim();
   const CIDprincipal = formData.get("CIDprincipal")?.toString().trim();
   const CIDsecundario = formData.get("CIDsecundario")?.toString().trim();
@@ -145,12 +142,11 @@ export async function updatePacienteAction(id, formData) {
   const prioridade = formData.get("prioridade")?.toString().trim();
 
   if (nome) data.nome = nome;
-  if (status) data.status = status === "Ativo";
+  if (status) data.status = status;
   if (cpf) data.cpf = cpf;
   if (rg) data.rg = rg;
   if (nascimento) data.nascimento = new Date(nascimento);
   if (profissao) data.profissao = profissao;
-  if (dataCadastro) data.dataCadastro = new Date(dataCadastro);
   if (tipoCancer) data.tipoCancer = tipoCancer;
   if (CIDprincipal) data.CIDprincipal = CIDprincipal;
   if (CIDsecundario) data.CIDsecundario = CIDsecundario;
@@ -175,7 +171,7 @@ export async function updatePacienteAction(id, formData) {
   } catch (err) {
     return {
       success: false,
-      error: err.message,
+      error: formatError(err),
     };
   }
 }

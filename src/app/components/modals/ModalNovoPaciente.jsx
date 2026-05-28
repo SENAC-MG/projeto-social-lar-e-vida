@@ -59,6 +59,7 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
                 type="text"
                 placeholder="Nome Completo"
                 className={inputClass}
+                required
               />
             </div>
 

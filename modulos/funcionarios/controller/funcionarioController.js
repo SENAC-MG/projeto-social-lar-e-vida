@@ -2,6 +2,7 @@
 
 // import { revalidatePath } from 'next/cache';
 import { apaga_Funcionario, gravarFuncionario, pegar_Funcionarios, updateFuncionarioService } from "../services/funcionarioService";
+import { formatError } from "../../../lib/formatError";
 /**
  * Buscar todos os funcionários
  *
@@ -38,7 +39,7 @@ export async function cadastrar_Funcionario(formData) {
     // Retorna erro controlado para o frontend
     return {
       success: false,
-      error: err.message
+      error: formatError(err)
     };
   }
 }
@@ -57,7 +58,7 @@ export async function deletar_Funcionario(id) {
   } catch (err) {
     return {
       success: false,
-      error: err.message,
+      error: formatError(err),
     };
   }
 }
@@ -83,7 +84,7 @@ export async function updateFuncionarioAction(id, formData) {
   if (cargo) data.cargo = cargo;
   if (telefone) data.telefone = telefone;
   if (status) data.status = status;
-  if (dataContratacao) data.dataContratacao = dataContratacao;
+  if (dataContratacao) data.dataContratacao = new Date(dataContratacao);
 
   try {
     const funcionarioAtualizado = await updateFuncionarioService(id, data);
@@ -96,7 +97,7 @@ export async function updateFuncionarioAction(id, formData) {
   } catch (err) {
     return {
       success: false,
-      error: err.message,
+      error: formatError(err),
     };
   }
 }

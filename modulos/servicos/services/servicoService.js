@@ -32,9 +32,9 @@ export async function gravarServico(
   funcionarioResponsavel
 ) {
 
-  // Validação: campos obrigatórios
-  if (!nome || !cpf || !tipoServico || !duracao || !valorServico || !unidade || !tempoServico || !status || !dataServico || !funcionarioResponsavel) {
-    throw new Error('Todos os campos são obrigatórios!');
+  // Validação: campos obrigatórios (funcionário pode ser opcional)
+  if (!nome || !cpf || !tipoServico || !duracao || !valorServico || !unidade || !tempoServico || !status || !dataServico) {
+    throw new Error('Campos obrigatórios ausentes (nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico, status, dataServico).');
   }
 
 

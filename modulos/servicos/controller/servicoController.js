@@ -2,6 +2,7 @@
 
 // import { revalidatePath } from 'next/cache';
 import { apaga_Servico, gravarServico, pegar_Servicos, updateServicoService } from "../services/servicoService";
+import { formatError } from "../../../lib/formatError";
 /**
  * Buscar todos os serviços
  *
@@ -42,7 +43,7 @@ export async function cadastrar_Servico(formData) {
     // Retorna erro controlado para o frontend
     return {
       success: false,
-      error: err.message
+      error: formatError(err)
     };
   }
 }
@@ -61,7 +62,7 @@ export async function deletar_Servico(id) {
   } catch (err) {
     return {
       success: false,
-      error: err.message,
+      error: formatError(err),
     };
   }
 }
@@ -109,7 +110,7 @@ export async function updateServicoAction(id, formData) {
   } catch (err) {
     return {
       success: false,
-      error: err.message,
+      error: formatError(err),
     };
   }
 }

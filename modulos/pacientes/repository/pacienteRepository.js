@@ -22,7 +22,7 @@ export async function get_AllPacientes() {
  * - Retorna o paciente criado
  */
 export async function post_Paciente(data) {
-  const { nome, status, cpf, rg, nascimento, profissao, dataCadastro, tipoCancer, CIDprincipal, CIDsecundario, rua, numero, cep, bairro, cidade, telefone1, telefone2, sexo, prioridade } = data;
+  const { nome, status, cpf, rg, nascimento, profissao, tipoCancer, CIDprincipal, CIDsecundario, rua, numero, cep, bairro, cidade, telefone1, telefone2, sexo, prioridade } = data;
   return await prisma.Pacientes.create({
     data: {
       nome,
@@ -31,7 +31,6 @@ export async function post_Paciente(data) {
       rg,
       nascimento,
       profissao,
-      dataCadastro,
       tipoCancer,
       CIDprincipal,
       CIDsecundario,

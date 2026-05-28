@@ -26,7 +26,6 @@ export async function gravarPaciente(
   rg,
   nascimento,
   profissao,
-  dataCadastro,
   tipoCancer,
   CIDprincipal,
   CIDsecundario,
@@ -41,30 +40,9 @@ export async function gravarPaciente(
   prioridade
 ) {
 
-  // Validação: campos obrigatórios
-  // Observação: `status` é booleano — deve aceitar `false` (Inativo)
-  if (
-    !nome ||
-    typeof status !== 'boolean' ||
-    !cpf ||
-    !rg ||
-    !nascimento ||
-    !profissao ||
-    !dataCadastro ||
-    !tipoCancer ||
-    !CIDprincipal ||
-    !CIDsecundario ||
-    !rua ||
-    !numero ||
-    !cep ||
-    !bairro ||
-    !cidade ||
-    !telefone1 ||
-    !telefone2 ||
-    !sexo ||
-    !prioridade
-  ) {
-    throw new Error('Todos os campos são obrigatórios!');
+  // Validação: campos obrigatórios do formulário (relaxada para aceitar campos opcionais do modal)
+  if (!nome || !cpf || !rg || !nascimento || isNaN(new Date(nascimento).getTime()) || !sexo || !status || !prioridade) {
+    throw new Error('Campos obrigatórios ausentes (nome, cpf, rg, nascimento, sexo, status, prioridade).');
   }
 
 
@@ -77,17 +55,16 @@ export async function gravarPaciente(
       rg,
       nascimento,
       profissao,
-      dataCadastro,
       tipoCancer,
       CIDprincipal,
-      CIDsecundario,
+      CIDsecundario: CIDsecundario || "",
       rua,
       numero,
       cep,
       bairro,
       cidade,
       telefone1,
-      telefone2,
+      telefone2: telefone2 || "",
       sexo,
       prioridade
     });
