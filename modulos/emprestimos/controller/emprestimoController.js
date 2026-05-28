@@ -22,7 +22,7 @@ export async function cadastrar_Emprestimo(formData) {
   const rg = formData.get('rg')?.toString().trim();
   const nascimento = new Date(formData.get('nascimento')?.toString().trim());
   const dataEmprestimo = new Date(formData.get('dataEmprestimo')?.toString().trim());
-  const materiaisEmprestados = formData.get('materiaisEmprestados')?.toString().trim();
+  const quantidade = formData.get('quantidade')?.toString().trim();
   const rua = formData.get('rua')?.toString().trim();
   const numero = formData.get('numero')?.toString().trim();
   const cep = formData.get('cep')?.toString().trim();
@@ -30,12 +30,15 @@ export async function cadastrar_Emprestimo(formData) {
   const cidade = formData.get('cidade')?.toString().trim();
   const telefone1 = formData.get('telefone1')?.toString().trim();
   const telefone2 = formData.get('telefone2')?.toString().trim();
+  const status = formData.get('status')?.toString().trim();
+  const previsaoDevolucao = formData.get('previsaoDevolucao')?.toString().trim();
+  const dataDevolucao = formData.get('dataDevolucao')?.toString().trim();
 
-  console.log('Dados recebidos no action:', { nome, cpf, rg, nascimento, dataEmprestimo, materiaisEmprestados, rua, numero, cep, bairro, cidade, telefone1, telefone2 });
+  console.log('Dados recebidos no action:', { nome, cpf, rg, nascimento, dataEmprestimo, quantidade, rua, numero, cep, bairro, cidade, telefone1, telefone2, status, previsaoDevolucao, dataDevolucao });
 
   try {
     // Regras de negócio estão no service
-    await gravarEmprestimo(nome, cpf, rg, nascimento, dataEmprestimo, materiaisEmprestados, rua, numero, cep, bairro, cidade, telefone1, telefone2);
+    await gravarEmprestimo(nome, cpf, rg, nascimento, dataEmprestimo, quantidade, rua, numero, cep, bairro, cidade, telefone1, telefone2, status, previsaoDevolucao, dataDevolucao);
     //Voltando com a resposta conrolada para o frontend
     return {
       success: true,
@@ -84,7 +87,7 @@ export async function updateEmprestimoAction(id, formData) {
   const rg = formData.get("rg")?.toString().trim();
   const nascimento = formData.get("nascimento")?.toString();
   const dataEmprestimo = formData.get("dataEmprestimo")?.toString();
-  const materiaisEmprestados = formData.get("materiaisEmprestados")?.toString().trim();
+  const quantidade = formData.get("quantidade")?.toString().trim();
   const rua = formData.get("rua")?.toString().trim();
   const numero = formData.get("numero")?.toString().trim();
   const cep = formData.get("cep")?.toString().trim();
@@ -92,13 +95,16 @@ export async function updateEmprestimoAction(id, formData) {
   const cidade = formData.get("cidade")?.toString().trim();
   const telefone1 = formData.get("telefone1")?.toString().trim();
   const telefone2 = formData.get("telefone2")?.toString().trim();
+  const status = formData.get("status")?.toString().trim();
+  const previsaoDevolucao = formData.get("previsaoDevolucao")?.toString().trim();
+  const dataDevolucao = formData.get("dataDevolucao")?.toString().trim();
 
   if (nome) data.nome = nome;
   if (cpf) data.cpf = cpf;
   if (rg) data.rg = rg;
   if (nascimento) data.nascimento = new Date(nascimento);
   if (dataEmprestimo) data.dataEmprestimo = new Date(dataEmprestimo);
-  if (materiaisEmprestados) data.materiaisEmprestados = materiaisEmprestados;
+  if (quantidade) data.quantidade = quantidade;
   if (rua) data.rua = rua;
   if (numero) data.numero = numero;
   if (cep) data.cep = cep;
@@ -106,6 +112,9 @@ export async function updateEmprestimoAction(id, formData) {
   if (cidade) data.cidade = cidade;
   if (telefone1) data.telefone1 = telefone1;
   if (telefone2) data.telefone2 = telefone2;
+  if (status) data.status = status;
+  if (previsaoDevolucao) data.previsaoDevolucao = new Date(previsaoDevolucao);
+  if (dataDevolucao) data.dataDevolucao = new Date(dataDevolucao);
 
   try {
     const emprestimoAtualizado = await updateEmprestimoService(id, data);

@@ -22,13 +22,15 @@ export async function get_AllFuncionarios() {
  * - Retorna o funcionário criado
  */
 export async function post_Funcionario(data) {
-  const { nome, email, cargo, telefone } = data;
+  const { nome, email, cargo, telefone, status, dataContratacao } = data;
   return await prisma.Funcionarios.create({
     data: {
       nome,
       email,
       cargo,
-      telefone
+      telefone,
+      status,
+      dataContratacao
     }
   });
 }
@@ -63,10 +65,10 @@ export async function findFuncionarioById(id) {
 /**
  * - Recebe o ID do funcionário e os novos dados
  * - Atualiza apenas os campos enviados
- * - Retorna o aluno atualizado
+ * - Retorna o funcionário atualizado
  */
 export async function updateFuncionario(id, data) {
-  console.log('Atualizando aluno ID:', id, 'com dados', data);
+  console.log('Atualizando funcionário ID:', id, 'com dados', data);
 
   const Funcionario_atualizado = await prisma.Funcionarios.update({
     where: { id },

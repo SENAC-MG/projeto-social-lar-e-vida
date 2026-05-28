@@ -36,7 +36,9 @@ export async function gravarPaciente(
   bairro,
   cidade,
   telefone1,
-  telefone2
+  telefone2,
+  sexo,
+  prioridade
 ) {
 
   // Validação: campos obrigatórios
@@ -58,7 +60,9 @@ export async function gravarPaciente(
     !bairro ||
     !cidade ||
     !telefone1 ||
-    !telefone2
+    !telefone2 ||
+    !sexo ||
+    !prioridade
   ) {
     throw new Error('Todos os campos são obrigatórios!');
   }
@@ -83,7 +87,9 @@ export async function gravarPaciente(
       bairro,
       cidade,
       telefone1,
-      telefone2
+      telefone2,
+      sexo,
+      prioridade
     });
   } catch (err) {
     // Tratamento de erro do Prisma para unique constraint

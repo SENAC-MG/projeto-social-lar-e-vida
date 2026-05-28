@@ -24,12 +24,15 @@ export async function cadastrar_Servico(formData) {
   const valorServico = Number(formData.get('valorServico'));
   const unidade = formData.get('unidade')?.toString().trim();
   const tempoServico = formData.get('tempoServico')?.toString().trim();
+  const status = formData.get('status')?.toString()?.toString().trim();
+  const dataServico = new Date(formData.get('dataServico')?.toString().trim());
+  const funcionarioResponsavel = formData.get('funcionarioResponsavel')?.toString().trim();
 
-  console.log('Dados recebidos no action:', { nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico });
+  console.log('Dados recebidos no action:', { nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico, status, dataServico, funcionarioResponsavel });
 
   try {
     // Regras de negócio estão no service
-    await gravarServico(nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico);
+    await gravarServico(nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico, status, dataServico, funcionarioResponsavel);
     //Voltando com a resposta conrolada para o frontend
     return {
       success: true,
@@ -80,6 +83,9 @@ export async function updateServicoAction(id, formData) {
   const valorServico = formData.get("valorServico")?.toString();
   const unidade = formData.get("unidade")?.toString().trim();
   const tempoServico = formData.get("tempoServico")?.toString().trim();
+  const status = formData.get("status")?.toString().trim();
+  const dataServico = formData.get("dataServico")?.toString().trim();
+  const funcionarioResponsavel = formData.get("funcionarioResponsavel")?.toString().trim();
 
   if (nome) data.nome = nome;
   if (cpf) data.cpf = cpf;
@@ -88,6 +94,9 @@ export async function updateServicoAction(id, formData) {
   if (valorServico) data.valorServico = Number(valorServico);
   if (unidade) data.unidade = unidade;
   if (tempoServico) data.tempoServico = tempoServico;
+  if (status) data.status = status;
+  if (dataServico) data.dataServico = new Date(dataServico);
+  if (funcionarioResponsavel) data.funcionarioResponsavel = funcionarioResponsavel;
 
   try {
     const servicoAtualizado = await updateServicoService(id, data);

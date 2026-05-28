@@ -21,12 +21,14 @@ export async function cadastrar_Funcionario(formData) {
   const email = formData.get('email')?.toString().trim();
   const cargo = formData.get('cargo')?.toString().trim();
   const telefone = formData.get('telefone')?.toString().trim();
+  const status = formData.get('status')?.toString().trim();
+  const dataContratacao = new Date(formData.get('dataContratacao')?.toString().trim());
 
-  console.log('Dados recebidos no action:', { nome, email, cargo, telefone });
+  console.log('Dados recebidos no action:', { nome, email, cargo, telefone, status, dataContratacao });
 
   try {
     // Regras de negócio estão no service
-    await gravarFuncionario(nome, email, cargo, telefone);
+    await gravarFuncionario(nome, email, cargo, telefone, status, dataContratacao);
     //Voltando com a resposta conrolada para o frontend
     return {
       success: true,
@@ -74,11 +76,14 @@ export async function updateFuncionarioAction(id, formData) {
   const email = formData.get("email")?.toString().trim();
   const cargo = formData.get("cargo")?.toString().trim();
   const telefone = formData.get("telefone")?.toString().trim();
-
+  const status = formData.get("status")?.toString().trim();
+  const dataContratacao = formData.get("dataContratacao")?.toString().trim();
   if (nome) data.nome = nome;
   if (email) data.email = email;
   if (cargo) data.cargo = cargo;
   if (telefone) data.telefone = telefone;
+  if (status) data.status = status;
+  if (dataContratacao) data.dataContratacao = dataContratacao;
 
   try {
     const funcionarioAtualizado = await updateFuncionarioService(id, data);

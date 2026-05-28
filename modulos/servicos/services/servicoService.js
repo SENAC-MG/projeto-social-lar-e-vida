@@ -26,11 +26,14 @@ export async function gravarServico(
   duracao,
   valorServico,
   unidade,
-  tempoServico
+  tempoServico,
+  status,
+  dataServico,
+  funcionarioResponsavel
 ) {
 
   // Validação: campos obrigatórios
-  if (!nome || !cpf || !tipoServico || !duracao || !valorServico || !unidade || !tempoServico) {
+  if (!nome || !cpf || !tipoServico || !duracao || !valorServico || !unidade || !tempoServico || !status || !dataServico || !funcionarioResponsavel) {
     throw new Error('Todos os campos são obrigatórios!');
   }
 
@@ -43,7 +46,10 @@ export async function gravarServico(
     duracao,
     valorServico,
     unidade,
-    tempoServico
+    tempoServico,
+    status,
+    dataServico,
+    funcionarioResponsavel
   });
 }
 
