@@ -107,6 +107,43 @@ export default function ModalEditarEmprestimo({
                 defaultValue={formatDate(emprestimo.dataEmprestimo)}
                 className={inputClass}
               />
+
+              <input
+                name="quantidade"
+                type="number"
+                min="1"
+                defaultValue={emprestimo.quantidade || 1}
+                placeholder="Quantidade"
+                className={inputClass}
+              />
+
+              <select
+                name="status"
+                defaultValue={emprestimo.status || "ativo"}
+                className={`${inputClass} appearance-none cursor-pointer`}
+              >
+                <option value="">Não alterar</option>
+                <option value="ativo">Ativo</option>
+                <option value="devolvido">Devolvido</option>
+                <option value="atrasado">Atrasado</option>
+                <option value="cancelado">Cancelado</option>
+              </select>
+
+              <input
+                name="previsaoDevolucao"
+                type="date"
+                defaultValue={formatDate(emprestimo.previsaoDevolucao)}
+                placeholder="Previsão Devolução"
+                className={inputClass}
+              />
+
+              <input
+                name="dataDevolucao"
+                type="date"
+                defaultValue={formatDate(emprestimo.dataDevolucao)}
+                placeholder="Data Devolução"
+                className={inputClass}
+              />
             </div>
           </section>
 
@@ -211,4 +248,3 @@ export default function ModalEditarEmprestimo({
     </div>
   );
 }
-
