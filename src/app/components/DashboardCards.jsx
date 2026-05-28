@@ -32,35 +32,18 @@ export default function DashboardCards() {
             get_Funcionarios(),
           ]);
 
-        const totalPacientes = pacientes.length;
-        const pacientesAtivos = pacientes.filter(
-          (p) => p.status === "ativo",
-        ).length;
-
-        const totalEmprestimos = emprestimos.length;
-        const emprestimosAtivos = emprestimos.filter(
-          (e) => e.status === "ativo",
-        ).length;
-
-        const totalServicos = servicos.length;
-        const servicosPendentes = servicos.filter(
-          (s) => s.status === "pendente",
-        ).length;
-
-        const totalFuncionarios = funcionarios.length;
-        const funcionariosAtivos = funcionarios.filter(
-          (f) => f.status === "ativo",
-        ).length;
-
         setDados({
-          totalPacientes,
-          pacientesAtivos,
-          totalEmprestimos,
-          emprestimosAtivos,
-          totalServicos,
-          servicosPendentes,
-          totalFuncionarios,
-          funcionariosAtivos,
+          totalPacientes: pacientes.length,
+          pacientesAtivos: pacientes.filter((p) => p.status === "ativo").length,
+          totalEmprestimos: emprestimos.length,
+          emprestimosAtivos: emprestimos.filter((e) => e.status === "ativo")
+            .length,
+          totalServicos: servicos.length,
+          servicosPendentes: servicos.filter((s) => s.status === "pendente")
+            .length,
+          totalFuncionarios: funcionarios.length,
+          funcionariosAtivos: funcionarios.filter((f) => f.status === "ativo")
+            .length,
         });
       } catch (error) {
         console.error("Erro ao carregar dados do dashboard:", error);
@@ -74,96 +57,100 @@ export default function DashboardCards() {
 
   const cards = [
     {
-      titulo: "Total de Pacientes",
+      titulo: "Pacientes",
       valor: dados.totalPacientes,
+      descricao: "Cadastrados",
       icone: Users,
-      cor: "bg-blue-100 dark:bg-blue-900/30",
-      textoCor: "text-blue-600 dark:text-blue-400",
-      iconeCor: "bg-blue-500",
+      corBorda: "#5C7A53",
     },
     {
       titulo: "Pacientes Ativos",
       valor: dados.pacientesAtivos,
+      descricao: "Em atendimento",
       icone: Users,
-      cor: "bg-green-100 dark:bg-green-900/30",
-      textoCor: "text-green-600 dark:text-green-400",
-      iconeCor: "bg-green-500",
+      corBorda: "#3D5A80",
     },
     {
-      titulo: "Total de Empréstimos",
+      titulo: "Empréstimos",
       valor: dados.totalEmprestimos,
+      descricao: "Registrados",
       icone: Package,
-      cor: "bg-purple-100 dark:bg-purple-900/30",
-      textoCor: "text-purple-600 dark:text-purple-400",
-      iconeCor: "bg-purple-500",
+      corBorda: "#D88C42",
     },
     {
       titulo: "Empréstimos Ativos",
       valor: dados.emprestimosAtivos,
+      descricao: "Em aberto",
       icone: Package,
-      cor: "bg-indigo-100 dark:bg-indigo-900/30",
-      textoCor: "text-indigo-600 dark:text-indigo-400",
-      iconeCor: "bg-indigo-500",
+      corBorda: "#A6477B",
     },
     {
-      titulo: "Total de Serviços",
+      titulo: "Serviços",
       valor: dados.totalServicos,
+      descricao: "Cadastrados",
       icone: Wrench,
-      cor: "bg-orange-100 dark:bg-orange-900/30",
-      textoCor: "text-orange-600 dark:text-orange-400",
-      iconeCor: "bg-orange-500",
+      corBorda: "#5C7A53",
     },
     {
       titulo: "Serviços Pendentes",
       valor: dados.servicosPendentes,
+      descricao: "Aguardando",
       icone: Wrench,
-      cor: "bg-yellow-100 dark:bg-yellow-900/30",
-      textoCor: "text-yellow-600 dark:text-yellow-400",
-      iconeCor: "bg-yellow-500",
+      corBorda: "#3D5A80",
     },
     {
-      titulo: "Total de Funcionários",
+      titulo: "Funcionários",
       valor: dados.totalFuncionarios,
+      descricao: "Cadastrados",
       icone: Hospital,
-      cor: "bg-pink-100 dark:bg-pink-900/30",
-      textoCor: "text-pink-600 dark:text-pink-400",
-      iconeCor: "bg-pink-500",
+      corBorda: "#D88C42",
     },
     {
       titulo: "Funcionários Ativos",
       valor: dados.funcionariosAtivos,
+      descricao: "Ativos",
       icone: Hospital,
-      cor: "bg-red-100 dark:bg-red-900/30",
-      textoCor: "text-red-600 dark:text-red-400",
-      iconeCor: "bg-red-500",
+      corBorda: "#A6477B",
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
       {cards.map((card, index) => {
         const Icon = card.icone;
+
         return (
           <div
             key={index}
-            className={`${card.cor} rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-all hover:shadow-md`}
+            className="relative overflow-hidden rounded-xl bg-white dark:bg-[#1C1C1C] border border-gray-200 dark:border-[#313131] p-5 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
           >
-            <div className="flex justify-between items-start">
+            <div
+              className="absolute left-0 top-0 h-full w-1"
+              style={{ backgroundColor: card.corBorda }}
+            />
+
+            <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+                <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-[#A1A1AA]">
                   {card.titulo}
                 </p>
-                <p className={`text-3xl font-bold ${card.textoCor}`}>
+
+                <h3 className="mt-2 text-4xl font-bold leading-none text-gray-900 dark:text-[#F5F5F5]">
                   {loading ? "-" : card.valor}
+                </h3>
+
+                <p className="mt-2 text-sm font-medium text-gray-500 dark:text-[#A1A1AA]">
+                  {card.descricao}
                 </p>
               </div>
-              <div className={`${card.iconeCor} p-3 rounded-lg`}>
-                <Icon size={24} className="text-white" />
+
+              <div className="flex h-11 w-11 items-center justify-center rounded-md bg-gray-100 dark:bg-[#272A25] text-[#5C7A53] dark:text-[#92AF77]">
+                <Icon size={22} />
               </div>
             </div>
           </div>
         );
       })}
-    </div>
+    </section>
   );
 }
