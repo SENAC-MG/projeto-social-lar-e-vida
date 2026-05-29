@@ -3,11 +3,12 @@ description: Validates required env vars and generates a restricted .env file fo
 runs:
   using: composite
   steps:
-    - name: Validate required environment variables
+    - name: Validate environment and generate .env
       shell: bash
       run: |
         required_keys=(DATABASE_URL JWT_SECRET DEFAULT_ADMIN_EMAIL DEFAULT_ADMIN_PASSWORD NODE_ENV)
         missing=0
+
         for key in "${required_keys[@]}"; do
           if [ -z "${!key}" ]; then
             echo "::error::Missing required variable: $key"
@@ -20,18 +21,14 @@ runs:
             missing=1
           fi
         done
+
         if [ "$missing" -ne 0 ]; then
           exit 1
         fi
 
-    - name: Generate .env file for CI
-      shell: bash
-      run: |
-        required_keys=(DATABASE_URL JWT_SECRET DEFAULT_ADMIN_EMAIL DEFAULT_ADMIN_PASSWORD NODE_ENV)
         escape_dotenv_value() {
           local value="$1"
           value="${value//\\/\\\\}"
-          value="${value//$'\n'/\\n}"
           value="${value//\"/\\\"}"
           printf '"%s"' "$value"
         }

@@ -36,6 +36,10 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
+      - name: Remove CI .env file
+        if: always()
+        run: rm -f .env
+
   # ── Build ─────────────────────────────────────────────────────────────────
   build:
     name: Build
@@ -56,6 +60,10 @@ jobs:
 
       - name: Build application
         run: npm run build
+
+      - name: Remove CI .env file
+        if: always()
+        run: rm -f .env
 
       - name: Upload build logs on failure
         if: failure()
@@ -104,6 +112,10 @@ jobs:
 
       - name: Run Playwright tests
         run: npx playwright test
+
+      - name: Remove CI .env file
+        if: always()
+        run: rm -f .env
 
       - name: Upload Playwright report
         if: ${{ !cancelled() }}
