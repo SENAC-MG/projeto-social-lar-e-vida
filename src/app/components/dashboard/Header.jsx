@@ -1,7 +1,5 @@
 "use client";
 
-import react from "react";
-
 export default function Header() {
   return (
     <header className="h-16 bg-card border-b border-zinc-700 flex items-center justify-between px-4 md:px-6">
