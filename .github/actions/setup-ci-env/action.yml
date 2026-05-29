@@ -16,8 +16,8 @@ runs:
             continue
           fi
 
-          if printf '%s' "${!key}" | grep -q $'\n'; then
-            echo "::error::Variable must not contain newlines: $key"
+          if printf '%s' "${!key}" | LC_ALL=C grep -q '[[:cntrl:]]'; then
+            echo "::error::Variable must not contain control characters: $key"
             validation_failed=1
           fi
         done
@@ -27,9 +27,11 @@ runs:
         fi
 
         escape_dotenv_value() {
-          local value="$1"
-          value="${value//\'/\'\"\'\"\'}"
-          printf "'%s'" "$value"
+          python - "$1" <<'PY'
+import json
+import sys
+print(json.dumps(sys.argv[1]))
+PY
         }
 
         {
