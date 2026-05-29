@@ -27,11 +27,10 @@ runs:
         fi
 
         escape_dotenv_value() {
-          python - "$1" <<'PY'
-import json
-import sys
-print(json.dumps(sys.argv[1]))
-PY
+          local value="$1"
+          # Escape single quotes for safe single-quoted .env values.
+          value="${value//\'/\'\"\'\"\'}"
+          printf "'%s'" "$value"
         }
 
         {
@@ -39,4 +38,7 @@ PY
             printf '%s=%s\n' "$key" "$(escape_dotenv_value "${!key}")"
           done
         } > .env
-        chmod 600 .env
+        chmod 600 .env || {
+          echo "::error::Failed to set .env file permissions"
+          exit 1
+        }
