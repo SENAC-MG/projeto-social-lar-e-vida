@@ -20,11 +20,11 @@ runs:
     - name: Generate .env file for CI
       shell: bash
       run: |
-        cat <<EOF > .env
-        DATABASE_URL=${DATABASE_URL}
-        JWT_SECRET=${JWT_SECRET}
-        DEFAULT_ADMIN_EMAIL=${DEFAULT_ADMIN_EMAIL}
-        DEFAULT_ADMIN_PASSWORD=${DEFAULT_ADMIN_PASSWORD}
-        NODE_ENV=${NODE_ENV}
-        EOF
+        {
+          printf 'DATABASE_URL=%s\n' "$DATABASE_URL"
+          printf 'JWT_SECRET=%s\n' "$JWT_SECRET"
+          printf 'DEFAULT_ADMIN_EMAIL=%s\n' "$DEFAULT_ADMIN_EMAIL"
+          printf 'DEFAULT_ADMIN_PASSWORD=%s\n' "$DEFAULT_ADMIN_PASSWORD"
+          printf 'NODE_ENV=%s\n' "$NODE_ENV"
+        } > .env
         chmod 600 .env
