@@ -6,10 +6,17 @@ runs:
     - name: Validate required environment variables
       shell: bash
       run: |
+        required_keys=(DATABASE_URL JWT_SECRET DEFAULT_ADMIN_EMAIL DEFAULT_ADMIN_PASSWORD NODE_ENV)
         missing=0
-        for key in DATABASE_URL JWT_SECRET DEFAULT_ADMIN_EMAIL DEFAULT_ADMIN_PASSWORD NODE_ENV; do
+        for key in "${required_keys[@]}"; do
           if [ -z "${!key}" ]; then
             echo "::error::Missing required variable: $key"
+            missing=1
+            continue
+          fi
+
+          if printf '%s' "${!key}" | grep -q $'\n'; then
+            echo "::error::Variable must not contain newlines: $key"
             missing=1
           fi
         done
@@ -20,11 +27,18 @@ runs:
     - name: Generate .env file for CI
       shell: bash
       run: |
+        required_keys=(DATABASE_URL JWT_SECRET DEFAULT_ADMIN_EMAIL DEFAULT_ADMIN_PASSWORD NODE_ENV)
+        escape_dotenv_value() {
+          local value="$1"
+          value="${value//\\/\\\\}"
+          value="${value//$'\n'/\\n}"
+          value="${value//\"/\\\"}"
+          printf '"%s"' "$value"
+        }
+
         {
-          printf 'DATABASE_URL=%s\n' "$DATABASE_URL"
-          printf 'JWT_SECRET=%s\n' "$JWT_SECRET"
-          printf 'DEFAULT_ADMIN_EMAIL=%s\n' "$DEFAULT_ADMIN_EMAIL"
-          printf 'DEFAULT_ADMIN_PASSWORD=%s\n' "$DEFAULT_ADMIN_PASSWORD"
-          printf 'NODE_ENV=%s\n' "$NODE_ENV"
+          for key in "${required_keys[@]}"; do
+            printf '%s=%s\n' "$key" "$(escape_dotenv_value "${!key}")"
+          done
         } > .env
         chmod 600 .env
