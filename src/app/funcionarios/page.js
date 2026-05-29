@@ -124,10 +124,11 @@ export default function FuncionariosPage() {
 
                                 <tr className="text-[11px] uppercase tracking-wider text-foreground/50">
 
-                                    <th className="px-6 py-4 font-semibold">Nome Completo</th>
+                                    <th className="px-6 py-4 font-semibold">Nome</th>
                                     <th className="px-6 py-4 font-semibold">Email</th>
-                                    <th className="px-6 py-4 font-semibold">Telefone</th>
                                     <th className="px-6 py-4 font-semibold">Cargo</th>
+                                    <th className="px-6 py-4 font-semibold">Status</th>
+                                    <th className="px-6 py-4 font-semibold">Data Contratação</th>
                                     <th className="px-6 py-4 font-semibold text-center">
                                         Ações
                                     </th>
@@ -136,11 +137,11 @@ export default function FuncionariosPage() {
 
                             <tbody>
                                 {loading ? (
-                                    <EmptyTableState colSpan="5">
+                                    <EmptyTableState colSpan="6">
                                         Carregando...
                                     </EmptyTableState>
                                 ) : funcionarios.length === 0 ? (
-                                    <EmptyTableState colSpan="5">
+                                    <EmptyTableState colSpan="6">
                                         Nenhum funcionário cadastrado
                                     </EmptyTableState>
                                 ) : (
@@ -164,12 +165,24 @@ export default function FuncionariosPage() {
 
                                             <td className="px-6 py-4 text-foreground/60 text-sm">
 
-                                                {funcionario.telefone}
+                                                {funcionario.cargo}
+                                            </td>
+
+                                            <td className="px-6 py-4 text-sm">
+
+                                                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${funcionario.status === "ativo" ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300" :
+                                                        funcionario.status === "inativo" ? "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300" :
+                                                            "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300"
+                                                    }`}>
+                                                    {funcionario.status || "ativo"}
+                                                </span>
                                             </td>
 
                                             <td className="px-6 py-4 text-foreground/60 text-sm">
 
-                                                {funcionario.cargo}
+                                                {funcionario.dataContratacao
+                                                    ? new Date(funcionario.dataContratacao).toLocaleDateString("pt-BR")
+                                                    : "-"}
                                             </td>
 
                                             <td className="px-6 py-4">

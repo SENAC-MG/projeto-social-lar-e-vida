@@ -85,12 +85,14 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
                 </label>
                 <select
                   name="status"
-                  defaultValue={paciente.status ? "Ativo" : "Inativo"}
+                  defaultValue={paciente.status || "ativo"}
                   className={`${inputClass} appearance-none cursor-pointer`}
                 >
                   <option value="">Não alterar</option>
-                  <option value="Ativo">Ativo</option>
-                  <option value="Inativo">Inativo</option>
+                  <option value="ativo">Ativo</option>
+                  <option value="em tratamento">Em Tratamento</option>
+                  <option value="alta">Alta</option>
+                  <option value="inativo">Inativo</option>
                 </select>
               </div>
 
@@ -118,6 +120,22 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
 
               <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-gray-400">
+                  Sexo
+                </label>
+                <select
+                  name="sexo"
+                  defaultValue={paciente.sexo || ""}
+                  className={`${inputClass} appearance-none cursor-pointer`}
+                >
+                  <option value="">Não alterar</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Feminino">Feminino</option>
+                  <option value="Outro">Outro</option>
+                </select>
+              </div>
+
+              <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
+                <label className="text-sm font-medium text-gray-400">
                   Nascimento
                 </label>
                 <input
@@ -126,6 +144,23 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
                   defaultValue={formatDate(paciente.nascimento)}
                   className={inputClass}
                 />
+              </div>
+
+              <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
+                <label className="text-sm font-medium text-gray-400">
+                  Prioridade
+                </label>
+                <select
+                  name="prioridade"
+                  defaultValue={paciente.prioridade || "media"}
+                  className={`${inputClass} appearance-none cursor-pointer`}
+                >
+                  <option value="">Não alterar</option>
+                  <option value="baixa">Baixa</option>
+                  <option value="media">Média</option>
+                  <option value="alta">Alta</option>
+                  <option value="urgente">Urgente</option>
+                </select>
               </div>
 
               <div className="col-span-12 md:col-span-6 flex flex-col gap-1.5">
@@ -289,4 +324,3 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
     </div>
   );
 }
-

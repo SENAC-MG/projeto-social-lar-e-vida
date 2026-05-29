@@ -103,13 +103,12 @@ export default function ServicosPage() {
                         <table className="bg-[#F9FBFD] dark:bg-background w-full text-left border-collapse min-w-[800px]">
                             <thead className="bg-[#F9FBFD] dark:bg-zinc-800/50 border-b border-card-border">
                                 <tr className="text-[11px] uppercase tracking-wider text-foreground/50">
-                                    <th className="px-6 py-4 font-semibold">Nome Completo</th>
-                                    <th className="px-6 py-4 font-semibold">CPF</th>
-                                    <th className="px-6 py-4 font-semibold">Tipo</th>
-                                    <th className="px-6 py-4 font-semibold">Duração</th>
-                                    <th className="px-6 py-4 font-semibold">Valor</th>
-                                    <th className="px-6 py-4 font-semibold">Unidade</th>
-                                    <th className="px-6 py-4 font-semibold">Tempo</th>
+                                    <th className="px-6 py-4 font-semibold">Nome</th>
+                                    <th className="px-6 py-4 font-semibold">Tipo Serviço</th>
+                                    <th className="px-6 py-4 font-semibold">Status</th>
+                                    <th className="px-6 py-4 font-semibold">Responsável</th>
+                                    <th className="px-6 py-4 font-semibold">Valor (R$)</th>
+                                    <th className="px-6 py-4 font-semibold">Data Serviço</th>
                                     <th className="px-6 py-4 text-center font-semibold">
                                         Ações
                                     </th>
@@ -118,7 +117,7 @@ export default function ServicosPage() {
 
                             <tbody>
                                 {servicosFiltrados.length === 0 ? (
-                                    <EmptyTableState colSpan="8">
+                                    <EmptyTableState colSpan="7">
                                         Nenhum serviço cadastrado
                                     </EmptyTableState>
                                 ) : (
@@ -130,14 +129,29 @@ export default function ServicosPage() {
                                             <td className="px-6 py-4 text-foreground font-medium text-sm">
                                                 {servico.nome}
                                             </td>
-                                            <td className="px-6 py-4 text-sm text-foreground/60">{servico.cpf}</td>
-                                            <td className="px-6 py-4 text-sm text-foreground/60">{servico.tipoServico}</td>
-                                            <td className="px-6 py-4 text-sm text-foreground/60">{servico.duracao}</td>
+                                            <td className="px-6 py-4 text-sm text-foreground/60">
+                                                {servico.tipoServico}
+                                            </td>
+                                            <td className="px-6 py-4 text-sm">
+                                                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${servico.status === "pendente" ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300" :
+                                                        servico.status === "em andamento" ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300" :
+                                                            servico.status === "concluido" ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300" :
+                                                                "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300"
+                                                    }`}>
+                                                    {servico.status || "pendente"}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 text-sm text-foreground/60">
+                                                {servico.funcionarioResponsavel || "-"}
+                                            </td>
                                             <td className="px-6 py-4 text-green-500 font-medium text-sm">
                                                 R$ {servico.valorServico}
                                             </td>
-                                            <td className="px-6 py-4 text-sm text-foreground/60">{servico.unidade}</td>
-                                            <td className="px-6 py-4 text-sm text-foreground/60">{servico.tempoServico}</td>
+                                            <td className="px-6 py-4 text-sm text-foreground/60">
+                                                {servico.dataServico
+                                                    ? new Date(servico.dataServico).toLocaleDateString("pt-BR")
+                                                    : "-"}
+                                            </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex justify-center gap-2">
                                                     <BotaoEditarServico

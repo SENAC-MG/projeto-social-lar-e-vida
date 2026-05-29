@@ -22,7 +22,7 @@ export async function get_AllEmprestimos() {
  * - Retorna o Empréstimo criado
  */
 export async function post_Emprestimo(data) {
-  const { nome, cpf, rg, nascimento, dataEmprestimo, materiaisEmprestados, rua, numero, cep, bairro, cidade, telefone1, telefone2 } = data;
+  const { nome, cpf, rg, nascimento, dataEmprestimo, quantidade, rua, numero, cep, bairro, cidade, telefone1, telefone2, status, previsaoDevolucao, dataDevolucao } = data;
   return await prisma.Emprestimo.create({
     data: {
       nome,
@@ -30,14 +30,17 @@ export async function post_Emprestimo(data) {
       rg,
       nascimento,
       dataEmprestimo,
-      materiaisEmprestados,
+      quantidade,
       rua,
       numero,
       cep,
       bairro,
       cidade,
       telefone1,
-      telefone2
+      telefone2,
+      status,
+      previsaoDevolucao,
+      dataDevolucao
     }
   });
 }

@@ -81,6 +81,38 @@ export default function ModalEditarServico({ servico, onClose, onSuccess }) {
               placeholder="CPF"
               className={inputClass}
             />
+
+            <select
+              name="status"
+              defaultValue={servico.status || "pendente"}
+              className={`${inputClass} appearance-none cursor-pointer`}
+            >
+              <option value="">Não alterar</option>
+              <option value="pendente">Pendente</option>
+              <option value="em andamento">Em Andamento</option>
+              <option value="concluido">Concluído</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+
+            <input
+              name="dataServico"
+              type="date"
+              defaultValue={
+                servico.dataServico
+                  ? new Date(servico.dataServico).toISOString().split("T")[0]
+                  : ""
+              }
+              placeholder="Data do Serviço"
+              className={inputClass}
+            />
+
+            <input
+              name="funcionarioResponsavel"
+              type="text"
+              defaultValue={servico.funcionarioResponsavel || ""}
+              placeholder="Funcionário Responsável"
+              className={`md:col-span-2 ${inputClass}`}
+            />
           </div>
 
           <hr className="border-border" />

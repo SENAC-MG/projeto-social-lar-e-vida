@@ -2,6 +2,7 @@
 
 // import { revalidatePath } from 'next/cache';
 import { apaga_Servico, gravarServico, pegar_Servicos, updateServicoService } from "../services/servicoService";
+import { formatError } from "../../../lib/formatError";
 /**
  * Buscar todos os serviços
  *
@@ -24,12 +25,15 @@ export async function cadastrar_Servico(formData) {
   const valorServico = Number(formData.get('valorServico'));
   const unidade = formData.get('unidade')?.toString().trim();
   const tempoServico = formData.get('tempoServico')?.toString().trim();
+  const status = formData.get('status')?.toString()?.toString().trim();
+  const dataServico = new Date(formData.get('dataServico')?.toString().trim());
+  const funcionarioResponsavel = formData.get('funcionarioResponsavel')?.toString().trim();
 
-  console.log('Dados recebidos no action:', { nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico });
+  console.log('Dados recebidos no action:', { nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico, status, dataServico, funcionarioResponsavel });
 
   try {
     // Regras de negócio estão no service
-    await gravarServico(nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico);
+    await gravarServico(nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico, status, dataServico, funcionarioResponsavel);
     //Voltando com a resposta conrolada para o frontend
     return {
       success: true,
@@ -39,7 +43,7 @@ export async function cadastrar_Servico(formData) {
     // Retorna erro controlado para o frontend
     return {
       success: false,
-      error: err.message
+      error: formatError(err)
     };
   }
 }
@@ -58,7 +62,7 @@ export async function deletar_Servico(id) {
   } catch (err) {
     return {
       success: false,
-      error: err.message,
+      error: formatError(err),
     };
   }
 }
@@ -80,6 +84,9 @@ export async function updateServicoAction(id, formData) {
   const valorServico = formData.get("valorServico")?.toString();
   const unidade = formData.get("unidade")?.toString().trim();
   const tempoServico = formData.get("tempoServico")?.toString().trim();
+  const status = formData.get("status")?.toString().trim();
+  const dataServico = formData.get("dataServico")?.toString().trim();
+  const funcionarioResponsavel = formData.get("funcionarioResponsavel")?.toString().trim();
 
   if (nome) data.nome = nome;
   if (cpf) data.cpf = cpf;
@@ -88,6 +95,9 @@ export async function updateServicoAction(id, formData) {
   if (valorServico) data.valorServico = Number(valorServico);
   if (unidade) data.unidade = unidade;
   if (tempoServico) data.tempoServico = tempoServico;
+  if (status) data.status = status;
+  if (dataServico) data.dataServico = new Date(dataServico);
+  if (funcionarioResponsavel) data.funcionarioResponsavel = funcionarioResponsavel;
 
   try {
     const servicoAtualizado = await updateServicoService(id, data);
@@ -100,7 +110,7 @@ export async function updateServicoAction(id, formData) {
   } catch (err) {
     return {
       success: false,
-      error: err.message,
+      error: formatError(err),
     };
   }
 }

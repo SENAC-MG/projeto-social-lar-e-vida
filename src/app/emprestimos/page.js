@@ -107,24 +107,20 @@ export default function EmprestimosPage() {
                         <table className="bg-[#F9FBFD] dark:bg-background w-full text-left border-collapse min-w-[800px]">
                             <thead className="bg-[#F9FBFD] dark:bg-zinc-800/50 border-b border-card-border">
                                 <tr className="text-[11px] uppercase tracking-wider text-foreground/50 font-semibold">
-                                    <th className="px-6 py-4">Nome Completo</th>
-                                    <th className="px-6 py-4">Materiais</th>
+                                    <th className="px-6 py-4">Nome</th>
                                     <th className="px-6 py-4">CPF</th>
-                                    <th className="px-6 py-4">Cidade</th>
-                                    <th className="px-6 py-4">Telefone 1</th>
-                                    <th className="px-6 py-4">Data</th>
+                                    <th className="px-6 py-4">Quantidade</th>
+                                    <th className="px-6 py-4">Status</th>
+                                    <th className="px-6 py-4">Data Empréstimo</th>
+                                    <th className="px-6 py-4">Previsão Devolução</th>
                                     <th className="px-6 py-4 text-center">Ações</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                {loading ? (
+                                {emprestimosFiltrados.length === 0 ? (
                                     <EmptyTableState colSpan="7">
-                                        Carregando empréstimos...
-                                    </EmptyTableState>
-                                ) : emprestimos.length === 0 ? (
-                                    <EmptyTableState colSpan="7">
-                                        Nenhum empréstimo cadastrado
+                                        {loading ? "Carregando empréstimos..." : "Nenhum empréstimo encontrado"}
                                     </EmptyTableState>
                                 ) : (
                                     emprestimos.map((emprestimo) => (
@@ -135,17 +131,29 @@ export default function EmprestimosPage() {
                                             <td className="px-6 py-4 text-foreground font-medium text-sm">
                                                 {emprestimo.nome}
                                             </td>
-                                            <td className="px-6 py-4 text-sm max-w-[250px] truncate text-foreground/60" title={emprestimo.materiaisEmprestados}>
-                                                {emprestimo.materiaisEmprestados}
+                                            <td className="px-6 py-4 text-sm text-foreground/60">
+                                                {emprestimo.cpf}
                                             </td>
-                                            <td className="px-6 py-4 text-sm text-foreground/60">{emprestimo.cpf}</td>
-                                            <td className="px-6 py-4 text-sm text-foreground/60">{emprestimo.cidade}</td>
-                                            <td className="px-6 py-4 text-sm text-foreground/60">{emprestimo.telefone1}</td>
+                                            <td className="px-6 py-4 text-sm text-foreground/60">
+                                                {emprestimo.quantidade || 1}
+                                            </td>
+                                            <td className="px-6 py-4 text-sm">
+                                                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${emprestimo.status === "ativo" ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300" :
+                                                        emprestimo.status === "devolvido" ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300" :
+                                                            emprestimo.status === "atrasado" ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300" :
+                                                                "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300"
+                                                    }`}>
+                                                    {emprestimo.status || "ativo"}
+                                                </span>
+                                            </td>
                                             <td className="px-6 py-4 text-sm text-foreground/60">
                                                 {emprestimo.dataEmprestimo
-                                                    ? new Date(
-                                                        emprestimo.dataEmprestimo
-                                                    ).toLocaleDateString("pt-BR")
+                                                    ? new Date(emprestimo.dataEmprestimo).toLocaleDateString("pt-BR")
+                                                    : "-"}
+                                            </td>
+                                            <td className="px-6 py-4 text-sm text-foreground/60">
+                                                {emprestimo.previsaoDevolucao
+                                                    ? new Date(emprestimo.previsaoDevolucao).toLocaleDateString("pt-BR")
                                                     : "-"}
                                             </td>
 

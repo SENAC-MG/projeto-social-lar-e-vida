@@ -100,16 +100,12 @@ export default function PacientesPage() {
                         <table className="bg-[#F9FBFD] dark:bg-background w-full text-left border-collapse min-w-[900px]">
                             <thead className="bg-[#F9FBFD] dark:bg-zinc-800/50 border-b border-card-border">
                                 <tr className="text-[11px] uppercase tracking-wider text-foreground/50">
-                                    <th className="px-6 py-4 font-semibold">Nome Completo</th>
-                                    <th className="px-6 py-4 font-semibold">Tipo de Câncer</th>
-                                    <th className="px-6 py-4 font-semibold">Status</th>
+                                    <th className="px-6 py-4 font-semibold">Nome</th>
                                     <th className="px-6 py-4 font-semibold">CPF</th>
-                                    <th className="px-6 py-4 font-semibold">Cidade</th>
-                                    <th className="px-6 py-4 font-semibold">Telefone 1</th>
-                                    <th className="px-6 py-4 font-semibold">Telefone 2</th>
-                                    <th className="px-6 py-4 font-semibold">
-                                        Data de Cadastro
-                                    </th>
+                                    <th className="px-6 py-4 font-semibold">Sexo</th>
+                                    <th className="px-6 py-4 font-semibold">Status</th>
+                                    <th className="px-6 py-4 font-semibold">Prioridade</th>
+                                    <th className="px-6 py-4 font-semibold">Telefone</th>
                                     <th className="px-6 py-4 text-center font-semibold">
                                         Ações
                                     </th>
@@ -118,11 +114,11 @@ export default function PacientesPage() {
 
                             <tbody>
                                 {loading ? (
-                                    <EmptyTableState colSpan="9">
+                                    <EmptyTableState colSpan="7">
                                         Carregando...
                                     </EmptyTableState>
                                 ) : pacientes.length === 0 ? (
-                                    <EmptyTableState colSpan="9">
+                                    <EmptyTableState colSpan="7">
                                         Nenhum paciente cadastrado
                                     </EmptyTableState>
                                 ) : (
@@ -135,27 +131,31 @@ export default function PacientesPage() {
                                                 {paciente.nome}
                                             </td>
                                             <td className="px-6 py-4 text-foreground/60 text-sm">
-                                                {paciente.tipoCancer}
-                                            </td>
-                                            <td className="px-6 py-4 text-foreground/60 text-sm">
-                                                {paciente.status}
-                                            </td>
-                                            <td className="px-6 py-4 text-foreground/60 text-sm">
                                                 {paciente.cpf}
                                             </td>
                                             <td className="px-6 py-4 text-foreground/60 text-sm">
-                                                {paciente.cidade}
+                                                {paciente.sexo || "-"}
+                                            </td>
+                                            <td className="px-6 py-4 text-sm">
+                                                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${paciente.status === "ativo" ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300" :
+                                                        paciente.status === "em tratamento" ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300" :
+                                                            paciente.status === "alta" ? "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300" :
+                                                                "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300"
+                                                    }`}>
+                                                    {paciente.status || "-"}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 text-sm">
+                                                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${paciente.prioridade === "urgente" ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300" :
+                                                        paciente.prioridade === "alta" ? "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300" :
+                                                            paciente.prioridade === "media" ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300" :
+                                                                "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300"
+                                                    }`}>
+                                                    {paciente.prioridade || "-"}
+                                                </span>
                                             </td>
                                             <td className="px-6 py-4 text-foreground/60 text-sm">
-                                                {paciente.telefone1}
-                                            </td>
-                                            <td className="px-6 py-4 text-foreground/60 text-sm">
-                                                {paciente.telefone2}
-                                            </td>
-                                            <td className="px-6 py-4 text-foreground/60 text-sm">
-                                                {paciente.createdAt
-                                                    ? new Date(paciente.createdAt).toLocaleDateString("pt-BR")
-                                                    : "-"}
+                                                {paciente.telefone1 || "-"}
                                             </td>
 
                                             <td className="px-6 py-4">

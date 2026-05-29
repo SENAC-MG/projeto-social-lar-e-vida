@@ -24,20 +24,27 @@ export async function gravarEmprestimo(
   rg,
   nascimento,
   dataEmprestimo,
-  materiaisEmprestados,
+  quantidade,
   rua,
   numero,
   cep,
   bairro,
   cidade,
   telefone1,
-  telefone2
+  telefone2,
+  status,
+  previsaoDevolucao,
+  dataDevolucao
 ) {
 
   // Validação: campos obrigatórios
-  if (!nome || !cpf || !rg || !nascimento || !dataEmprestimo || !materiaisEmprestados || !rua || !numero || !cep || !bairro || !cidade || !telefone1 || !telefone2) {
-    throw new Error('Todos os campos são obrigatórios!');
+  if (!nome || !cpf || !rg || !nascimento || !dataEmprestimo || quantidade == null || Number.isNaN(Number(quantidade)) || !rua || !numero || !cep || !bairro || !cidade || !telefone1 || !telefone2 || !status) {
+    throw new Error('Todos os campos obrigatórios não foram preenchidos.');
   }
+
+  // Converte datas opcionais quando fornecidas
+  const previsao = previsaoDevolucao ? new Date(previsaoDevolucao) : null;
+  const devolucao = dataDevolucao ? new Date(dataDevolucao) : null;
 
 
   // Se passou por todas regras pode salvar -> pode salvar
@@ -47,14 +54,17 @@ export async function gravarEmprestimo(
     rg,
     nascimento,
     dataEmprestimo,
-    materiaisEmprestados,
+    quantidade: Number(quantidade),
     rua,
     numero,
     cep,
     bairro,
     cidade,
     telefone1,
-    telefone2
+    telefone2,
+    status,
+    previsaoDevolucao: previsao,
+    dataDevolucao: devolucao
   });
 }
 

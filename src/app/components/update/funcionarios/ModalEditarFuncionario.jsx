@@ -91,6 +91,22 @@ export default function ModalEditarFuncionario({
                 />
               </div>
 
+              <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
+                <label className="text-sm font-medium text-gray-400">
+                  Status
+                </label>
+                <select
+                  name="status"
+                  defaultValue={funcionario.status || "ativo"}
+                  className={`${inputClass} appearance-none cursor-pointer`}
+                >
+                  <option value="">Não alterar</option>
+                  <option value="ativo">Ativo</option>
+                  <option value="inativo">Inativo</option>
+                  <option value="afastado">Afastado</option>
+                </select>
+              </div>
+
               <div className="col-span-12 md:col-span-6 flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-gray-400">
                   Email
@@ -116,6 +132,24 @@ export default function ModalEditarFuncionario({
                   className={inputClass}
                 />
               </div>
+
+              <div className="col-span-12 md:col-span-6 flex flex-col gap-1.5">
+                <label className="text-sm font-medium text-gray-400">
+                  Data de Contratação
+                </label>
+                <input
+                  name="dataContratacao"
+                  type="date"
+                  defaultValue={
+                    funcionario.dataContratacao
+                      ? new Date(funcionario.dataContratacao)
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  className={inputClass}
+                />
+              </div>
             </div>
           </section>
 
@@ -134,4 +168,3 @@ export default function ModalEditarFuncionario({
     </div>
   );
 }
-
