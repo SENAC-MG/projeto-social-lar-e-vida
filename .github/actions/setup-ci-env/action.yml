@@ -7,30 +7,29 @@ runs:
       shell: bash
       run: |
         required_keys=(DATABASE_URL JWT_SECRET DEFAULT_ADMIN_EMAIL DEFAULT_ADMIN_PASSWORD NODE_ENV)
-        missing=0
+        validation_failed=0
 
         for key in "${required_keys[@]}"; do
           if [ -z "${!key}" ]; then
             echo "::error::Missing required variable: $key"
-            missing=1
+            validation_failed=1
             continue
           fi
 
           if printf '%s' "${!key}" | grep -q $'\n'; then
             echo "::error::Variable must not contain newlines: $key"
-            missing=1
+            validation_failed=1
           fi
         done
 
-        if [ "$missing" -ne 0 ]; then
+        if [ "$validation_failed" -ne 0 ]; then
           exit 1
         fi
 
         escape_dotenv_value() {
           local value="$1"
-          value="${value//\\/\\\\}"
-          value="${value//\"/\\\"}"
-          printf '"%s"' "$value"
+          value="${value//\'/\'\"\'\"\'}"
+          printf "'%s'" "$value"
         }
 
         {
