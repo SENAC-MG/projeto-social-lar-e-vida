@@ -1,0 +1,30 @@
+name: Setup CI environment
+description: Validates required env vars and generates a restricted .env file for CI jobs
+runs:
+  using: composite
+  steps:
+    - name: Validate required environment variables
+      shell: bash
+      run: |
+        missing=0
+        for key in DATABASE_URL JWT_SECRET DEFAULT_ADMIN_EMAIL DEFAULT_ADMIN_PASSWORD NODE_ENV; do
+          if [ -z "${!key}" ]; then
+            echo "::error::Missing required variable: $key"
+            missing=1
+          fi
+        done
+        if [ "$missing" -ne 0 ]; then
+          exit 1
+        fi
+
+    - name: Generate .env file for CI
+      shell: bash
+      run: |
+        cat <<EOF > .env
+        DATABASE_URL=${DATABASE_URL}
+        JWT_SECRET=${JWT_SECRET}
+        DEFAULT_ADMIN_EMAIL=${DEFAULT_ADMIN_EMAIL}
+        DEFAULT_ADMIN_PASSWORD=${DEFAULT_ADMIN_PASSWORD}
+        NODE_ENV=${NODE_ENV}
+        EOF
+        chmod 600 .env
