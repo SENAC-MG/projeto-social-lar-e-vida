@@ -16,6 +16,7 @@ runs:
             continue
           fi
 
+          # Control characters can break .env parsing and enable injection in downstream tooling.
           if printf '%s' "${!key}" | LC_ALL=C grep -q '[[:cntrl:]]'; then
             echo "::error::Variable must not contain control characters: $key"
             validation_failed=1
@@ -28,7 +29,7 @@ runs:
 
         escape_dotenv_value() {
           local value="$1"
-          # Escape single quotes for safe single-quoted .env values.
+          # Replace single quotes with '\'' (close-quote, escaped quote, reopen-quote).
           value="${value//\'/\'\"\'\"\'}"
           printf "'%s'" "$value"
         }
