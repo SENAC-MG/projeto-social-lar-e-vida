@@ -4,42 +4,84 @@ import { deletar_Servico } from "@modulos/servicos/controller/servicoController"
 import { toast } from "sonner";
 import { Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 export default function BotaoDeletarServico({ id, onDeleted }) {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function handleDelete() {
-    const confirmar = window.confirm(
-      "Tem certeza que deseja deletar este serviço?",
-    );
+    const result = await Swal.fire({
+      title: "Digite 123 para confirmar exclusão",
+      input: "text",
+      text: "Essa ação não poderá ser desfeita",
+      inputPlaceholder: "Digite 123",
+      showCancelButton: true,
+      confirmButtonText: "Deletar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#d33",
 
-    if (!confirmar) return;
+      preConfirm: (valorDigitado) => {
+        if (valorDigitado !== "123") {
+          Swal.showValidationMessage(
+            "Código incorreto. Digite 123 para deletar.",
+          );
+          return false;
+        }
+
+        return true;
+      },
+
+      allowOutsideClick: () => !Swal.isLoading(),
+    });
+
+    if (!result.isConfirmed) return;
+
+    setLoading(true);
 
     try {
-      setLoading(true);
-
       const res = await deletar_Servico(id);
 
-      if (res?.success) {
+      if (res.success) {
         toast.success(res.message || "Serviço deletado com sucesso!");
+
+        Swal.fire({
+          icon: "success",
+          title: "Serviço deletado com sucesso!",
+          timer: 2000,
+          showConfirmButton: false,
+        });
 
         if (onDeleted) {
           await onDeleted();
         }
       } else {
-        toast.error(res?.error || "Erro ao deletar serviço.");
+        toast.error(res.error || "Erro ao deletar serviço.");
       }
     } catch (error) {
-      console.error("Erro ao deletar serviço:", error);
-
-      toast.error("Erro inesperado ao deletar.");
+      toast.error(error?.message || "Erro inesperado ao deletar serviço.");
     } finally {
       setLoading(false);
+      try {
+        if (onDeleted && typeof onDeleted === "function") {
+          await onDeleted();
+        }
+      } catch (e) {
+        // ignore
+      }
+
+      try {
+        router.refresh();
+      } catch (e) {
+        // ignore
+      }
     }
   }
 
   return (
     <button
+      type="button"
       onClick={handleDelete}
       disabled={loading}
       title="Deletar serviço"

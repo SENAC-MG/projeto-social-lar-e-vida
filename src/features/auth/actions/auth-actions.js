@@ -6,27 +6,34 @@ import {
   SESSION_COOKIE,
   SESSION_MAX_AGE,
 } from '@/features/auth/constants/auth-constants';
-import {
-  authenticate,
-  isResetTokenValid,
-  requestPasswordReset,
-  resetPassword,
-} from '@/features/auth/services/auth-service';
 
-export async function loginAction(email, senha) {
+import { authenticate } from '@/features/auth/services/auth-service';
+
+import { generateJwtToken } from '@/features/auth/utils/jwt';
+
+export async function loginAction(email, senha, rememberSession = false) {
   const result = await authenticate(email, senha);
 
   if (!result.success) {
     return result;
   }
 
+  // cria JWT
+  const token = await generateJwtToken({
+    userId: result.userId,
+  });
+
   const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE, String(result.userId), {
+
+  // salva JWT no cookie
+  cookieStore.set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
     path: '/',
-    maxAge: SESSION_MAX_AGE,
+    maxAge: rememberSession
+      ? 60 * 60 * 24 * 365 * 10 // 10 anos,
+      : SESSION_MAX_AGE, // 1 dia
   });
 
   redirect('/home');
@@ -58,4 +65,12 @@ export async function resetPasswordAction(formData) {
       error: error?.message || 'Não foi possível redefinir a senha.',
     };
   }
+}
+
+export async function logoutAction() {
+  const cookieStore = await cookies();
+
+  cookieStore.delete(SESSION_COOKIE);
+
+  redirect('/');
 }

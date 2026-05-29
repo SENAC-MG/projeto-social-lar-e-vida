@@ -9,7 +9,7 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
   const [loading, setLoading] = useState(false);
 
   const inputClass =
-    "w-full bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] outline-none transition-all placeholder:text-gray-600";
+    "bg-card w-full border border-border rounded-lg px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground";
 
   const formatDate = (date) => {
     if (!date) return "";
@@ -61,7 +61,7 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
           className="p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
         >
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <User size={14} /> Dados Pessoais
             </h3>
 
@@ -85,12 +85,14 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
                 </label>
                 <select
                   name="status"
-                  defaultValue={paciente.status ? "Ativo" : "Inativo"}
+                  defaultValue={paciente.status || "ativo"}
                   className={`${inputClass} appearance-none cursor-pointer`}
                 >
                   <option value="">Não alterar</option>
-                  <option value="Ativo">Ativo</option>
-                  <option value="Inativo">Inativo</option>
+                  <option value="ativo">Ativo</option>
+                  <option value="em tratamento">Em Tratamento</option>
+                  <option value="alta">Alta</option>
+                  <option value="inativo">Inativo</option>
                 </select>
               </div>
 
@@ -118,6 +120,22 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
 
               <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-gray-400">
+                  Sexo
+                </label>
+                <select
+                  name="sexo"
+                  defaultValue={paciente.sexo || ""}
+                  className={`${inputClass} appearance-none cursor-pointer`}
+                >
+                  <option value="">Não alterar</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Feminino">Feminino</option>
+                  <option value="Outro">Outro</option>
+                </select>
+              </div>
+
+              <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
+                <label className="text-sm font-medium text-gray-400">
                   Nascimento
                 </label>
                 <input
@@ -126,6 +144,23 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
                   defaultValue={formatDate(paciente.nascimento)}
                   className={inputClass}
                 />
+              </div>
+
+              <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
+                <label className="text-sm font-medium text-gray-400">
+                  Prioridade
+                </label>
+                <select
+                  name="prioridade"
+                  defaultValue={paciente.prioridade || "media"}
+                  className={`${inputClass} appearance-none cursor-pointer`}
+                >
+                  <option value="">Não alterar</option>
+                  <option value="baixa">Baixa</option>
+                  <option value="media">Média</option>
+                  <option value="alta">Alta</option>
+                  <option value="urgente">Urgente</option>
+                </select>
               </div>
 
               <div className="col-span-12 md:col-span-6 flex flex-col gap-1.5">
@@ -156,7 +191,7 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <Stethoscope size={14} /> Informações Clínicas
             </h3>
 
@@ -203,7 +238,7 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <MapPin size={14} /> Endereço
             </h3>
 
@@ -251,7 +286,7 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
           </section>
 
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <Phone size={14} /> Contato
             </h3>
 
@@ -278,7 +313,7 @@ export default function ModalEditarPaciente({ paciente, onClose, onSuccess }) {
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 bg-[#F97316] hover:bg-[#e85a1a] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-orange-900/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 !bg-[#5C7A53] hover:!bg-[#5C7A53] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-[#5C7A53]/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Save size={18} />
               {loading ? "Salvando..." : "Salvar alterações"}

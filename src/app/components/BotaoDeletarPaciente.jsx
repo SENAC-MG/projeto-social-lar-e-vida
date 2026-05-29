@@ -4,42 +4,72 @@ import { deletar_Paciente } from "@modulos/pacientes/controller/pacienteControll
 import { toast } from "sonner";
 import { Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
-export default function BotaoDeletar({ id, onDeleted }) {
+export default function BotaoDeletarPaciente({ id, onDeleted }) {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function handleDelete() {
-    const confirmar = window.confirm(
-      "Tem certeza que deseja deletar este paciente?",
-    );
+    const result = await Swal.fire({
+      title: "Digite 123 para confirmar exclusão",
+      input: "text",
+      text: "Essa ação não poderá ser desfeita",
+      inputPlaceholder: "Digite 123",
+      showCancelButton: true,
+      confirmButtonText: "Deletar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#d33",
 
-    if (!confirmar) return;
+      preConfirm: (valorDigitado) => {
+        if (valorDigitado !== "123") {
+          Swal.showValidationMessage(
+            "Código incorreto. Digite 123 para deletar.",
+          );
+          return false;
+        }
+
+        return true;
+      },
+
+      allowOutsideClick: () => !Swal.isLoading(),
+    });
+
+    if (!result.isConfirmed) return;
+
+    setLoading(true);
 
     try {
-      setLoading(true);
-
       const res = await deletar_Paciente(id);
 
-      if (res?.success) {
+      if (res.success) {
         toast.success(res.message || "Paciente deletado com sucesso!");
+
+        Swal.fire({
+          icon: "success",
+          title: "Paciente deletado com sucesso!",
+          timer: 2000,
+          showConfirmButton: false,
+        });
 
         if (onDeleted) {
           await onDeleted();
         }
       } else {
-        toast.error(res?.error || "Erro ao deletar paciente.");
+        toast.error(res.error || "Erro ao deletar paciente.");
       }
     } catch (error) {
-      console.error("Erro ao deletar paciente:", error);
-
-      toast.error("Erro inesperado ao deletar.");
+      toast.error(error?.message || "Erro inesperado ao deletar paciente.");
     } finally {
       setLoading(false);
+      router.refresh();
     }
   }
 
   return (
     <button
+      type="button"
       onClick={handleDelete}
       disabled={loading}
       title="Deletar paciente"

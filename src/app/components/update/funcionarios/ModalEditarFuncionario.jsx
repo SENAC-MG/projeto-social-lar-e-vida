@@ -13,7 +13,7 @@ export default function ModalEditarFuncionario({
   const [loading, setLoading] = useState(false);
 
   const inputClass =
-    "w-full bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] outline-none transition-all placeholder:text-gray-600";
+    "bg-card w-full border border-border rounded-lg px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground";
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -42,9 +42,9 @@ export default function ModalEditarFuncionario({
       className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
       onClick={handleOverlayClick}
     >
-      <div className="bg-[#11141d] w-full max-w-4xl rounded-2xl shadow-2xl border border-gray-800 overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
-        <div className="flex justify-between items-center p-6 border-b border-gray-800 bg-[#1a1f2e]">
-          <h2 className="text-xl font-bold text-white">Editar Funcionário</h2>
+      <div className="bg-[#F7F9FC] dark:bg-[#081120] w-full max-w-4xl rounded-2xl shadow-2xl border border-gray-800 overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
+        <div className="bg-[#F7F9FC] dark:bg-[#081120] flex justify-between items-center p-6 border-b border-gray-800 bg-[#1a1f2e]">
+          <h2 className="text-xl font-bold text-primary">Editar Funcionário</h2>
 
           <button
             type="button"
@@ -57,10 +57,10 @@ export default function ModalEditarFuncionario({
 
         <form
           onSubmit={handleSubmit}
-          className="p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
+          className="bg-[#F7F9FC] dark:bg-[#081120] p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
         >
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
               <User size={14} /> Dados do Funcionário
             </h3>
 
@@ -91,6 +91,22 @@ export default function ModalEditarFuncionario({
                 />
               </div>
 
+              <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">
+                <label className="text-sm font-medium text-gray-400">
+                  Status
+                </label>
+                <select
+                  name="status"
+                  defaultValue={funcionario.status || "ativo"}
+                  className={`${inputClass} appearance-none cursor-pointer`}
+                >
+                  <option value="">Não alterar</option>
+                  <option value="ativo">Ativo</option>
+                  <option value="inativo">Inativo</option>
+                  <option value="afastado">Afastado</option>
+                </select>
+              </div>
+
               <div className="col-span-12 md:col-span-6 flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-gray-400">
                   Email
@@ -116,6 +132,24 @@ export default function ModalEditarFuncionario({
                   className={inputClass}
                 />
               </div>
+
+              <div className="col-span-12 md:col-span-6 flex flex-col gap-1.5">
+                <label className="text-sm font-medium text-gray-400">
+                  Data de Contratação
+                </label>
+                <input
+                  name="dataContratacao"
+                  type="date"
+                  defaultValue={
+                    funcionario.dataContratacao
+                      ? new Date(funcionario.dataContratacao)
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  className={inputClass}
+                />
+              </div>
             </div>
           </section>
 
@@ -123,7 +157,7 @@ export default function ModalEditarFuncionario({
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 bg-[#F97316] hover:bg-[#e85a1a] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-orange-900/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 !bg-[#5C7A53] hover:!bg-[#5C7A53] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-[#5C7A53]/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Save size={18} />
               {loading ? "Salvando..." : "Salvar alterações"}

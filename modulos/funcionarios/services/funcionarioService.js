@@ -23,11 +23,13 @@ export async function gravarFuncionario(
   nome,
   email,
   cargo,
-  telefone
+  telefone,
+  status,
+  dataContratacao
 ) {
 
   // Validação: campos obrigatórios
-  if (!nome || !email || !cargo || !telefone) {
+  if (!nome || !email || !cargo || !telefone || !status || !dataContratacao) {
     throw new Error('Todos os campos são obrigatórios!');
   }
 
@@ -37,7 +39,9 @@ export async function gravarFuncionario(
     nome,
     email,
     cargo,
-    telefone
+    telefone,
+    status,
+    dataContratacao
   });
 }
 

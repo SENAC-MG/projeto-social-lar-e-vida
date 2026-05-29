@@ -13,7 +13,7 @@ export default function ModalEditarEmprestimo({
   const [loading, setLoading] = useState(false);
 
   const inputClass =
-    "w-full bg-[#1a1f2e] border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] outline-none transition-all placeholder:text-gray-600";
+    "bg-card w-full border border-border rounded-lg px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground";
 
   const formatDate = (date) => {
     if (!date) return "";
@@ -65,7 +65,7 @@ export default function ModalEditarEmprestimo({
           className="p-6 space-y-8 overflow-y-auto max-h-[85vh] custom-scrollbar"
         >
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-wider mb-4">
               Dados Pessoais
             </h3>
 
@@ -107,11 +107,48 @@ export default function ModalEditarEmprestimo({
                 defaultValue={formatDate(emprestimo.dataEmprestimo)}
                 className={inputClass}
               />
+
+              <input
+                name="quantidade"
+                type="number"
+                min="1"
+                defaultValue={emprestimo.quantidade || 1}
+                placeholder="Quantidade"
+                className={inputClass}
+              />
+
+              <select
+                name="status"
+                defaultValue={emprestimo.status || "ativo"}
+                className={`${inputClass} appearance-none cursor-pointer`}
+              >
+                <option value="">Não alterar</option>
+                <option value="ativo">Ativo</option>
+                <option value="devolvido">Devolvido</option>
+                <option value="atrasado">Atrasado</option>
+                <option value="cancelado">Cancelado</option>
+              </select>
+
+              <input
+                name="previsaoDevolucao"
+                type="date"
+                defaultValue={formatDate(emprestimo.previsaoDevolucao)}
+                placeholder="Previsão Devolução"
+                className={inputClass}
+              />
+
+              <input
+                name="dataDevolucao"
+                type="date"
+                defaultValue={formatDate(emprestimo.dataDevolucao)}
+                placeholder="Data Devolução"
+                className={inputClass}
+              />
             </div>
           </section>
 
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-wider mb-4">
               Materiais Emprestados
             </h3>
 
@@ -125,7 +162,7 @@ export default function ModalEditarEmprestimo({
           </section>
 
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-wider mb-4">
               Endereço
             </h3>
 
@@ -173,7 +210,7 @@ export default function ModalEditarEmprestimo({
           </section>
 
           <section>
-            <h3 className="text-[#F97316] text-xs font-bold uppercase tracking-wider mb-4">
+            <h3 className="text-primary text-xs font-bold uppercase tracking-wider mb-4">
               Contato
             </h3>
 
@@ -200,7 +237,7 @@ export default function ModalEditarEmprestimo({
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 bg-[#F97316] hover:bg-[#e85a1a] text-white px-8 py-2.5 rounded-lg font-bold transition-all disabled:opacity-50"
+              className="flex items-center gap-2 !bg-[#5C7A53] hover:!bg-[#5C7A53] text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-lg shadow-[#5C7A53]/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Save size={18} />
               {loading ? "Salvando..." : "Salvar alterações"}

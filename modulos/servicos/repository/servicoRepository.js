@@ -22,7 +22,7 @@ export async function get_AllServicos() {
  * - Retorna o serviço criado
  */
 export async function post_Servico(data) {
-  const { nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico } = data;
+  const { nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico, status, dataServico, funcionarioResponsavel } = data;
   return await prisma.Servicos.create({
     data: {
       nome,
@@ -31,7 +31,10 @@ export async function post_Servico(data) {
       duracao,
       valorServico,
       unidade,
-      tempoServico
+      tempoServico,
+      status,
+      dataServico,
+      funcionarioResponsavel
     }
   });
 }

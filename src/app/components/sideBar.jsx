@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  Sun,
-  Moon,
-  Menu,
-} from "lucide-react";
+import { Sun, Moon, Menu, LogOut } from "lucide-react";
 import Image from "next/image";
 import logo from "../../../public/logo.png";
 import Link from "next/link";
@@ -12,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "@wrksz/themes/client";
 import { useEffect, useState } from "react";
 import { mainNavigationItems } from "@/shared/layouts/navigation-config";
+import LogoutButton from "./LogoutButton";
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
   const pathname = usePathname();
@@ -22,14 +19,15 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
     setMounted(true);
   }, []);
 
+  if (!mounted) return null;
+
   const isDark = mounted ? resolvedTheme === "dark" : true;
   const nextTheme = isDark ? "light" : "dark";
   const toggleLabel = isDark ? "Modo Claro" : "Modo Escuro";
 
-  // Mantive as outras variáveis de cores caso queira usá-las nos textos/bordas
   const textColor = isDark ? "#A3A3A3" : "#737373";
-  const titleColor = isDark ? "#FAFAFA" : "#1D1C1A";
-  const borderColor = isDark ? "rgba(255,255,255,0.1)" : "#E5E5E5";
+  const titleColor = isDark ? "#F2F2F2" : "#121212";
+  const borderColor = isDark ? "#333333" : "#E3E3E3";
   const logoBg = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)";
   const logoBorder = isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.1)";
 
@@ -45,20 +43,22 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
       )}
 
       <aside
-        className={`fixed md:sticky top-0 left-0 h-screen flex flex-col p-4 transition-all duration-300 z-50 
-    bg-gray-100 dark:bg-black
-    ${isOpen
-            ? "w-64 translate-x-0"
-            : "w-0 -translate-x-full md:w-20 md:translate-x-0 overflow-hidden md:overflow-visible"
-          }
+        className={`fixed md:sticky top-0 left-0 min-h-screen flex flex-col p-4 transition-all duration-300 z-50
+    bg-background
+    ${
+      isOpen
+        ? "w-64 translate-x-0"
+        : "w-0 -translate-x-full md:w-20 md:translate-x-0 overflow-hidden md:overflow-visible"
+    }
   `}
         style={{
           borderRight: `1px solid ${borderColor}`,
         }}
       >
         <div
-          className={`flex items-center mb-10 min-h-[72px] ${isOpen ? "justify-between ml-2" : "justify-center"
-            }`}
+          className={`flex items-center mb-10 min-h-[72px] ${
+            isOpen ? "justify-between ml-2" : "justify-center"
+          }`}
         >
           {isOpen ? (
             <>
@@ -103,7 +103,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
               <button
                 type="button"
                 onClick={toggleSidebar}
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
+                className="cursor-pointer p-2 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
                 style={{ color: textColor }}
                 aria-label="Recolher barra lateral"
               >
@@ -114,7 +114,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
             <button
               type="button"
               onClick={toggleSidebar}
-              className="hidden md:block p-2 hover:bg-white/10 rounded-lg transition-colors mx-auto"
+              className="cursor-pointer hidden md:block p-2 hover:bg-white/10 rounded-lg transition-colors mx-auto"
               style={{ color: textColor }}
               aria-label="Expandir barra lateral"
             >
@@ -133,13 +133,15 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                 key={item.path}
                 href={item.path}
                 title={!isOpen ? item.label : undefined}
-                className={`flex items-center w-full px-4 py-3 rounded-lg transition-all ${isOpen ? "gap-3" : "justify-center"
-                  } ${isActive
-                    ? "bg-primary text-white"
+                className={`flex items-center w-full px-4 py-3 rounded-lg transition-all ${
+                  isOpen ? "gap-3" : "justify-center"
+                } ${
+                  isActive
+                    ? "bg-[#5C7A53] text-white"
                     : "bg-transparent hover:bg-white/10"
-                  }`}
+                }`}
                 style={{
-                  color: isActive ? "#FAFAFA" : textColor,
+                  color: isActive ? "#F2F2F2" : textColor,
                 }}
               >
                 <Icon size={20} className="flex-shrink-0" />
@@ -153,27 +155,27 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
           })}
         </nav>
 
-        <div className="mt-auto border-t pt-4" style={{ borderColor }}>
+        <div
+          className="mt-auto border-t pt-4 flex flex-col gap-2"
+          style={{ borderColor }}
+        >
+          <LogoutButton />
+
           <button
             type="button"
             onClick={() => mounted && setTheme(nextTheme)}
-            disabled={!mounted}
             data-testid="theme-toggle"
-            aria-label={
-              mounted
-                ? `Ativar ${toggleLabel.toLowerCase()}`
-                : "Carregando tema"
-            }
-            className={`flex items-center py-2 transition-colors ${isOpen ? "gap-3 px-4" : "justify-center"
-              } ${mounted ? "cursor-pointer" : "cursor-default opacity-70"}`}
+            className={`flex items-center py-2 transition-colors rounded-lg ${
+              isOpen ? "gap-3 px-4" : "justify-center"
+            } ${mounted ? "cursor-pointer" : "cursor-default opacity-70"}`}
             style={{ color: textColor }}
           >
             <span className="relative flex h-6 w-11 flex-shrink-0 items-center rounded-full bg-foreground/15 transition-colors duration-300">
               <span
-                className={`absolute h-5 w-5 rounded-full bg-primary transition-transform duration-300 ease-out ${isDark ? "translate-x-5" : "translate-x-1"
-                  }`}
+                className={`absolute h-5 w-5 rounded-full bg-[#5C7A53] transition-transform duration-300 ease-out ${
+                  isDark ? "translate-x-5" : "translate-x-1"
+                }`}
               />
-
               {isDark ? (
                 <Moon size={12} className="absolute left-1 text-white/80" />
               ) : (

@@ -35,13 +35,15 @@ model PasswordResetToken {
 model Pacientes {
   id            Int      @id @default(autoincrement())
   nome          String
-  status        Boolean
+  status        String @default("ativo")
   cpf           String   @unique
   rg            String
   nascimento    DateTime
+  sexo          String
   profissao     String
   dataCadastro  DateTime @default(now())
   tipoCancer    String
+  prioridade    String @default("media")
   CIDprincipal  String
   CIDsecundario String
   rua           String
@@ -60,7 +62,10 @@ model Emprestimo {
   rg                   String
   nascimento           DateTime
   dataEmprestimo       DateTime @default(now())
-  materiaisEmprestados String
+  quantidade           Int @default(1)
+  status               String @default("ativo")
+  previsaoDevolucao DateTime?
+  dataDevolucao DateTime?
   rua                  String
   numero               String
   cep                  String
@@ -74,6 +79,9 @@ model Servicos {
   id           Int    @id @default(autoincrement())
   nome         String
   cpf          String
+  status       String @default("pendente")
+  dataServico  DateTime @default(now())
+  funcionarioResponsavel  String?
   tipoServico  String
   duracao      String
   valorServico Float
@@ -84,7 +92,9 @@ model Servicos {
 model Funcionarios {
   id       Int    @id @default(autoincrement())
   nome     String
+  status   String @default("ativo")
   email    String @unique
   cargo    String
   telefone String
+  dataContratacao DateTime @default(now())
 }

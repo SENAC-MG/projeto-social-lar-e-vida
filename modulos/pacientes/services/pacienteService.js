@@ -26,7 +26,6 @@ export async function gravarPaciente(
   rg,
   nascimento,
   profissao,
-  dataCadastro,
   tipoCancer,
   CIDprincipal,
   CIDsecundario,
@@ -36,35 +35,49 @@ export async function gravarPaciente(
   bairro,
   cidade,
   telefone1,
-  telefone2
+  telefone2,
+  sexo,
+  prioridade
 ) {
 
-  // Validação: campos obrigatórios
-  if (!nome || !status || !cpf || !rg || !nascimento || !profissao || !dataCadastro || !tipoCancer || !CIDprincipal || !CIDsecundario || !rua || !numero || !cep || !bairro || !cidade || !telefone1 || !telefone2) {
-    throw new Error('Todos os campos são obrigatórios!');
+  // Validação: campos obrigatórios do formulário (relaxada para aceitar campos opcionais do modal)
+  if (!nome || !cpf || !rg || !nascimento || isNaN(new Date(nascimento).getTime()) || !sexo || !status || !prioridade) {
+    throw new Error('Campos obrigatórios ausentes (nome, cpf, rg, nascimento, sexo, status, prioridade).');
   }
 
 
   // Se passou por todas regras pode salvar -> pode salvar
-  return await post_Paciente({
-    nome,
-    status,
-    cpf,
-    rg,
-    nascimento,
-    profissao,
-    dataCadastro,
-    tipoCancer,
-    CIDprincipal,
-    CIDsecundario,
-    rua,
-    numero,
-    cep,
-    bairro,
-    cidade,
-    telefone1,
-    telefone2
-  });
+  try {
+    return await post_Paciente({
+      nome,
+      status,
+      cpf,
+      rg,
+      nascimento,
+      profissao,
+      tipoCancer,
+      CIDprincipal,
+      CIDsecundario: CIDsecundario || "",
+      rua,
+      numero,
+      cep,
+      bairro,
+      cidade,
+      telefone1,
+      telefone2: telefone2 || "",
+      sexo,
+      prioridade
+    });
+  } catch (err) {
+    // Tratamento de erro do Prisma para unique constraint
+    if (err && err.code === 'P2002') {
+      // Identifica qual campo causou o conflito, se possível
+      const target = err.meta && err.meta.target ? err.meta.target.join(', ') : 'campo único';
+      throw new Error(`Violação de unicidade: ${target} já cadastrado.`);
+    }
+    // Repassa outros erros
+    throw err;
+  }
 }
 
 /**
