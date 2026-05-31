@@ -1,0 +1,45 @@
+name: Setup CI environment
+description: Validates required env vars and generates a restricted .env file for CI jobs
+runs:
+  using: composite
+  steps:
+    - name: Validate environment and generate .env
+      shell: bash
+      run: |
+        required_keys=(DATABASE_URL JWT_SECRET DEFAULT_ADMIN_EMAIL DEFAULT_ADMIN_PASSWORD NODE_ENV)
+        validation_failed=0
+
+        for key in "${required_keys[@]}"; do
+          if [ -z "${!key}" ]; then
+            echo "::error::Missing required variable: $key"
+            validation_failed=1
+            continue
+          fi
+
+          # Control characters can break .env parsing and enable injection in downstream tooling.
+          if printf '%s' "${!key}" | LC_ALL=C grep -q '[[:cntrl:]]'; then
+            echo "::error::Variable must not contain control characters: $key"
+            validation_failed=1
+          fi
+        done
+
+        if [ "$validation_failed" -ne 0 ]; then
+          exit 1
+        fi
+
+        escape_dotenv_value() {
+          local value="$1"
+          # Replace single quotes with '\'' (close-quote, escaped quote, reopen-quote).
+          value="${value//\'/\'\"\'\"\'}"
+          printf "'%s'" "$value"
+        }
+
+        {
+          for key in "${required_keys[@]}"; do
+            printf '%s=%s\n' "$key" "$(escape_dotenv_value "${!key}")"
+          done
+        } > .env
+        chmod 600 .env || {
+          echo "::error::Failed to set .env file permissions"
+          exit 1
+        }
