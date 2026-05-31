@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 
 import { UserPlus, Hospital, Search, Menu } from "lucide-react";
-
+import Pagination from "../components/shared/ui/Pagination";
 import AppShell from "@/shared/layouts/AppShell";
 import ModalNovoFuncionario from "../components/modals/ModalNovoFuncionario";
 import ModalEditarFuncionario from "../components/update/funcionarios/ModalEditarFuncionario";
@@ -171,8 +171,8 @@ export default function FuncionariosPage() {
                                             <td className="px-6 py-4 text-sm">
 
                                                 <span className={`px-3 py-1 rounded-full text-xs font-semibold ${funcionario.status === "ativo" ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300" :
-                                                        funcionario.status === "inativo" ? "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300" :
-                                                            "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300"
+                                                    funcionario.status === "inativo" ? "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300" :
+                                                        "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300"
                                                     }`}>
                                                     {funcionario.status || "ativo"}
                                                 </span>
