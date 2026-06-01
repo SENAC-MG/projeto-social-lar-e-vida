@@ -8,7 +8,7 @@ export default function Pagination({
   onPageChange,
 }) {
   return (
-    <div className="flex items-center justify-between border-t border-border px-6 py-4">
+    <div className="flex items-center justify-between border-t border-border px-6 py-2">
       <span className="text-sm text-muted-foreground font-medium">
         Página {paginaAtual} de {totalPaginas}
       </span>
