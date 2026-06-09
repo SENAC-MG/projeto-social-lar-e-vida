@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ShieldCheck } from "lucide-react";
 import { useState, useEffect } from "react";
 import { login } from "../../actions/login";
 import background from "../../public/background.png";
@@ -33,7 +33,6 @@ export default function Home() {
             return;
         }
 
-        // salvar preferência da sessão
         localStorage.setItem(
             "rememberSession",
             rememberSession
@@ -181,29 +180,11 @@ export default function Home() {
                         </Button>
                     </form>
 
-                    <div className="mt-12 rounded-2xl bg-gray-50 p-6 border border-gray-100">
-                        <span className="text-4xl text-[#5C7A53] font-serif font-bold italic">
-                            “
-                        </span>
-
-                        <p className="text-xs italic text-gray-500 leading-relaxed -mt-2">
-                            O sistema mudou completamente a forma como gerenciamos nossas
-                            doações. Tudo ficou mais organizado e a ajuda a nossos residentes
-                            aumentou.
+                    <div className="mt-12 rounded-2xl  p-6">
+                        <p className="text-xs italic text-gray-500 leading-relaxed -mt-2 text-center">
+                            <ShieldCheck className="inline-block mr-2 h-4 w-4" />
+                            Conexão segura · JWT · Dados criptografados
                         </p>
-
-                        <div className="mt-4 flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-full bg-gray-300 overflow-hidden relative">
-                                {/* imagem do Carlos */}
-                            </div>
-
-                            <div>
-                                <p className="text-xs font-bold text-gray-900">Carlos</p>
-                                <p className="text-[10px] text-gray-400">
-                                    Diretor - Lar e Vida
-                                </p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
