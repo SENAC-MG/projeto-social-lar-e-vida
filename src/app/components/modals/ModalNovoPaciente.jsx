@@ -39,10 +39,14 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
     "bg-card w-full border border-border rounded-lg px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground";
 
   return (
-    <Modal title="Novo Paciente" onClose={onClose}>
+    <Modal
+      title="Novo Paciente"
+      onClose={onClose}
+      headerClassName={"bg-[#11141d] dark:bg-[#F7F9FC]"}
+    >
       <form
         onSubmit={handleSubmit}
-        className="bg-[#F7F9FC] dark:bg-background p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
+        className="bg-[#11141d] dark:bg-[#F7F9FC] p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
       >
         <section>
           <h3 className="text-primary text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">

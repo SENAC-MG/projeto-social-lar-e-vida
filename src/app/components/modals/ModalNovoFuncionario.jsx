@@ -32,10 +32,14 @@ export default function ModalNovoFuncionario({ onClose, onSuccess }) {
   }
 
   return (
-    <Modal title="Novo Funcionário" onClose={onClose}>
+    <Modal
+      title="Novo Funcionário"
+      onClose={onClose}
+      headerClassName={"bg-[#11141d] dark:bg-[#F7F9FC]"}
+    >
       <form
         onSubmit={handleSubmit}
-        className="p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
+        className="p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar bg-[#11141d] dark:bg-[#F7F9FC]"
       >
         <section>
           <h3 className="text-primary text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">

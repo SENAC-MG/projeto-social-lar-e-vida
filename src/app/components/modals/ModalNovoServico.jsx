@@ -37,10 +37,15 @@ export default function ModalNovoServico({ onClose, onSuccess }) {
     "bg-card w-full border border-border rounded-lg px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground";
 
   return (
-    <Modal title="Novo Serviço" onClose={onClose} className="max-w-2xl">
+    <Modal
+      title="Novo Serviço"
+      onClose={onClose}
+      className="max-w-2xl"
+      headerClassName={"bg-[#11141d] dark:bg-[#F7F9FC]"}
+    >
       <form
         onSubmit={handleSubmit}
-        className="p-6 space-y-6 overflow-y-auto max-h-[80vh] custom-scrollbar bg-[#F7F9FC] dark:bg-background"
+        className="p-6 space-y-6 overflow-y-auto max-h-[80vh] custom-scrollbar bg-[#11141d] dark:bg-[#F7F9FC]"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
