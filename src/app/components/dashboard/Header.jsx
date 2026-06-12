@@ -46,13 +46,12 @@ export default function Header() {
 
                             <div className="overflow-hidden rounded-xl border border-gray-200 bg-[#f2f2f2] shadow-xl dark:border-gray-700 dark:bg-zinc-900 backdrop-blur-sm">
                                 <div className="p-2">
-                                    <a
-                                        href="#"
-                                        className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-white hover:text-gray-900 dark:text-gray-400 dark:hover:bg-zinc-800 dark:hover:text-white disabled:cursor-not-allowed disabled:opacity-50 pointer-events-none transition-colors"
-                                        role="menuitem"
+                                    <span
+                                        className="block rounded-lg px-4 py-2 text-sm text-gray-500 dark:text-gray-400 opacity-50 cursor-not-allowed transition-colors"
+                                        aria-disabled="true"
                                     >
                                         Meu perfil
-                                    </a>
+                                    </span>
 
                                     <LogoutButton />
                                 </div>
