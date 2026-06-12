@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Mail, Lock, Eye, EyeOff, ShieldCheck } from "lucide-react";
+import { useEffect, useState } from "react";
 import { login } from "../../actions/login";
-import background from "../../public/background.png";
+import fundo from "../../public/fundo.png";
 import logo from "../../public/logo.png";
 import Button from "@/shared/ui/Button";
 import { InputField } from "@/shared/ui/Input";
@@ -17,9 +17,7 @@ export default function Home() {
     const [rememberSession, setRememberSession] = useState(false);
 
     useEffect(() => {
-        const savedRememberSession =
-            localStorage.getItem("rememberSession");
-
+        const savedRememberSession = localStorage.getItem("rememberSession");
         if (savedRememberSession === "true") {
             setRememberSession(true);
         }
@@ -33,22 +31,12 @@ export default function Home() {
             return;
         }
 
-        // salvar preferência da sessão
-        localStorage.setItem(
-            "rememberSession",
-            rememberSession
-        );
+        localStorage.setItem("rememberSession", rememberSession);
 
-        const result = await login(
-            email,
-            password,
-            rememberSession
-        );
+        const result = await login(email, password);
 
         if (!result?.success) {
-            alert(
-                "Usuário ou senha incorretos. Tente novamente."
-            );
+            alert("Usuário ou senha incorretos. Tente novamente.");
         }
     };
 
@@ -56,14 +44,14 @@ export default function Home() {
         <main className="flex min-h-screen w-full font-sans">
             <div className="relative hidden w-[55%] lg:block">
                 <Image
-                    src={background}
-                    alt="Background Lar e Vida"
+                    src={fundo}
+                    alt="Fundo"
                     fill
-                    priority
-                    className="object-cover"
+                    placeholder="blur"
+                    className="object-cover object-center blur-xs"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50" />
+                <div className="absolute inset-0 bg-black/50" />
 
                 <div className="absolute inset-0 flex flex-col p-16 text-white">
                     <div className="flex items-center gap-4">
@@ -73,7 +61,7 @@ export default function Home() {
 
                         <div>
                             <h2 className="text-xl font-bold leading-tight">Lar e Vida</h2>
-                            <p className="text-sm text-[#5C7A53] font-medium uppercase tracking-wider">
+                            <p className="text-sm text-zinc-300 font-medium uppercase tracking-wider">
                                 Sistema de Gestão Hospitalar com Analytics Integrado
                             </p>
                         </div>
@@ -84,14 +72,16 @@ export default function Home() {
 
                         <h3 className="text-6xl font-serif font-medium leading-[1.1] mb-6 drop-shadow-lg">
                             Um futuro mais <br />
-                            <span className="text-[#5C7A53]">organizado</span>
+                            <span className="text-[#5C7A53] underline underline-offset-8">
+                                organizado
+                            </span>
                         </h3>
 
-                        <p className="max-w-md text-xl text-gray-100 leading-relaxed drop-shadow-md">
+                        <p className="max-w-md text-xl text-gray-100 leading-relaxed drop-shadow-md text-justify">
                             O Lar e Vida é um sistema de gestão hospitalar desenvolvido para
-                            otimizar o gerenciamento de doações, voluntariado e recursos,
-                            garantindo que cada contribuição faça a maior diferença possível
-                            para nossos residentes.
+                            otimizar o gerenciamento de doações, voluntariado e recursos, garantindo
+                            que cada contribuição faça a maior diferença possível para nossos
+                            residentes.
                         </p>
                     </div>
                     <div className="h-14" />
@@ -164,13 +154,6 @@ export default function Home() {
                                 />
                                 Lembrar Sessão
                             </label>
-
-                            <Link
-                                href="/recuperar-senha"
-                                className="font-medium text-[#5C7A53] transition-colors hover:text-[#5C7A53]/80"
-                            >
-                                Esqueci minha senha
-                            </Link>
                         </div>
 
                         <Button
@@ -181,29 +164,11 @@ export default function Home() {
                         </Button>
                     </form>
 
-                    <div className="mt-12 rounded-2xl bg-gray-50 p-6 border border-gray-100">
-                        <span className="text-4xl text-[#5C7A53] font-serif font-bold italic">
-                            “
-                        </span>
-
-                        <p className="text-xs italic text-gray-500 leading-relaxed -mt-2">
-                            O sistema mudou completamente a forma como gerenciamos nossas
-                            doações. Tudo ficou mais organizado e a ajuda a nossos residentes
-                            aumentou.
+                    <div className="mt-12 rounded-2xl  p-6">
+                        <p className="text-xs italic text-gray-500 leading-relaxed -mt-2 text-center">
+                            <ShieldCheck className="inline-block mr-2 h-4 w-4" />
+                            Conexão segura · JWT · Dados criptografados
                         </p>
-
-                        <div className="mt-4 flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-full bg-gray-300 overflow-hidden relative">
-                                {/* imagem do Carlos */}
-                            </div>
-
-                            <div>
-                                <p className="text-xs font-bold text-gray-900">Carlos</p>
-                                <p className="text-[10px] text-gray-400">
-                                    Diretor - Lar e Vida
-                                </p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

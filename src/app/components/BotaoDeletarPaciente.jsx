@@ -8,72 +8,70 @@ import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
 export default function BotaoDeletarPaciente({ id, onDeleted }) {
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
-  async function handleDelete() {
-    const result = await Swal.fire({
-      title: "Digite 123 para confirmar exclusão",
-      input: "text",
-      text: "Essa ação não poderá ser desfeita",
-      inputPlaceholder: "Digite 123",
-      showCancelButton: true,
-      confirmButtonText: "Deletar",
-      cancelButtonText: "Cancelar",
-      confirmButtonColor: "#d33",
+    async function handleDelete() {
+        const result = await Swal.fire({
+            title: "Digite 123 para confirmar exclusão",
+            input: "text",
+            text: "Essa ação não poderá ser desfeita",
+            inputPlaceholder: "Digite 123",
+            showCancelButton: true,
+            confirmButtonText: "Deletar",
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: "#d33",
 
-      preConfirm: (valorDigitado) => {
-        if (valorDigitado !== "123") {
-          Swal.showValidationMessage(
-            "Código incorreto. Digite 123 para deletar.",
-          );
-          return false;
-        }
+            preConfirm: (valorDigitado) => {
+                if (valorDigitado !== "123") {
+                    Swal.showValidationMessage("Código incorreto. Digite 123 para deletar.");
+                    return false;
+                }
 
-        return true;
-      },
+                return true;
+            },
 
-      allowOutsideClick: () => !Swal.isLoading(),
-    });
-
-    if (!result.isConfirmed) return;
-
-    setLoading(true);
-
-    try {
-      const res = await deletar_Paciente(id);
-
-      if (res.success) {
-        toast.success(res.message || "Paciente deletado com sucesso!");
-
-        Swal.fire({
-          icon: "success",
-          title: "Paciente deletado com sucesso!",
-          timer: 2000,
-          showConfirmButton: false,
+            allowOutsideClick: () => !Swal.isLoading(),
         });
 
-        if (onDeleted) {
-          await onDeleted();
-        }
-      } else {
-        toast.error(res.error || "Erro ao deletar paciente.");
-      }
-    } catch (error) {
-      toast.error(error?.message || "Erro inesperado ao deletar paciente.");
-    } finally {
-      setLoading(false);
-      router.refresh();
-    }
-  }
+        if (!result.isConfirmed) return;
 
-  return (
-    <button
-      type="button"
-      onClick={handleDelete}
-      disabled={loading}
-      title="Deletar paciente"
-      className="
+        setLoading(true);
+
+        try {
+            const res = await deletar_Paciente(id);
+
+            if (res.success) {
+                toast.success(res.message || "Paciente deletado com sucesso!");
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Paciente deletado com sucesso!",
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+
+                if (onDeleted) {
+                    await onDeleted();
+                }
+            } else {
+                toast.error(res.error || "Erro ao deletar paciente.");
+            }
+        } catch (error) {
+            toast.error(error?.message || "Erro inesperado ao deletar paciente.");
+        } finally {
+            setLoading(false);
+            router.refresh();
+        }
+    }
+
+    return (
+        <button
+            type="button"
+            onClick={handleDelete}
+            disabled={loading}
+            title="Deletar paciente"
+            className="
         flex items-center justify-center
         w-10 h-10
         rounded-xl
@@ -88,12 +86,8 @@ export default function BotaoDeletarPaciente({ id, onDeleted }) {
         disabled:cursor-not-allowed
         disabled:hover:scale-100
       "
-    >
-      {loading ? (
-        <Loader2 size={18} className="animate-spin" />
-      ) : (
-        <Trash2 size={18} />
-      )}
-    </button>
-  );
+        >
+            {loading ? <Loader2 size={18} className="animate-spin" /> : <Trash2 size={18} />}
+        </button>
+    );
 }

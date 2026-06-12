@@ -1,8 +1,14 @@
 "use server";
 
 // import { revalidatePath } from 'next/cache';
-import { apaga_Paciente, gravarPaciente, pegar_Pacientes, updatePacienteService } from "../services/pacienteService";
+import {
+    apaga_Paciente,
+    gravarPaciente,
+    pegar_Pacientes,
+    updatePacienteService,
+} from "../services/pacienteService";
 import { formatError } from "../../../lib/formatError";
+import { sanitizeString, sanitizeOptionalString, parseDate } from "../../../lib/sanitize";
 /**
  * Buscar todos os pacientes
  *
@@ -11,86 +17,87 @@ import { formatError } from "../../../lib/formatError";
  * - Não preciso passar Argumentos
  */
 export async function get_Pacientes() {
-  const dados = await pegar_Pacientes();
-  // Atualiza os dados da rota (refaz cache do Next.js)
-  return dados;
+    const dados = await pegar_Pacientes();
+    // Atualiza os dados da rota (refaz cache do Next.js)
+    return dados;
 }
 
 export async function cadastrar_Paciente(formData) {
-  // Extração e Limpeza dos dados
-  const nome = formData.get('nome')?.toString().trim();
-  const status = formData.get('status')?.toString().trim();
-  const cpf = formData.get('cpf')?.toString().trim();
-  const rg = formData.get('rg')?.toString().trim();
-  const nascimento = new Date(formData.get('nascimento')?.toString().trim());
-  const profissao = formData.get('profissao')?.toString().trim();
-  const tipoCancer = formData.get('tipoCancer')?.toString().trim();
-  const CIDprincipal = formData.get('CIDprincipal')?.toString().trim();
-  const CIDsecundario = formData.get('CIDsecundario')?.toString().trim();
-  const rua = formData.get('rua')?.toString().trim();
-  const numero = formData.get('numero')?.toString().trim();
-  const cep = formData.get('cep')?.toString().trim();
-  const bairro = formData.get('bairro')?.toString().trim();
-  const cidade = formData.get('cidade')?.toString().trim();
-  const telefone1 = formData.get('telefone1')?.toString().trim();
-  const telefone2 = formData.get('telefone2')?.toString().trim();
-  const sexo = formData.get('sexo')?.toString().trim();
-  const prioridade = formData.get('prioridade')?.toString().trim();
+    // Extração e Limpeza dos dados
+    const nome = sanitizeString(formData.get("nome"));
+    const status = sanitizeOptionalString(formData.get("status"));
+    const cpf = sanitizeString(formData.get("cpf"));
+    const rg = sanitizeString(formData.get("rg"));
+    const nascimento = parseDate(formData.get("nascimento"));
+    const profissao = sanitizeOptionalString(formData.get("profissao"));
+    const tipoCancer = sanitizeOptionalString(formData.get("tipoCancer"));
+    const CIDprincipal = sanitizeOptionalString(formData.get("CIDprincipal"));
+    const CIDsecundario = sanitizeOptionalString(formData.get("CIDsecundario"));
+    const rua = sanitizeOptionalString(formData.get("rua"));
+    const numero = sanitizeOptionalString(formData.get("numero"));
+    const cep = sanitizeOptionalString(formData.get("cep"));
+    const bairro = sanitizeOptionalString(formData.get("bairro"));
+    const cidade = sanitizeOptionalString(formData.get("cidade"));
+    const telefone1 = sanitizeOptionalString(formData.get("telefone1"));
+    const telefone2 = sanitizeOptionalString(formData.get("telefone2"));
+    const sexo = sanitizeOptionalString(formData.get("sexo"));
+    const prioridade = sanitizeOptionalString(formData.get("prioridade"));
 
-  console.log('Dados recebidos no action:', {
-    nome,
-    status,
-    cpf,
-    rg,
-    nascimento,
-    profissao,
-    tipoCancer,
-    CIDprincipal,
-    CIDsecundario,
-    rua,
-    numero,
-    cep,
-    bairro,
-    cidade,
-    telefone1,
-    telefone2,
-    sexo,
-    prioridade,
-  });
+    console.log("Dados recebidos no action:", {
+        nome,
+        status,
+        cpf,
+        rg,
+        nascimento,
+        profissao,
+        tipoCancer,
+        CIDprincipal,
+        CIDsecundario,
+        rua,
+        numero,
+        cep,
+        bairro,
+        cidade,
+        telefone1,
+        telefone2,
+        sexo,
+        prioridade,
+    });
 
-  try {
-    // Regras de negócio estão no service
-    await gravarPaciente(nome,
-      status,
-      cpf,
-      rg,
-      nascimento,
-      profissao,
-      tipoCancer,
-      CIDprincipal,
-      CIDsecundario,
-      rua,
-      numero,
-      cep,
-      bairro,
-      cidade,
-      telefone1,
-      telefone2,
-      sexo,
-      prioridade
-    );
-    //Voltando com a resposta controlada para o frontend
-    return {
-      success: true,
-      message: 'Paciente cadastrado com sucesso!',
-    };
-  } catch (err) {
-    // Retorna erro controlado para o frontend
-    return {
-      success: false,
-      error: formatError(err)
-    };
-  }
+    try {
+        // Regras de negócio estão no service
+        await gravarPaciente(
+            nome,
+            status,
+            cpf,
+            rg,
+            nascimento,
+            profissao,
+            tipoCancer,
+            CIDprincipal,
+            CIDsecundario,
+            rua,
+            numero,
+            cep,
+            bairro,
+            cidade,
+            telefone1,
+            telefone2,
+            sexo,
+            prioridade
+        );
+        //Voltando com a resposta controlada para o frontend
+        return {
+            success: true,
+            message: "Paciente cadastrado com sucesso!",
+        };
+    } catch (err) {
+        // Retorna erro controlado para o frontend
+        return {
+            success: false,
+            error: formatError(err),
+        };
+    }
 }
 
 /**
@@ -101,15 +108,15 @@ export async function cadastrar_Paciente(formData) {
  * -> Após deletar, revalida a listagem
  */
 export async function deletar_Paciente(id) {
-  try {
-    await apaga_Paciente(id);
-    return { success: true, message: 'Paciente deletado com sucesso!' }
-  } catch (err) {
-    return {
-      success: false,
-      error: formatError(err),
-    };
-  }
+    try {
+        await apaga_Paciente(id);
+        return { success: true, message: "Paciente deletado com sucesso!" };
+    } catch (err) {
+        return {
+            success: false,
+            error: formatError(err),
+        };
+    }
 }
 
 /**
@@ -120,58 +127,58 @@ export async function deletar_Paciente(id) {
  * - Service garante que o paciente existe
  */
 export async function updatePacienteAction(id, formData) {
-  const data = {};
+    const data = {};
 
-  const nome = formData.get("nome")?.toString().trim();
-  const status = formData.get("status")?.toString();
-  const cpf = formData.get("cpf")?.toString().trim();
-  const rg = formData.get("rg")?.toString().trim();
-  const nascimento = formData.get("nascimento")?.toString();
-  const profissao = formData.get("profissao")?.toString().trim();
-  const tipoCancer = formData.get("tipoCancer")?.toString().trim();
-  const CIDprincipal = formData.get("CIDprincipal")?.toString().trim();
-  const CIDsecundario = formData.get("CIDsecundario")?.toString().trim();
-  const rua = formData.get("rua")?.toString().trim();
-  const numero = formData.get("numero")?.toString().trim();
-  const cep = formData.get("cep")?.toString().trim();
-  const bairro = formData.get("bairro")?.toString().trim();
-  const cidade = formData.get("cidade")?.toString().trim();
-  const telefone1 = formData.get("telefone1")?.toString().trim();
-  const telefone2 = formData.get("telefone2")?.toString().trim();
-  const sexo = formData.get("sexo")?.toString().trim();
-  const prioridade = formData.get("prioridade")?.toString().trim();
+    const nome = sanitizeString(formData.get("nome"));
+    const status = sanitizeOptionalString(formData.get("status"));
+    const cpf = sanitizeString(formData.get("cpf"));
+    const rg = sanitizeString(formData.get("rg"));
+    const nascimento = parseDate(formData.get("nascimento"));
+    const profissao = sanitizeOptionalString(formData.get("profissao"));
+    const tipoCancer = sanitizeOptionalString(formData.get("tipoCancer"));
+    const CIDprincipal = sanitizeOptionalString(formData.get("CIDprincipal"));
+    const CIDsecundario = sanitizeOptionalString(formData.get("CIDsecundario"));
+    const rua = sanitizeOptionalString(formData.get("rua"));
+    const numero = sanitizeOptionalString(formData.get("numero"));
+    const cep = sanitizeOptionalString(formData.get("cep"));
+    const bairro = sanitizeOptionalString(formData.get("bairro"));
+    const cidade = sanitizeOptionalString(formData.get("cidade"));
+    const telefone1 = sanitizeOptionalString(formData.get("telefone1"));
+    const telefone2 = sanitizeOptionalString(formData.get("telefone2"));
+    const sexo = sanitizeOptionalString(formData.get("sexo"));
+    const prioridade = sanitizeOptionalString(formData.get("prioridade"));
 
-  if (nome) data.nome = nome;
-  if (status) data.status = status;
-  if (cpf) data.cpf = cpf;
-  if (rg) data.rg = rg;
-  if (nascimento) data.nascimento = new Date(nascimento);
-  if (profissao) data.profissao = profissao;
-  if (tipoCancer) data.tipoCancer = tipoCancer;
-  if (CIDprincipal) data.CIDprincipal = CIDprincipal;
-  if (CIDsecundario) data.CIDsecundario = CIDsecundario;
-  if (rua) data.rua = rua;
-  if (numero) data.numero = numero;
-  if (cep) data.cep = cep;
-  if (bairro) data.bairro = bairro;
-  if (cidade) data.cidade = cidade;
-  if (telefone1) data.telefone1 = telefone1;
-  if (telefone2) data.telefone2 = telefone2;
-  if (sexo) data.sexo = sexo;
-  if (prioridade) data.prioridade = prioridade;
+    if (nome) data.nome = nome;
+    if (status) data.status = status;
+    if (cpf) data.cpf = cpf;
+    if (rg) data.rg = rg;
+    if (nascimento) data.nascimento = new Date(nascimento);
+    if (profissao) data.profissao = profissao;
+    if (tipoCancer) data.tipoCancer = tipoCancer;
+    if (CIDprincipal) data.CIDprincipal = CIDprincipal;
+    if (CIDsecundario) data.CIDsecundario = CIDsecundario;
+    if (rua) data.rua = rua;
+    if (numero) data.numero = numero;
+    if (cep) data.cep = cep;
+    if (bairro) data.bairro = bairro;
+    if (cidade) data.cidade = cidade;
+    if (telefone1) data.telefone1 = telefone1;
+    if (telefone2) data.telefone2 = telefone2;
+    if (sexo) data.sexo = sexo;
+    if (prioridade) data.prioridade = prioridade;
 
-  try {
-    const pacienteAtualizado = await updatePacienteService(id, data);
+    try {
+        const pacienteAtualizado = await updatePacienteService(id, data);
 
-    return {
-      success: true,
-      message: "Paciente atualizado com sucesso!",
-      paciente: pacienteAtualizado,
-    };
-  } catch (err) {
-    return {
-      success: false,
-      error: formatError(err),
-    };
-  }
+        return {
+            success: true,
+            message: "Paciente atualizado com sucesso!",
+            paciente: pacienteAtualizado,
+        };
+    } catch (err) {
+        return {
+            success: false,
+            error: formatError(err),
+        };
+    }
 }

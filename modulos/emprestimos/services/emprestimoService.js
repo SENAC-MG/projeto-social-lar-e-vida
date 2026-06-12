@@ -1,7 +1,19 @@
 "use server";
 // Importa funções do repository (acesso ao banco via Prisma)
 
-import { del_Emprestimo, post_Emprestimo, get_AllEmprestimos, findEmprestimoById, updateEmprestimo } from "../repository/emprestimoRepository";
+import {
+    del_Emprestimo,
+    post_Emprestimo,
+    get_AllEmprestimos,
+    findEmprestimoById,
+    updateEmprestimo,
+} from "../repository/emprestimoRepository";
+import {
+    validateRequiredString,
+    validateRequiredDate,
+    validateOptionalDate,
+    validateRequiredNumber,
+} from "../../../lib/payloadValidation";
 
 /**
  * Buscar todos os empréstimos
@@ -13,48 +25,17 @@ import { del_Emprestimo, post_Emprestimo, get_AllEmprestimos, findEmprestimoById
  */
 
 export async function pegar_Emprestimos() {
-  const result = await get_AllEmprestimos();
-  return result;
+    const result = await get_AllEmprestimos();
+    return result;
 }
 
-
 export async function gravarEmprestimo(
-  nome,
-  cpf,
-  rg,
-  nascimento,
-  dataEmprestimo,
-  quantidade,
-  rua,
-  numero,
-  cep,
-  bairro,
-  cidade,
-  telefone1,
-  telefone2,
-  status,
-  previsaoDevolucao,
-  dataDevolucao
-) {
-
-  // Validação: campos obrigatórios
-  if (!nome || !cpf || !rg || !nascimento || !dataEmprestimo || quantidade == null || Number.isNaN(Number(quantidade)) || !rua || !numero || !cep || !bairro || !cidade || !telefone1 || !telefone2 || !status) {
-    throw new Error('Todos os campos obrigatórios não foram preenchidos.');
-  }
-
-  // Converte datas opcionais quando fornecidas
-  const previsao = previsaoDevolucao ? new Date(previsaoDevolucao) : null;
-  const devolucao = dataDevolucao ? new Date(dataDevolucao) : null;
-
-
-  // Se passou por todas regras pode salvar -> pode salvar
-  return await post_Emprestimo({
     nome,
     cpf,
     rg,
     nascimento,
     dataEmprestimo,
-    quantidade: Number(quantidade),
+    quantidade,
     rua,
     numero,
     cep,
@@ -63,9 +44,45 @@ export async function gravarEmprestimo(
     telefone1,
     telefone2,
     status,
-    previsaoDevolucao: previsao,
-    dataDevolucao: devolucao
-  });
+    previsaoDevolucao,
+    dataDevolucao
+) {
+    const nomeValid = validateRequiredString(nome, "nome");
+    const cpfValid = validateRequiredString(cpf, "cpf");
+    const rgValid = validateRequiredString(rg, "rg");
+    const nascimentoValid = validateRequiredDate(nascimento, "nascimento");
+    const dataEmprestimoValid = validateRequiredDate(dataEmprestimo, "dataEmprestimo");
+    const quantidadeValid = validateRequiredNumber(quantidade, "quantidade");
+    const ruaValid = validateRequiredString(rua, "rua");
+    const numeroValid = validateRequiredString(numero, "numero");
+    const cepValid = validateRequiredString(cep, "cep");
+    const bairroValid = validateRequiredString(bairro, "bairro");
+    const cidadeValid = validateRequiredString(cidade, "cidade");
+    const telefone1Valid = validateRequiredString(telefone1, "telefone1");
+    const telefone2Valid = validateRequiredString(telefone2, "telefone2");
+    const statusValid = validateRequiredString(status, "status");
+    const previsaoValid = validateOptionalDate(previsaoDevolucao, "previsaoDevolucao");
+    const devolucaoValid = validateOptionalDate(dataDevolucao, "dataDevolucao");
+
+    // Se passou por todas regras pode salvar -> pode salvar
+    return await post_Emprestimo({
+        nome: nomeValid,
+        cpf: cpfValid,
+        rg: rgValid,
+        nascimento: nascimentoValid,
+        dataEmprestimo: dataEmprestimoValid,
+        quantidade: quantidadeValid,
+        rua: ruaValid,
+        numero: numeroValid,
+        cep: cepValid,
+        bairro: bairroValid,
+        cidade: cidadeValid,
+        telefone1: telefone1Valid,
+        telefone2: telefone2Valid,
+        status: statusValid,
+        previsaoDevolucao: previsaoValid,
+        dataDevolucao: devolucaoValid,
+    });
 }
 
 /**
@@ -76,7 +93,7 @@ export async function gravarEmprestimo(
  * - Evita erro silencioso ou inconsistência
  */
 export async function apaga_Emprestimo(id) {
-  return await del_Emprestimo(Number(id));
+    return await del_Emprestimo(Number(id));
 }
 
 /**
@@ -87,14 +104,12 @@ export async function apaga_Emprestimo(id) {
  * - Evita atualizar algo que não está no banco
  */
 export async function updateEmprestimoService(id, data) {
-  // Chamando a função de busca para garantir que o empréstimo existe
-  const existe = await findEmprestimoById(Number(id));
-  if (!existe) {
-    throw new Error('Empréstimo não encontrado para atualizar');
-  } else {
-    console.log('Empréstimo encontrado para atualização:', existe);
-  }
-  const emprestimoAtualizado = await updateEmprestimo(Number(id), data);
+    // Chamando a função de busca para garantir que o empréstimo existe
+    const existe = await findEmprestimoById(Number(id));
+    if (!existe) {
+        throw new Error("Empréstimo não encontrado para atualizar");
+    }
+    const emprestimoAtualizado = await updateEmprestimo(Number(id), data);
 
-  return emprestimoAtualizado;
+    return emprestimoAtualizado;
 }
