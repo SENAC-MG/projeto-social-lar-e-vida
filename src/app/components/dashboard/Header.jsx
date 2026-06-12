@@ -15,7 +15,10 @@ export default function Header() {
                     <div className="relative">
                         <button
                             type="button"
-                            onClick={() => setDropdownOpen(!dropdownOpen)}
+                            aria-haspopup="menu"
+                            aria-expanded={dropdownOpen}
+                            aria-controls="dashboard-menu"
+                            onClick={() => setDropdownOpen((open) => !open)}
                             className="overflow-hidden rounded-full border border-gray-300 shadow-inner transition-all duration-200 hover:scale-105 dark:border-gray-600"
                         >
                             <span className="sr-only">Toggle dashboard menu</span>
