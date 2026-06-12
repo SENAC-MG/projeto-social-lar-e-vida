@@ -7,12 +7,12 @@ import { prisma } from "../../../lib/prisma";
  * - Usado normalmente para listagem em tabelas
  */
 export async function get_AllEmprestimos() {
-  const result = await prisma.Emprestimo.findMany({
-    orderBy: {
-      nome: "asc",
-    },
-  });
-  return result;
+    const result = await prisma.Emprestimo.findMany({
+        orderBy: {
+            nome: "asc",
+        },
+    });
+    return result;
 }
 /**
  * - Criar novo Empréstimo
@@ -22,27 +22,44 @@ export async function get_AllEmprestimos() {
  * - Retorna o Empréstimo criado
  */
 export async function post_Emprestimo(data) {
-  const { nome, cpf, rg, nascimento, dataEmprestimo, quantidade, rua, numero, cep, bairro, cidade, telefone1, telefone2, status, previsaoDevolucao, dataDevolucao } = data;
-  return await prisma.Emprestimo.create({
-    data: {
-      nome,
-      cpf,
-      rg,
-      nascimento,
-      dataEmprestimo,
-      quantidade,
-      rua,
-      numero,
-      cep,
-      bairro,
-      cidade,
-      telefone1,
-      telefone2,
-      status,
-      previsaoDevolucao,
-      dataDevolucao
-    }
-  });
+    const {
+        nome,
+        cpf,
+        rg,
+        nascimento,
+        dataEmprestimo,
+        quantidade,
+        rua,
+        numero,
+        cep,
+        bairro,
+        cidade,
+        telefone1,
+        telefone2,
+        status,
+        previsaoDevolucao,
+        dataDevolucao,
+    } = data;
+    return await prisma.Emprestimo.create({
+        data: {
+            nome,
+            cpf,
+            rg,
+            nascimento,
+            dataEmprestimo,
+            quantidade,
+            rua,
+            numero,
+            cep,
+            bairro,
+            cidade,
+            telefone1,
+            telefone2,
+            status,
+            previsaoDevolucao,
+            dataDevolucao,
+        },
+    });
 }
 /**
  * Deletar Empréstimo
@@ -51,10 +68,10 @@ export async function post_Emprestimo(data) {
  * - Cuidado: Operação irreversível
  */
 export async function del_Emprestimo(id) {
-  const result = await prisma.Emprestimo.delete({
-    where: { id },
-  });
-  return result;
+    const result = await prisma.Emprestimo.delete({
+        where: { id },
+    });
+    return result;
 }
 
 /**
@@ -65,11 +82,11 @@ export async function del_Emprestimo(id) {
  * - Usado em edição, detalhes, etc
  */
 export async function findEmprestimoById(id) {
-  const emprestimo = await prisma.Emprestimo.findUnique({
-    where: { id },
-  });
-  // Retorna o empréstimo encontrado ou null se não existir
-  return emprestimo;
+    const emprestimo = await prisma.Emprestimo.findUnique({
+        where: { id },
+    });
+    // Retorna o empréstimo encontrado ou null se não existir
+    return emprestimo;
 }
 
 /**
@@ -78,13 +95,13 @@ export async function findEmprestimoById(id) {
  * - Retorna o empréstimo atualizado
  */
 export async function updateEmprestimo(id, data) {
-  console.log('Atualizando Empréstimo ID:', id, 'com dados', data);
+    console.log("Atualizando Empréstimo ID:", id, "com dados", data);
 
-  const Emprestimo_atualizado = await prisma.Emprestimo.update({
-    where: { id },
-    data,
-  });
+    const Emprestimo_atualizado = await prisma.Emprestimo.update({
+        where: { id },
+        data,
+    });
 
-  console.log('Empréstimo atualizado com sucesso:', Emprestimo_atualizado);
-  return Emprestimo_atualizado;
+    console.log("Empréstimo atualizado com sucesso:", Emprestimo_atualizado);
+    return Emprestimo_atualizado;
 }

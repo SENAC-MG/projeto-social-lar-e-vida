@@ -8,82 +8,80 @@ import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 
 export default function BotaoDeletar({ id, onDeleted }) {
-  const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-   const router = useRouter();
+    const router = useRouter();
 
-  async function handleDelete() {
-    const result = await Swal.fire({
-      title: "Digite 123 para confirmar exclusão",
-      input: "text",
-      text: "Essa ação não poderá ser desfeita",
-      inputPlaceholder: "Digite 123",
-      showCancelButton: true,
-      confirmButtonText: "Deletar",
-      confirmButtonColor: "#d33",
+    async function handleDelete() {
+        const result = await Swal.fire({
+            title: "Digite 123 para confirmar exclusão",
+            input: "text",
+            text: "Essa ação não poderá ser desfeita",
+            inputPlaceholder: "Digite 123",
+            showCancelButton: true,
+            confirmButtonText: "Deletar",
+            confirmButtonColor: "#d33",
 
-      preConfirm: (valorDigitado) => {
-        if (valorDigitado !== "123") {
-          Swal.showValidationMessage(
-            "Código incorreto. Digite 123 para deletar.",
-          );
+            preConfirm: (valorDigitado) => {
+                if (valorDigitado !== "123") {
+                    Swal.showValidationMessage("Código incorreto. Digite 123 para deletar.");
 
-          return false;
-        }
+                    return false;
+                }
 
-        return true;
-      },
+                return true;
+            },
 
-      allowOutsideClick: () => !Swal.isLoading(),
-    });
-
-    if (!result.isConfirmed) {
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const res = await deletar_Funcionario(id);
-
-      if (res.success) {
-        toast.success(res.message);
-
-        Swal.fire({
-          icon: "success",
-          title: "Registro deletado com sucesso!",
-          timer: 2000,
-          showConfirmButton: false,
+            allowOutsideClick: () => !Swal.isLoading(),
         });
-      } else {
-        toast.error(res.error || "Erro ao deletar funcionário.");
-      }
-    } catch (error) {
-      toast.error(error?.message || "Erro inesperado ao deletar funcionário.");
-    } finally {
-      setLoading(false);
-      try {
-        if (onDeleted && typeof onDeleted === "function") {
-          await onDeleted();
+
+        if (!result.isConfirmed) {
+            return;
         }
-      } catch (e) {
-        // ignore
-      }
 
-      try {
-        router.refresh();
-      } catch (e) {
-        // ignore
-      }
+        setLoading(true);
+
+        try {
+            const res = await deletar_Funcionario(id);
+
+            if (res.success) {
+                toast.success(res.message);
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Registro deletado com sucesso!",
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            } else {
+                toast.error(res.error || "Erro ao deletar funcionário.");
+            }
+        } catch (error) {
+            toast.error(error?.message || "Erro inesperado ao deletar funcionário.");
+        } finally {
+            setLoading(false);
+            try {
+                if (onDeleted && typeof onDeleted === "function") {
+                    await onDeleted();
+                }
+            } catch (_e) {
+                // ignore
+            }
+
+            try {
+                router.refresh();
+            } catch (_e) {
+                // ignore
+            }
+        }
     }
-  }
 
-  return (
-    <button
-      onClick={handleDelete}
-      disabled={loading}
-      title="Deletar funcionário"
-      className="
+    return (
+        <button
+            onClick={handleDelete}
+            disabled={loading}
+            title="Deletar funcionário"
+            className="
         flex items-center justify-center
         w-10 h-10
         rounded-xl
@@ -98,12 +96,8 @@ export default function BotaoDeletar({ id, onDeleted }) {
         disabled:cursor-not-allowed
         disabled:hover:scale-100
       "
-    >
-      {loading ? (
-        <Loader2 size={18} className="animate-spin" />
-      ) : (
-        <Trash2 size={18} />
-      )}
-    </button> 
-  );
+        >
+            {loading ? <Loader2 size={18} className="animate-spin" /> : <Trash2 size={18} />}
+        </button>
+    );
 }

@@ -1,14 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-    Save,
-    RotateCcw,
-    User,
-    Phone,
-    MapPin,
-    Stethoscope,
-} from "lucide-react";
+import { useState } from "react";
+import { Save, RotateCcw, User, Phone, MapPin, Stethoscope } from "lucide-react";
 import { toast } from "sonner";
 import { cadastrar_Paciente } from "@modulos/pacientes/controller/pacienteController";
 import Modal from "@/shared/ui/Modal";
@@ -39,11 +32,7 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
         "bg-card w-full border border-border rounded-lg px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground";
 
     return (
-        <Modal
-            title="Novo Paciente"
-            onClose={onClose}
-            headerClassName={"bg-[--card-bg]"}
-        >
+        <Modal title="Novo Paciente" onClose={onClose} headerClassName={"bg-[--card-bg]"}>
             <form
                 onSubmit={handleSubmit}
                 className="bg-[--card-bg] p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
@@ -113,12 +102,7 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
                             <label className="text-sm font-medium text-foreground/70">
                                 Nascimento <span className="text-primary">*</span>
                             </label>
-                            <input
-                                name="nascimento"
-                                type="date"
-                                className={inputClass}
-                                required
-                            />
+                            <input name="nascimento" type="date" className={inputClass} required />
                         </div>
 
                         <div className="col-span-12 md:col-span-4 flex flex-col gap-1.5">

@@ -19,39 +19,35 @@ import EmprestimosMensalBar from "./charts/emprestimos/EmprestimosMensalBar";
 import EmprestimosQuantidadeBar from "./charts/emprestimos/EmprestimosQuantidadeBar";
 import EmprestimosStatusPie from "./charts/emprestimos/EmprestimosStatusPie";
 export default function DashboardGraphics({ graficos }) {
-  return (
-    <div className="mt-8 space-y-6 text-2xl">
-      <ChartSection titulo="Gráficos de Funcionários">
-        <FuncionariosStatusPie dados={graficos?.funcionarios?.status} />
-        <FuncionariosCargoBar dados={graficos?.funcionarios?.cargo} />
-        <FuncionariosContratacoesBar
-          dados={graficos?.funcionarios?.contratacoesMes}
-        />
-        <FuncionariosContratacoesAnoBar
-          dados={graficos?.funcionarios?.contratacoesAno}
-        />
-      </ChartSection>
-      <ChartSection titulo="Gráficos de Pacientes">
-        <PacientesStatusPie dados={graficos.pacientes.status} />
-        <PacientesSexoPie dados={graficos.pacientes.sexo} />
-        <PacientesPrioridadeBar dados={graficos.pacientes.prioridade} />
-        <PacientesCancerBar dados={graficos.pacientes.cancer} />
-      </ChartSection>
-      <ChartSection titulo="Gráficos de Empréstimos">
-        <EmprestimosStatusPie dados={graficos?.emprestimos?.status} />
+    return (
+        <div className="mt-8 space-y-6 text-2xl">
+            <ChartSection titulo="Gráficos de Funcionários">
+                <FuncionariosStatusPie dados={graficos?.funcionarios?.status} />
+                <FuncionariosCargoBar dados={graficos?.funcionarios?.cargo} />
+                <FuncionariosContratacoesBar dados={graficos?.funcionarios?.contratacoesMes} />
+                <FuncionariosContratacoesAnoBar dados={graficos?.funcionarios?.contratacoesAno} />
+            </ChartSection>
+            <ChartSection titulo="Gráficos de Pacientes">
+                <PacientesStatusPie dados={graficos.pacientes.status} />
+                <PacientesSexoPie dados={graficos.pacientes.sexo} />
+                <PacientesPrioridadeBar dados={graficos.pacientes.prioridade} />
+                <PacientesCancerBar dados={graficos.pacientes.cancer} />
+            </ChartSection>
+            <ChartSection titulo="Gráficos de Empréstimos">
+                <EmprestimosStatusPie dados={graficos?.emprestimos?.status} />
 
-        <EmprestimosCidadeBar dados={graficos?.emprestimos?.cidade} />
+                <EmprestimosCidadeBar dados={graficos?.emprestimos?.cidade} />
 
-        <EmprestimosMensalBar dados={graficos?.emprestimos?.mensal} />
+                <EmprestimosMensalBar dados={graficos?.emprestimos?.mensal} />
 
-        <EmprestimosQuantidadeBar dados={graficos?.emprestimos?.quantidade} />
-      </ChartSection>
-      <ChartSection titulo="Gráficos de Serviços">
-        <ServicosStatusPie dados={graficos?.servicos?.status} />
-        <ServicosTipoBar dados={graficos?.servicos?.tipo} />
-        <ServicosResponsavelBar dados={graficos?.servicos?.responsavel} />
-        <ServicosValorBar dados={graficos?.servicos?.valorPorTipo} />
-      </ChartSection>
-    </div>
-  );
+                <EmprestimosQuantidadeBar dados={graficos?.emprestimos?.quantidade} />
+            </ChartSection>
+            <ChartSection titulo="Gráficos de Serviços">
+                <ServicosStatusPie dados={graficos?.servicos?.status} />
+                <ServicosTipoBar dados={graficos?.servicos?.tipo} />
+                <ServicosResponsavelBar dados={graficos?.servicos?.responsavel} />
+                <ServicosValorBar dados={graficos?.servicos?.valorPorTipo} />
+            </ChartSection>
+        </div>
+    );
 }

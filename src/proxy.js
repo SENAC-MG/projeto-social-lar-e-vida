@@ -1,17 +1,17 @@
-import { NextResponse } from 'next/server';
-import { SESSION_COOKIE } from '@/features/auth/constants/auth-constants';
-import { verifyJwtToken } from '@/features/auth/utils/jwt';
+import { NextResponse } from "next/server";
+import { SESSION_COOKIE } from "@/features/auth/constants/auth-constants";
+import { verifyJwtToken } from "@/features/auth/utils/jwt";
 
-const PUBLIC_PATHS = ['/', '/recuperar-senha', '/redefinir-senha'];
+const PUBLIC_PATHS = ["/", "/recuperar-senha", "/redefinir-senha"];
 
 export async function proxy(request) {
     const { pathname } = request.nextUrl;
 
     if (
-        pathname.startsWith('/_next') ||
-        pathname.startsWith('/api') ||
-        pathname.startsWith('/favicon') ||
-        pathname.startsWith('/public')
+        pathname.startsWith("/_next") ||
+        pathname.startsWith("/api") ||
+        pathname.startsWith("/favicon") ||
+        pathname.startsWith("/public")
     ) {
         return NextResponse.next();
     }
@@ -23,8 +23,8 @@ export async function proxy(request) {
 
     if (!hasValidSession && !isPublicPath) {
         const loginUrl = request.nextUrl.clone();
-        loginUrl.pathname = '/';
-        loginUrl.search = '';
+        loginUrl.pathname = "/";
+        loginUrl.search = "";
 
         const response = NextResponse.redirect(loginUrl);
         response.cookies.delete(SESSION_COOKIE);
@@ -32,10 +32,10 @@ export async function proxy(request) {
         return response;
     }
 
-    if (hasValidSession && pathname === '/') {
+    if (hasValidSession && pathname === "/") {
         const homeUrl = request.nextUrl.clone();
-        homeUrl.pathname = '/home';
-        homeUrl.search = '';
+        homeUrl.pathname = "/home";
+        homeUrl.search = "";
 
         return NextResponse.redirect(homeUrl);
     }
@@ -44,5 +44,5 @@ export async function proxy(request) {
 }
 
 export const config = {
-    matcher: ['/:path*'],
+    matcher: ["/:path*"],
 };

@@ -20,9 +20,7 @@ export default function ChartSection({ titulo, children }) {
                 </button>
             </div>
 
-            {aberto && (
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">{children}</div>
-            )}
+            {aberto && <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">{children}</div>}
         </section>
     );
 }

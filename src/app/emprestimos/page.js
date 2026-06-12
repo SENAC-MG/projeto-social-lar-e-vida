@@ -1,12 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
-    Box,
-    Menu,
-    Search,
-    Package,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { Box, Menu, Search, Package } from "lucide-react";
 
 import Pagination from "../components/shared/ui/Pagination";
 import AppShell from "@/shared/layouts/AppShell";
@@ -21,36 +16,22 @@ import BotaoEditarEmprestimo from "../components/update/emprestimos/BotaoEditarE
 import { useResponsiveSidebar } from "@/shared/hooks/useResponsiveSidebar";
 import Button from "@/shared/ui/Button";
 import { Input } from "@/shared/ui/Input";
-import {
-    DataTable,
-    EmptyTableState,
-} from "@/shared/ui/Table";
+import { DataTable, EmptyTableState } from "@/shared/ui/Table";
 
 export default function EmprestimosPage() {
-    const {
-        isSidebarOpen,
-        toggleSidebar,
-    } = useResponsiveSidebar();
+    const { isSidebarOpen, toggleSidebar } = useResponsiveSidebar();
 
-    const [isModalOpen, setIsModalOpen] =
-        useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const [
-        emprestimoEditando,
-        setEmprestimoEditando,
-    ] = useState(null);
+    const [emprestimoEditando, setEmprestimoEditando] = useState(null);
 
-    const [pesquisa, setPesquisa] =
-        useState("");
+    const [pesquisa, setPesquisa] = useState("");
 
-    const [emprestimos, setEmprestimos] =
-        useState([]);
+    const [emprestimos, setEmprestimos] = useState([]);
 
-    const [loading, setLoading] =
-        useState(true);
+    const [loading, setLoading] = useState(true);
 
-    const [paginaAtual, setPaginaAtual] =
-        useState(1);
+    const [paginaAtual, setPaginaAtual] = useState(1);
 
     const ITENS_POR_PAGINA = 15;
 
@@ -58,15 +39,11 @@ export default function EmprestimosPage() {
         try {
             setLoading(true);
 
-            const dados =
-                await get_Emprestimos();
+            const dados = await get_Emprestimos();
 
             setEmprestimos(dados || []);
         } catch (error) {
-            console.error(
-                "Erro ao carregar empréstimos:",
-                error
-            );
+            console.error("Erro ao carregar empréstimos:", error);
 
             setEmprestimos([]);
         } finally {
@@ -78,41 +55,23 @@ export default function EmprestimosPage() {
         carregarEmprestimos();
     }, []);
 
-    const emprestimosFiltrados =
-        emprestimos.filter((emprestimo) =>
-            [
-                emprestimo.nome,
-                emprestimo.cpf,
-                emprestimo.cidade,
-            ]
-                .join(" ")
-                .toLowerCase()
-                .includes(pesquisa.toLowerCase())
-        );
-
-    const totalPaginas = Math.ceil(
-        emprestimosFiltrados.length /
-        ITENS_POR_PAGINA
+    const emprestimosFiltrados = emprestimos.filter((emprestimo) =>
+        [emprestimo.nome, emprestimo.cpf, emprestimo.cidade]
+            .join(" ")
+            .toLowerCase()
+            .includes(pesquisa.toLowerCase())
     );
 
-    const inicio =
-        (paginaAtual - 1) *
-        ITENS_POR_PAGINA;
+    const totalPaginas = Math.ceil(emprestimosFiltrados.length / ITENS_POR_PAGINA);
 
-    const fim =
-        inicio + ITENS_POR_PAGINA;
+    const inicio = (paginaAtual - 1) * ITENS_POR_PAGINA;
 
-    const emprestimosPaginados =
-        emprestimosFiltrados.slice(
-            inicio,
-            fim
-        );
+    const fim = inicio + ITENS_POR_PAGINA;
+
+    const emprestimosPaginados = emprestimosFiltrados.slice(inicio, fim);
 
     return (
-        <AppShell
-            isSidebarOpen={isSidebarOpen}
-            toggleSidebar={toggleSidebar}
-        >
+        <AppShell isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}>
             <main className="bg-[#EEF2F7] dark:bg-background flex-1 flex flex-col min-w-0 transition-all duration-300">
                 <div className="p-4 sm:p-8">
                     <div className="flex flex-col sm:flex-row gap-4 justify-between sm:items-center mb-8">
@@ -126,10 +85,7 @@ export default function EmprestimosPage() {
                             </button>
 
                             <div className="p-3 rounded-xl shadow-sm flex-shrink-0 bg-[#5C7A53]">
-                                <Box
-                                    className="text-white"
-                                    size={24}
-                                />
+                                <Box className="text-white" size={24} />
                             </div>
 
                             <div className="min-w-0">
@@ -138,18 +94,13 @@ export default function EmprestimosPage() {
                                 </h1>
 
                                 <p className="text-foreground/50 text-xs sm:text-sm">
-                                    {
-                                        emprestimos.length
-                                    }{" "}
-                                    registros
+                                    {emprestimos.length} registros
                                 </p>
                             </div>
                         </div>
 
                         <Button
-                            onClick={() =>
-                                setIsModalOpen(true)
-                            }
+                            onClick={() => setIsModalOpen(true)}
                             className="cursor-pointer w-full sm:w-auto px-4 sm:px-6 py-2.5 text-sm sm:text-base !bg-[#5C7A53] hover:!bg-[#4F6847]"
                         >
                             <Package size={20} />
@@ -168,11 +119,7 @@ export default function EmprestimosPage() {
                                 <Input
                                     type="text"
                                     value={pesquisa}
-                                    onChange={(e) =>
-                                        setPesquisa(
-                                            e.target.value
-                                        )
-                                    }
+                                    onChange={(e) => setPesquisa(e.target.value)}
                                     placeholder="Pesquisar empréstimo..."
                                     className="pl-10 bg-transparent"
                                 />
@@ -183,185 +130,124 @@ export default function EmprestimosPage() {
                             <table className="w-full text-left border-collapse min-w-[800px]">
                                 <thead className="bg-[#F9FBFD] dark:bg-zinc-800/50 border-b border-card-border">
                                     <tr className="text-[11px] uppercase tracking-wider text-foreground/50 font-semibold">
-                                        <th className="px-6 py-4">
-                                            Nome
-                                        </th>
+                                        <th className="px-6 py-4">Nome</th>
 
-                                        <th className="px-6 py-4">
-                                            CPF
-                                        </th>
+                                        <th className="px-6 py-4">CPF</th>
 
-                                        <th className="px-6 py-4">
-                                            Quantidade
-                                        </th>
+                                        <th className="px-6 py-4">Quantidade</th>
 
-                                        <th className="px-6 py-4">
-                                            Status
-                                        </th>
+                                        <th className="px-6 py-4">Status</th>
 
-                                        <th className="px-6 py-4">
-                                            Data Empréstimo
-                                        </th>
+                                        <th className="px-6 py-4">Data Empréstimo</th>
 
-                                        <th className="px-6 py-4">
-                                            Previsão Devolução
-                                        </th>
+                                        <th className="px-6 py-4">Previsão Devolução</th>
 
-                                        <th className="px-6 py-4 text-center">
-                                            Ações
-                                        </th>
+                                        <th className="px-6 py-4 text-center">Ações</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     {loading ? (
                                         <EmptyTableState colSpan="7">
-                                            Carregando
-                                            empréstimos...
+                                            Carregando empréstimos...
                                         </EmptyTableState>
-                                    ) : emprestimosFiltrados.length ===
-                                        0 ? (
+                                    ) : emprestimosFiltrados.length === 0 ? (
                                         <EmptyTableState colSpan="7">
-                                            Nenhum
-                                            empréstimo
-                                            encontrado
+                                            Nenhum empréstimo encontrado
                                         </EmptyTableState>
                                     ) : (
-                                        emprestimosPaginados.map(
-                                            (
-                                                emprestimo
-                                            ) => (
-                                                <tr
-                                                    key={
-                                                        emprestimo.id
-                                                    }
-                                                    className="border-b border-card-border hover:bg-foreground/5 transition-colors"
-                                                >
-                                                    <td className="px-6 py-4 text-foreground font-medium text-sm">
-                                                        {
-                                                            emprestimo.nome
-                                                        }
-                                                    </td>
+                                        emprestimosPaginados.map((emprestimo) => (
+                                            <tr
+                                                key={emprestimo.id}
+                                                className="border-b border-card-border hover:bg-foreground/5 transition-colors"
+                                            >
+                                                <td className="px-6 py-4 text-foreground font-medium text-sm">
+                                                    {emprestimo.nome}
+                                                </td>
 
-                                                    <td className="px-6 py-4 text-sm text-foreground/60">
-                                                        {
-                                                            emprestimo.cpf
-                                                        }
-                                                    </td>
+                                                <td className="px-6 py-4 text-sm text-foreground/60">
+                                                    {emprestimo.cpf}
+                                                </td>
 
-                                                    <td className="px-6 py-4 text-sm text-foreground/60">
-                                                        {emprestimo.quantidade ||
-                                                            1}
-                                                    </td>
+                                                <td className="px-6 py-4 text-sm text-foreground/60">
+                                                    {emprestimo.quantidade || 1}
+                                                </td>
 
-                                                    <td className="px-6 py-4 text-sm">
-                                                        <span
-                                                            className={`px-3 py-1 rounded-full text-xs font-semibold ${emprestimo.status ===
-                                                                "ativo"
+                                                <td className="px-6 py-4 text-sm">
+                                                    <span
+                                                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                                            emprestimo.status === "ativo"
                                                                 ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
-                                                                : emprestimo.status ===
-                                                                    "devolvido"
-                                                                    ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                                                                    : emprestimo.status ===
-                                                                        "atrasado"
-                                                                        ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300"
-                                                                        : "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300"
-                                                                }`}
-                                                        >
-                                                            {emprestimo.status ||
-                                                                "ativo"}
-                                                        </span>
-                                                    </td>
+                                                                : emprestimo.status === "devolvido"
+                                                                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                                                                  : emprestimo.status === "atrasado"
+                                                                    ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300"
+                                                                    : "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300"
+                                                        }`}
+                                                    >
+                                                        {emprestimo.status || "ativo"}
+                                                    </span>
+                                                </td>
 
-                                                    <td className="px-6 py-4 text-sm text-foreground/60">
-                                                        {emprestimo.dataEmprestimo
-                                                            ? new Date(
-                                                                emprestimo.dataEmprestimo
-                                                            ).toLocaleDateString(
-                                                                "pt-BR"
-                                                            )
-                                                            : "-"}
-                                                    </td>
+                                                <td className="px-6 py-4 text-sm text-foreground/60">
+                                                    {emprestimo.dataEmprestimo
+                                                        ? new Date(
+                                                              emprestimo.dataEmprestimo
+                                                          ).toLocaleDateString("pt-BR")
+                                                        : "-"}
+                                                </td>
 
-                                                    <td className="px-6 py-4 text-sm text-foreground/60">
-                                                        {emprestimo.previsaoDevolucao
-                                                            ? new Date(
-                                                                emprestimo.previsaoDevolucao
-                                                            ).toLocaleDateString(
-                                                                "pt-BR"
-                                                            )
-                                                            : "-"}
-                                                    </td>
+                                                <td className="px-6 py-4 text-sm text-foreground/60">
+                                                    {emprestimo.previsaoDevolucao
+                                                        ? new Date(
+                                                              emprestimo.previsaoDevolucao
+                                                          ).toLocaleDateString("pt-BR")
+                                                        : "-"}
+                                                </td>
 
-                                                    <td className="px-6 py-4">
-                                                        <div className="flex justify-center gap-2">
-                                                            <BotaoEditarEmprestimo
-                                                                onClick={() =>
-                                                                    setEmprestimoEditando(
-                                                                        emprestimo
-                                                                    )
-                                                                }
-                                                            />
+                                                <td className="px-6 py-4">
+                                                    <div className="flex justify-center gap-2">
+                                                        <BotaoEditarEmprestimo
+                                                            onClick={() =>
+                                                                setEmprestimoEditando(emprestimo)
+                                                            }
+                                                        />
 
-                                                            <BotaoDeletarEmprestimo
-                                                                id={
-                                                                    emprestimo.id
-                                                                }
-                                                                onDeleted={
-                                                                    carregarEmprestimos
-                                                                }
-                                                            />
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        )
+                                                        <BotaoDeletarEmprestimo
+                                                            id={emprestimo.id}
+                                                            onDeleted={carregarEmprestimos}
+                                                        />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
                                     )}
                                 </tbody>
                             </table>
                         </DataTable>
 
-                        {emprestimosFiltrados.length >
-                            0 && (
-                                <Pagination
-                                    paginaAtual={
-                                        paginaAtual
-                                    }
-                                    totalPaginas={
-                                        totalPaginas
-                                    }
-                                    onPageChange={
-                                        setPaginaAtual
-                                    }
-                                />
-                            )}
+                        {emprestimosFiltrados.length > 0 && (
+                            <Pagination
+                                paginaAtual={paginaAtual}
+                                totalPaginas={totalPaginas}
+                                onPageChange={setPaginaAtual}
+                            />
+                        )}
                     </div>
                 </div>
 
                 {isModalOpen && (
                     <ModalNovoEmprestimo
-                        onClose={() =>
-                            setIsModalOpen(false)
-                        }
-                        onSuccess={
-                            carregarEmprestimos
-                        }
+                        onClose={() => setIsModalOpen(false)}
+                        onSuccess={carregarEmprestimos}
                     />
                 )}
 
                 {emprestimoEditando && (
                     <ModalEditarEmprestimo
-                        emprestimo={
-                            emprestimoEditando
-                        }
-                        onClose={() =>
-                            setEmprestimoEditando(
-                                null
-                            )
-                        }
-                        onSuccess={
-                            carregarEmprestimos
-                        }
+                        emprestimo={emprestimoEditando}
+                        onClose={() => setEmprestimoEditando(null)}
+                        onSuccess={carregarEmprestimos}
                     />
                 )}
             </main>

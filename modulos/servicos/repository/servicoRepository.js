@@ -7,12 +7,12 @@ import { prisma } from "../../../lib/prisma";
  * - Usado normalmente para listagem em tabelas
  */
 export async function get_AllServicos() {
-  const result = await prisma.Servicos.findMany({
-    orderBy: {
-      nome: "asc",
-    },
-  });
-  return result;
+    const result = await prisma.Servicos.findMany({
+        orderBy: {
+            nome: "asc",
+        },
+    });
+    return result;
 }
 /**
  * - Criar novo Serviço
@@ -22,21 +22,32 @@ export async function get_AllServicos() {
  * - Retorna o serviço criado
  */
 export async function post_Servico(data) {
-  const { nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico, status, dataServico, funcionarioResponsavel } = data;
-  return await prisma.Servicos.create({
-    data: {
-      nome,
-      cpf,
-      tipoServico,
-      duracao,
-      valorServico,
-      unidade,
-      tempoServico,
-      status,
-      dataServico,
-      funcionarioResponsavel
-    }
-  });
+    const {
+        nome,
+        cpf,
+        tipoServico,
+        duracao,
+        valorServico,
+        unidade,
+        tempoServico,
+        status,
+        dataServico,
+        funcionarioResponsavel,
+    } = data;
+    return await prisma.Servicos.create({
+        data: {
+            nome,
+            cpf,
+            tipoServico,
+            duracao,
+            valorServico,
+            unidade,
+            tempoServico,
+            status,
+            dataServico,
+            funcionarioResponsavel,
+        },
+    });
 }
 /**
  * Deletar serviço
@@ -45,10 +56,10 @@ export async function post_Servico(data) {
  * - Cuidado: Operação irreversível
  */
 export async function del_Servico(id) {
-  const result = await prisma.Servicos.delete({
-    where: { id },
-  });
-  return result;
+    const result = await prisma.Servicos.delete({
+        where: { id },
+    });
+    return result;
 }
 
 /**
@@ -59,11 +70,11 @@ export async function del_Servico(id) {
  * - Usado em edição, detalhes, etc
  */
 export async function findServicoById(id) {
-  const servico = await prisma.Servicos.findUnique({
-    where: { id },
-  });
-  // Retorna o serviço encontrado ou null se não existir
-  return servico;
+    const servico = await prisma.Servicos.findUnique({
+        where: { id },
+    });
+    // Retorna o serviço encontrado ou null se não existir
+    return servico;
 }
 
 /**
@@ -72,13 +83,13 @@ export async function findServicoById(id) {
  * - Retorna o serviço atualizado
  */
 export async function updateServico(id, data) {
-  console.log('Atualizando serviço ID:', id, 'com dados', data);
+    console.log("Atualizando serviço ID:", id, "com dados", data);
 
-  const Servico_atualizado = await prisma.Servicos.update({
-    where: { id },
-    data,
-  });
+    const Servico_atualizado = await prisma.Servicos.update({
+        where: { id },
+        data,
+    });
 
-  console.log('Serviço atualizado com sucesso:', Servico_atualizado);
-  return Servico_atualizado;
+    console.log("Serviço atualizado com sucesso:", Servico_atualizado);
+    return Servico_atualizado;
 }
