@@ -125,7 +125,7 @@ export async function updateServicoAction(id, formData) {
     if (cpf) data.cpf = cpf;
     if (tipoServico) data.tipoServico = tipoServico;
     if (duracao) data.duracao = duracao;
-    if (valorServico) data.valorServico = Number(valorServico);
+    if (valorServico !== undefined) data.valorServico = Number(valorServico);
     if (unidade) data.unidade = unidade;
     if (tempoServico) data.tempoServico = tempoServico;
     if (status) data.status = status;
