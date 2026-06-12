@@ -3,6 +3,7 @@
 // import { revalidatePath } from 'next/cache';
 import { apaga_Paciente, gravarPaciente, pegar_Pacientes, updatePacienteService } from "../services/pacienteService";
 import { formatError } from "../../../lib/formatError";
+import { sanitizeString, sanitizeOptionalString, parseDate } from "../../../lib/sanitize";
 /**
  * Buscar todos os pacientes
  *
@@ -18,24 +19,24 @@ export async function get_Pacientes() {
 
 export async function cadastrar_Paciente(formData) {
   // Extração e Limpeza dos dados
-  const nome = formData.get('nome')?.toString().trim();
-  const status = formData.get('status')?.toString().trim();
-  const cpf = formData.get('cpf')?.toString().trim();
-  const rg = formData.get('rg')?.toString().trim();
-  const nascimento = new Date(formData.get('nascimento')?.toString().trim());
-  const profissao = formData.get('profissao')?.toString().trim();
-  const tipoCancer = formData.get('tipoCancer')?.toString().trim();
-  const CIDprincipal = formData.get('CIDprincipal')?.toString().trim();
-  const CIDsecundario = formData.get('CIDsecundario')?.toString().trim();
-  const rua = formData.get('rua')?.toString().trim();
-  const numero = formData.get('numero')?.toString().trim();
-  const cep = formData.get('cep')?.toString().trim();
-  const bairro = formData.get('bairro')?.toString().trim();
-  const cidade = formData.get('cidade')?.toString().trim();
-  const telefone1 = formData.get('telefone1')?.toString().trim();
-  const telefone2 = formData.get('telefone2')?.toString().trim();
-  const sexo = formData.get('sexo')?.toString().trim();
-  const prioridade = formData.get('prioridade')?.toString().trim();
+  const nome = sanitizeString(formData.get('nome'));
+  const status = sanitizeOptionalString(formData.get('status'));
+  const cpf = sanitizeString(formData.get('cpf'));
+  const rg = sanitizeString(formData.get('rg'));
+  const nascimento = parseDate(formData.get('nascimento'));
+  const profissao = sanitizeOptionalString(formData.get('profissao'));
+  const tipoCancer = sanitizeOptionalString(formData.get('tipoCancer'));
+  const CIDprincipal = sanitizeOptionalString(formData.get('CIDprincipal'));
+  const CIDsecundario = sanitizeOptionalString(formData.get('CIDsecundario'));
+  const rua = sanitizeOptionalString(formData.get('rua'));
+  const numero = sanitizeOptionalString(formData.get('numero'));
+  const cep = sanitizeOptionalString(formData.get('cep'));
+  const bairro = sanitizeOptionalString(formData.get('bairro'));
+  const cidade = sanitizeOptionalString(formData.get('cidade'));
+  const telefone1 = sanitizeOptionalString(formData.get('telefone1'));
+  const telefone2 = sanitizeOptionalString(formData.get('telefone2'));
+  const sexo = sanitizeOptionalString(formData.get('sexo'));
+  const prioridade = sanitizeOptionalString(formData.get('prioridade'));
 
   console.log('Dados recebidos no action:', {
     nome,
@@ -122,24 +123,24 @@ export async function deletar_Paciente(id) {
 export async function updatePacienteAction(id, formData) {
   const data = {};
 
-  const nome = formData.get("nome")?.toString().trim();
-  const status = formData.get("status")?.toString();
-  const cpf = formData.get("cpf")?.toString().trim();
-  const rg = formData.get("rg")?.toString().trim();
-  const nascimento = formData.get("nascimento")?.toString();
-  const profissao = formData.get("profissao")?.toString().trim();
-  const tipoCancer = formData.get("tipoCancer")?.toString().trim();
-  const CIDprincipal = formData.get("CIDprincipal")?.toString().trim();
-  const CIDsecundario = formData.get("CIDsecundario")?.toString().trim();
-  const rua = formData.get("rua")?.toString().trim();
-  const numero = formData.get("numero")?.toString().trim();
-  const cep = formData.get("cep")?.toString().trim();
-  const bairro = formData.get("bairro")?.toString().trim();
-  const cidade = formData.get("cidade")?.toString().trim();
-  const telefone1 = formData.get("telefone1")?.toString().trim();
-  const telefone2 = formData.get("telefone2")?.toString().trim();
-  const sexo = formData.get("sexo")?.toString().trim();
-  const prioridade = formData.get("prioridade")?.toString().trim();
+  const nome = sanitizeString(formData.get("nome"));
+  const status = sanitizeOptionalString(formData.get("status"));
+  const cpf = sanitizeString(formData.get("cpf"));
+  const rg = sanitizeString(formData.get("rg"));
+  const nascimento = parseDate(formData.get("nascimento"));
+  const profissao = sanitizeOptionalString(formData.get("profissao"));
+  const tipoCancer = sanitizeOptionalString(formData.get("tipoCancer"));
+  const CIDprincipal = sanitizeOptionalString(formData.get("CIDprincipal"));
+  const CIDsecundario = sanitizeOptionalString(formData.get("CIDsecundario"));
+  const rua = sanitizeOptionalString(formData.get("rua"));
+  const numero = sanitizeOptionalString(formData.get("numero"));
+  const cep = sanitizeOptionalString(formData.get("cep"));
+  const bairro = sanitizeOptionalString(formData.get("bairro"));
+  const cidade = sanitizeOptionalString(formData.get("cidade"));
+  const telefone1 = sanitizeOptionalString(formData.get("telefone1"));
+  const telefone2 = sanitizeOptionalString(formData.get("telefone2"));
+  const sexo = sanitizeOptionalString(formData.get("sexo"));
+  const prioridade = sanitizeOptionalString(formData.get("prioridade"));
 
   if (nome) data.nome = nome;
   if (status) data.status = status;

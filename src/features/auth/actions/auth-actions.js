@@ -10,9 +10,12 @@ import {
 import { authenticate } from '@/features/auth/services/auth-service';
 
 import { generateJwtToken } from '@/features/auth/utils/jwt';
+import { sanitizeEmail, sanitizeString } from '../../../../lib/sanitize';
 
 export async function loginAction(email, senha, rememberSession = false) {
-  const result = await authenticate(email, senha);
+  const sanitizedEmail = sanitizeEmail(email);
+  const sanitizedSenha = sanitizeString(senha);
+  const result = await authenticate(sanitizedEmail, sanitizedSenha);
 
   if (!result.success) {
     return result;
@@ -40,7 +43,7 @@ export async function loginAction(email, senha, rememberSession = false) {
 }
 
 export async function requestPasswordResetAction(formData) {
-  const email = formData.get('email')?.toString();
+  const email = sanitizeEmail(formData.get('email'));
   return requestPasswordReset(email);
 }
 
@@ -50,8 +53,8 @@ export async function validateResetTokenAction(token) {
 }
 
 export async function resetPasswordAction(formData) {
-  const token = formData.get('token')?.toString();
-  const newPassword = formData.get('newPassword')?.toString();
+  const token = sanitizeString(formData.get('token'));
+  const newPassword = sanitizeString(formData.get('newPassword'));
 
   try {
     await resetPassword(token, newPassword);
