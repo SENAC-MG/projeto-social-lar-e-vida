@@ -32,6 +32,10 @@ export default function FuncionariosPage() {
 
     const totalPaginas = Math.ceil(funcionarios.length / ITENS_POR_PAGINA);
 
+    useEffect(() => {
+        setPaginaAtual((current) => Math.min(current, Math.max(1, totalPaginas)));
+    }, [totalPaginas]);
+
     const inicio = (paginaAtual - 1) * ITENS_POR_PAGINA;
     const fim = inicio + ITENS_POR_PAGINA;
 
