@@ -1,4 +1,24 @@
 import { prisma } from "../../../lib/prisma";
+
+function sanitizeForLog(value) {
+    if (typeof value === "string") {
+        return value.replace(/[\r\n]/g, "");
+    }
+
+    if (Array.isArray(value)) {
+        return value.map(sanitizeForLog);
+    }
+
+    if (value && typeof value === "object") {
+        const sanitizedObject = {};
+        for (const [key, val] of Object.entries(value)) {
+            sanitizedObject[key] = sanitizeForLog(val);
+        }
+        return sanitizedObject;
+    }
+
+    return value;
+}
 /**
  * Buscar todos os serviços
  *
@@ -83,13 +103,15 @@ export async function findServicoById(id) {
  * - Retorna o serviço atualizado
  */
 export async function updateServico(id, data) {
-    console.log("Atualizando serviço ID:", id, "com dados", data);
+    const safeDataForLog = sanitizeForLog(data);
+    console.log("Atualizando serviço ID:", id, "com dados", safeDataForLog);
 
     const Servico_atualizado = await prisma.Servicos.update({
         where: { id },
         data,
     });
 
-    console.log("Serviço atualizado com sucesso:", Servico_atualizado);
+    const safeServicoAtualizadoForLog = sanitizeForLog(Servico_atualizado);
+    console.log("Serviço atualizado com sucesso:", safeServicoAtualizadoForLog);
     return Servico_atualizado;
 }
