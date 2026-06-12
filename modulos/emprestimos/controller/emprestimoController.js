@@ -150,7 +150,7 @@ export async function updateEmprestimoAction(id, formData) {
     if (rg) data.rg = rg;
     if (nascimento) data.nascimento = new Date(nascimento);
     if (dataEmprestimo) data.dataEmprestimo = new Date(dataEmprestimo);
-    if (quantidade) data.quantidade = quantidade;
+    if (quantidade !== undefined) data.quantidade = quantidade;
     if (rua) data.rua = rua;
     if (numero) data.numero = numero;
     if (cep) data.cep = cep;
