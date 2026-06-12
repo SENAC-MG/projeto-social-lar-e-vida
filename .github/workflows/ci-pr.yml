@@ -14,11 +14,11 @@ permissions:
   contents: read
 
 env:
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-  JWT_SECRET: ${{ secrets.JWT_SECRET }}
-  DEFAULT_ADMIN_EMAIL: ${{ vars.DEFAULT_ADMIN_EMAIL }}
-  DEFAULT_ADMIN_PASSWORD: ${{ secrets.DEFAULT_ADMIN_PASSWORD }}
-  NODE_ENV: ${{ vars.NODE_ENV }}
+  DATABASE_URL: ${{ secrets.DATABASE_URL || 'file:./prisma/dev.db' }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET || 'ci-jwt-secret' }}
+  DEFAULT_ADMIN_EMAIL: ${{ vars.DEFAULT_ADMIN_EMAIL || 'ci-admin@example.com' }}
+  DEFAULT_ADMIN_PASSWORD: ${{ secrets.DEFAULT_ADMIN_PASSWORD || 'ci-admin-password' }}
+  NODE_ENV: ${{ vars.NODE_ENV || 'test' }}
 
 jobs:
   # ── Lint ──────────────────────────────────────────────────────────────────
