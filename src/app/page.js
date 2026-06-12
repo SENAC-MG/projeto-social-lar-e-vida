@@ -154,13 +154,6 @@ export default function Home() {
                                 />
                                 Lembrar Sessão
                             </label>
-
-                            <Link
-                                href="/recuperar-senha"
-                                className="font-medium text-[#5C7A53] transition-colors hover:text-[#5C7A53]/80"
-                            >
-                                Esqueci minha senha
-                            </Link>
                         </div>
 
                         <Button

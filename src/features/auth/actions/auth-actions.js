@@ -44,32 +44,9 @@ export async function loginAction(email, senha, rememberSession = false) {
     redirect("/home");
 }
 
-export async function requestPasswordResetAction(formData) {
-    const email = sanitizeEmail(formData.get("email"));
-    return requestPasswordReset(email);
-}
-
 export async function validateResetTokenAction(token) {
     const isValid = await isResetTokenValid(token);
     return { valid: isValid };
-}
-
-export async function resetPasswordAction(formData) {
-    const token = sanitizeString(formData.get("token"));
-    const newPassword = sanitizeString(formData.get("newPassword"));
-
-    try {
-        await resetPassword(token, newPassword);
-        return {
-            success: true,
-            message: "Senha redefinida com sucesso. Faça login com sua nova senha.",
-        };
-    } catch (error) {
-        return {
-            success: false,
-            error: error?.message || "Não foi possível redefinir a senha.",
-        };
-    }
 }
 
 export async function logoutAction() {
