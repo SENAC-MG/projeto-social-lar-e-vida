@@ -3,6 +3,11 @@ import { error } from "node:console";
 // Importa funções do repository (acesso ao banco via Prisma)
 
 import { del_Paciente, post_Paciente, get_AllPacientes, findPacienteById, updatePaciente } from "../repository/pacienteRepository";
+import {
+  validateRequiredString,
+  validateOptionalString,
+  validateRequiredDate,
+} from "../../../lib/payloadValidation";
 
 /**
  * Buscar todos os pacientes
@@ -40,33 +45,46 @@ export async function gravarPaciente(
   prioridade
 ) {
 
-  // Validação: campos obrigatórios do formulário (relaxada para aceitar campos opcionais do modal)
-  if (!nome || !cpf || !rg || !nascimento || isNaN(new Date(nascimento).getTime()) || !sexo || !status || !prioridade) {
-    throw new Error('Campos obrigatórios ausentes (nome, cpf, rg, nascimento, sexo, status, prioridade).');
-  }
-
+  const nomeValid = validateRequiredString(nome, 'nome');
+  const statusValid = validateRequiredString(status, 'status');
+  const cpfValid = validateRequiredString(cpf, 'cpf');
+  const rgValid = validateRequiredString(rg, 'rg');
+  const nascimentoValid = validateRequiredDate(nascimento, 'nascimento');
+  const sexoValid = validateRequiredString(sexo, 'sexo');
+  const prioridadeValid = validateRequiredString(prioridade, 'prioridade');
+  const profissaoValid = validateOptionalString(profissao, 'profissao');
+  const tipoCancerValid = validateOptionalString(tipoCancer, 'tipoCancer');
+  const CIDprincipalValid = validateOptionalString(CIDprincipal, 'CIDprincipal');
+  const CIDsecundarioValid = validateOptionalString(CIDsecundario, 'CIDsecundario');
+  const ruaValid = validateOptionalString(rua, 'rua');
+  const numeroValid = validateOptionalString(numero, 'numero');
+  const cepValid = validateOptionalString(cep, 'cep');
+  const bairroValid = validateOptionalString(bairro, 'bairro');
+  const cidadeValid = validateOptionalString(cidade, 'cidade');
+  const telefone1Valid = validateOptionalString(telefone1, 'telefone1');
+  const telefone2Valid = validateOptionalString(telefone2, 'telefone2');
 
   // Se passou por todas regras pode salvar -> pode salvar
   try {
     return await post_Paciente({
-      nome,
-      status,
-      cpf,
-      rg,
-      nascimento,
-      profissao,
-      tipoCancer,
-      CIDprincipal,
-      CIDsecundario: CIDsecundario || "",
-      rua,
-      numero,
-      cep,
-      bairro,
-      cidade,
-      telefone1,
-      telefone2: telefone2 || "",
-      sexo,
-      prioridade
+      nome: nomeValid,
+      status: statusValid,
+      cpf: cpfValid,
+      rg: rgValid,
+      nascimento: nascimentoValid,
+      profissao: profissaoValid,
+      tipoCancer: tipoCancerValid,
+      CIDprincipal: CIDprincipalValid,
+      CIDsecundario: CIDsecundarioValid || "",
+      rua: ruaValid,
+      numero: numeroValid,
+      cep: cepValid,
+      bairro: bairroValid,
+      cidade: cidadeValid,
+      telefone1: telefone1Valid,
+      telefone2: telefone2Valid || "",
+      sexo: sexoValid,
+      prioridade: prioridadeValid,
     });
   } catch (err) {
     // Tratamento de erro do Prisma para unique constraint
@@ -92,6 +110,31 @@ export async function apaga_Paciente(id) {
 }
 
 /**
+ * Valida dados de atualização de paciente.
+ */
+function validatePacienteUpdateData(data) {
+  if (data.nome !== undefined) data.nome = validateRequiredString(data.nome, 'nome');
+  if (data.status !== undefined) data.status = validateRequiredString(data.status, 'status');
+  if (data.cpf !== undefined) data.cpf = validateRequiredString(data.cpf, 'cpf');
+  if (data.rg !== undefined) data.rg = validateRequiredString(data.rg, 'rg');
+  if (data.nascimento !== undefined) data.nascimento = validateRequiredDate(data.nascimento, 'nascimento');
+  if (data.profissao !== undefined) data.profissao = validateOptionalString(data.profissao, 'profissao');
+  if (data.tipoCancer !== undefined) data.tipoCancer = validateOptionalString(data.tipoCancer, 'tipoCancer');
+  if (data.CIDprincipal !== undefined) data.CIDprincipal = validateOptionalString(data.CIDprincipal, 'CIDprincipal');
+  if (data.CIDsecundario !== undefined) data.CIDsecundario = validateOptionalString(data.CIDsecundario, 'CIDsecundario');
+  if (data.rua !== undefined) data.rua = validateOptionalString(data.rua, 'rua');
+  if (data.numero !== undefined) data.numero = validateOptionalString(data.numero, 'numero');
+  if (data.cep !== undefined) data.cep = validateOptionalString(data.cep, 'cep');
+  if (data.bairro !== undefined) data.bairro = validateOptionalString(data.bairro, 'bairro');
+  if (data.cidade !== undefined) data.cidade = validateOptionalString(data.cidade, 'cidade');
+  if (data.telefone1 !== undefined) data.telefone1 = validateOptionalString(data.telefone1, 'telefone1');
+  if (data.telefone2 !== undefined) data.telefone2 = validateOptionalString(data.telefone2, 'telefone2');
+  if (data.sexo !== undefined) data.sexo = validateRequiredString(data.sexo, 'sexo');
+  if (data.prioridade !== undefined) data.prioridade = validateRequiredString(data.prioridade, 'prioridade');
+  return data;
+}
+
+/**
  * Atualizar paciente
  *
  * Regra de negócio:
@@ -106,6 +149,7 @@ export async function updatePacienteService(id, data) {
   } else {
     console.log('Paciente encontrado para atualização:', existe);
   }
+  validatePacienteUpdateData(data);
   const pacienteAtualizado = await updatePaciente(Number(id), data);
 
   return pacienteAtualizado;

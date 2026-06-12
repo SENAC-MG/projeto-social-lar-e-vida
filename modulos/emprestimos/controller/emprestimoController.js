@@ -3,6 +3,7 @@
 // import { revalidatePath } from 'next/cache';
 import { apaga_Emprestimo, gravarEmprestimo, pegar_Emprestimos, updateEmprestimoService } from "../services/emprestimoService";
 import { formatError } from "../../../lib/formatError";
+import { sanitizeString, sanitizeOptionalString, parseDate, parseIntegerValue } from "../../../lib/sanitize";
 /**
  * Buscar todos os empréstimos
  *
@@ -18,22 +19,22 @@ export async function get_Emprestimos() {
 
 export async function cadastrar_Emprestimo(formData) {
   // Extração e Limpeza dos dados
-  const nome = formData.get('nome')?.toString().trim();
-  const cpf = formData.get('cpf')?.toString().trim();
-  const rg = formData.get('rg')?.toString().trim();
-  const nascimento = new Date(formData.get('nascimento')?.toString().trim());
-  const dataEmprestimo = new Date(formData.get('dataEmprestimo')?.toString().trim());
-  const quantidade = Number(formData.get('quantidade')?.toString().trim());
-  const rua = formData.get('rua')?.toString().trim();
-  const numero = formData.get('numero')?.toString().trim();
-  const cep = formData.get('cep')?.toString().trim();
-  const bairro = formData.get('bairro')?.toString().trim();
-  const cidade = formData.get('cidade')?.toString().trim();
-  const telefone1 = formData.get('telefone1')?.toString().trim();
-  const telefone2 = formData.get('telefone2')?.toString().trim();
-  const status = formData.get('status')?.toString().trim();
-  const previsaoDevolucao = formData.get('previsaoDevolucao') ? formData.get('previsaoDevolucao').toString().trim() : "";
-  const dataDevolucao = formData.get('dataDevolucao') ? formData.get('dataDevolucao').toString().trim() : "";
+  const nome = sanitizeString(formData.get('nome'));
+  const cpf = sanitizeString(formData.get('cpf'));
+  const rg = sanitizeString(formData.get('rg'));
+  const nascimento = parseDate(formData.get('nascimento'));
+  const dataEmprestimo = parseDate(formData.get('dataEmprestimo'));
+  const quantidade = parseIntegerValue(formData.get('quantidade'));
+  const rua = sanitizeOptionalString(formData.get('rua'));
+  const numero = sanitizeOptionalString(formData.get('numero'));
+  const cep = sanitizeOptionalString(formData.get('cep'));
+  const bairro = sanitizeOptionalString(formData.get('bairro'));
+  const cidade = sanitizeOptionalString(formData.get('cidade'));
+  const telefone1 = sanitizeOptionalString(formData.get('telefone1'));
+  const telefone2 = sanitizeOptionalString(formData.get('telefone2'));
+  const status = sanitizeOptionalString(formData.get('status'));
+  const previsaoDevolucao = parseDate(formData.get('previsaoDevolucao'));
+  const dataDevolucao = parseDate(formData.get('dataDevolucao'));
 
   console.log('Dados recebidos no action:', { nome, cpf, rg, nascimento, dataEmprestimo, quantidade, rua, numero, cep, bairro, cidade, telefone1, telefone2, status, previsaoDevolucao, dataDevolucao });
 
@@ -83,22 +84,22 @@ export async function deletar_Emprestimo(id) {
 export async function updateEmprestimoAction(id, formData) {
   const data = {};
 
-  const nome = formData.get("nome")?.toString().trim();
-  const cpf = formData.get("cpf")?.toString().trim();
-  const rg = formData.get("rg")?.toString().trim();
-  const nascimento = formData.get("nascimento")?.toString();
-  const dataEmprestimo = formData.get("dataEmprestimo")?.toString();
-  const quantidade = Number(formData.get("quantidade")?.toString().trim());
-  const rua = formData.get("rua")?.toString().trim();
-  const numero = formData.get("numero")?.toString().trim();
-  const cep = formData.get("cep")?.toString().trim();
-  const bairro = formData.get("bairro")?.toString().trim();
-  const cidade = formData.get("cidade")?.toString().trim();
-  const telefone1 = formData.get("telefone1")?.toString().trim();
-  const telefone2 = formData.get("telefone2")?.toString().trim();
-  const status = formData.get("status")?.toString().trim();
-  const previsaoDevolucao = formData.get("previsaoDevolucao") ? formData.get("previsaoDevolucao").toString().trim() : "";
-  const dataDevolucao = formData.get("dataDevolucao") ? formData.get("dataDevolucao").toString().trim() : "";
+  const nome = sanitizeString(formData.get("nome"));
+  const cpf = sanitizeString(formData.get("cpf"));
+  const rg = sanitizeString(formData.get("rg"));
+  const nascimento = parseDate(formData.get("nascimento"));
+  const dataEmprestimo = parseDate(formData.get("dataEmprestimo"));
+  const quantidade = parseIntegerValue(formData.get("quantidade"));
+  const rua = sanitizeOptionalString(formData.get("rua"));
+  const numero = sanitizeOptionalString(formData.get("numero"));
+  const cep = sanitizeOptionalString(formData.get("cep"));
+  const bairro = sanitizeOptionalString(formData.get("bairro"));
+  const cidade = sanitizeOptionalString(formData.get("cidade"));
+  const telefone1 = sanitizeOptionalString(formData.get("telefone1"));
+  const telefone2 = sanitizeOptionalString(formData.get("telefone2"));
+  const status = sanitizeOptionalString(formData.get("status"));
+  const previsaoDevolucao = parseDate(formData.get("previsaoDevolucao"));
+  const dataDevolucao = parseDate(formData.get("dataDevolucao"));
 
   if (nome) data.nome = nome;
   if (cpf) data.cpf = cpf;

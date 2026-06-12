@@ -3,6 +3,12 @@ import { error } from "node:console";
 // Importa funções do repository (acesso ao banco via Prisma)
 
 import { del_Funcionario, post_Funcionario, get_AllFuncionarios, findFuncionarioById, updateFuncionario } from "../repository/funcionarioRepository";
+import {
+  validateEmail,
+  validateRequiredString,
+  validateRequiredDate,
+  validateOptionalString,
+} from "../../../lib/payloadValidation";
 
 /**
  * Buscar todos os alunos
@@ -28,20 +34,20 @@ export async function gravarFuncionario(
   dataContratacao
 ) {
 
-  // Validação: campos obrigatórios
-  if (!nome || !email || !cargo || !telefone || !status || !dataContratacao) {
-    throw new Error('Todos os campos são obrigatórios!');
-  }
+  const nomeValid = validateRequiredString(nome, 'nome');
+  const emailValid = validateEmail(email, 'email');
+  const cargoValid = validateRequiredString(cargo, 'cargo');
+  const telefoneValid = validateRequiredString(telefone, 'telefone');
+  const statusValid = validateRequiredString(status, 'status');
+  const dataContratacaoValid = validateRequiredDate(dataContratacao, 'dataContratacao');
 
-
-  // Se passou por todas regras pode salvar -> pode salvar
   return await post_Funcionario({
-    nome,
-    email,
-    cargo,
-    telefone,
-    status,
-    dataContratacao
+    nome: nomeValid,
+    email: emailValid,
+    cargo: cargoValid,
+    telefone: telefoneValid,
+    status: statusValid,
+    dataContratacao: dataContratacaoValid,
   });
 }
 
@@ -54,6 +60,19 @@ export async function gravarFuncionario(
  */
 export async function apaga_Funcionario(id) {
   return await del_Funcionario(Number(id));
+}
+
+/**
+ * Valida dados de atualização de funcionário.
+ */
+function validateFuncionarioUpdateData(data) {
+  if (data.nome !== undefined) data.nome = validateRequiredString(data.nome, 'nome');
+  if (data.email !== undefined) data.email = validateEmail(data.email, 'email');
+  if (data.cargo !== undefined) data.cargo = validateRequiredString(data.cargo, 'cargo');
+  if (data.telefone !== undefined) data.telefone = validateRequiredString(data.telefone, 'telefone');
+  if (data.status !== undefined) data.status = validateRequiredString(data.status, 'status');
+  if (data.dataContratacao !== undefined) data.dataContratacao = validateRequiredDate(data.dataContratacao, 'dataContratacao');
+  return data;
 }
 
 /**
@@ -71,6 +90,7 @@ export async function updateFuncionarioService(id, data) {
   } else {
     console.log('Funcionário encontrado para atualização:', existe);
   }
+  validateFuncionarioUpdateData(data);
   const funcionarioAtualizado = await updateFuncionario(Number(id), data);
 
   return funcionarioAtualizado;

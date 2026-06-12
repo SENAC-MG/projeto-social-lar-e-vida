@@ -3,6 +3,12 @@ import { error } from "node:console";
 // Importa funções do repository (acesso ao banco via Prisma)
 
 import { del_Servico, post_Servico, get_AllServicos, findServicoById, updateServico } from "../repository/servicoRepository";
+import {
+  validateRequiredString,
+  validateOptionalString,
+  validateRequiredDate,
+  validateRequiredNumber,
+} from "../../../lib/payloadValidation";
 
 /**
  * Buscar todos os serviços
@@ -32,24 +38,28 @@ export async function gravarServico(
   funcionarioResponsavel
 ) {
 
-  // Validação: campos obrigatórios (funcionário pode ser opcional)
-  if (!nome || !cpf || !tipoServico || !duracao || !valorServico || !unidade || !tempoServico || !status || !dataServico) {
-    throw new Error('Campos obrigatórios ausentes (nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico, status, dataServico).');
-  }
+  const nomeValid = validateRequiredString(nome, 'nome');
+  const cpfValid = validateRequiredString(cpf, 'cpf');
+  const tipoServicoValid = validateRequiredString(tipoServico, 'tipoServico');
+  const duracaoValid = validateRequiredString(duracao, 'duracao');
+  const valorServicoValid = validateRequiredNumber(valorServico, 'valorServico');
+  const unidadeValid = validateRequiredString(unidade, 'unidade');
+  const tempoServicoValid = validateRequiredString(tempoServico, 'tempoServico');
+  const statusValid = validateRequiredString(status, 'status');
+  const dataServicoValid = validateRequiredDate(dataServico, 'dataServico');
+  const funcionarioResponsavelValid = validateOptionalString(funcionarioResponsavel, 'funcionarioResponsavel');
 
-
-  // Se passou por todas regras pode salvar -> pode salvar
   return await post_Servico({
-    nome,
-    cpf,
-    tipoServico,
-    duracao,
-    valorServico,
-    unidade,
-    tempoServico,
-    status,
-    dataServico,
-    funcionarioResponsavel
+    nome: nomeValid,
+    cpf: cpfValid,
+    tipoServico: tipoServicoValid,
+    duracao: duracaoValid,
+    valorServico: valorServicoValid,
+    unidade: unidadeValid,
+    tempoServico: tempoServicoValid,
+    status: statusValid,
+    dataServico: dataServicoValid,
+    funcionarioResponsavel: funcionarioResponsavelValid,
   });
 }
 
@@ -79,6 +89,7 @@ export async function updateServicoService(id, data) {
   } else {
     console.log('Serviço encontrado para atualização:', existe);
   }
+  validateServicoUpdateData(data);
   const servicoAtualizado = await updateServico(Number(id), data);
 
   return servicoAtualizado;

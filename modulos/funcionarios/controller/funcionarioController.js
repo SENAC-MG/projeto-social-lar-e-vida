@@ -3,6 +3,7 @@
 // import { revalidatePath } from 'next/cache';
 import { apaga_Funcionario, gravarFuncionario, pegar_Funcionarios, updateFuncionarioService } from "../services/funcionarioService";
 import { formatError } from "../../../lib/formatError";
+import { sanitizeString, sanitizeEmail, parseDate, sanitizeOptionalString } from "../../../lib/sanitize";
 /**
  * Buscar todos os funcionários
  *
@@ -18,12 +19,12 @@ export async function get_Funcionarios() {
 
 export async function cadastrar_Funcionario(formData) {
   // Extração e Limpeza dos dados
-  const nome = formData.get('nome')?.toString().trim();
-  const email = formData.get('email')?.toString().trim();
-  const cargo = formData.get('cargo')?.toString().trim();
-  const telefone = formData.get('telefone')?.toString().trim();
-  const status = formData.get('status')?.toString().trim();
-  const dataContratacao = new Date(formData.get('dataContratacao')?.toString().trim());
+  const nome = sanitizeString(formData.get('nome'));
+  const email = sanitizeEmail(formData.get('email'));
+  const cargo = sanitizeOptionalString(formData.get('cargo'));
+  const telefone = sanitizeOptionalString(formData.get('telefone'));
+  const status = sanitizeOptionalString(formData.get('status'));
+  const dataContratacao = parseDate(formData.get('dataContratacao'));
 
   console.log('Dados recebidos no action:', { nome, email, cargo, telefone, status, dataContratacao });
 
@@ -73,12 +74,12 @@ export async function deletar_Funcionario(id) {
 export async function updateFuncionarioAction(id, formData) {
   const data = {};
 
-  const nome = formData.get("nome")?.toString().trim();
-  const email = formData.get("email")?.toString().trim();
-  const cargo = formData.get("cargo")?.toString().trim();
-  const telefone = formData.get("telefone")?.toString().trim();
-  const status = formData.get("status")?.toString().trim();
-  const dataContratacao = formData.get("dataContratacao")?.toString().trim();
+  const nome = sanitizeString(formData.get("nome"));
+  const email = sanitizeEmail(formData.get("email"));
+  const cargo = sanitizeOptionalString(formData.get("cargo"));
+  const telefone = sanitizeOptionalString(formData.get("telefone"));
+  const status = sanitizeOptionalString(formData.get("status"));
+  const dataContratacao = parseDate(formData.get("dataContratacao"));
   if (nome) data.nome = nome;
   if (email) data.email = email;
   if (cargo) data.cargo = cargo;

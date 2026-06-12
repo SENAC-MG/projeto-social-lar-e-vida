@@ -3,6 +3,7 @@
 // import { revalidatePath } from 'next/cache';
 import { apaga_Servico, gravarServico, pegar_Servicos, updateServicoService } from "../services/servicoService";
 import { formatError } from "../../../lib/formatError";
+import { sanitizeString, sanitizeOptionalString, parseDate, parseFloatValue } from "../../../lib/sanitize";
 /**
  * Buscar todos os serviços
  *
@@ -18,16 +19,16 @@ export async function get_Servicos() {
 
 export async function cadastrar_Servico(formData) {
   // Extração e Limpeza dos dados
-  const nome = formData.get('nome')?.toString().trim();
-  const cpf = formData.get('cpf')?.toString().trim();
-  const tipoServico = formData.get('tipoServico')?.toString().trim();
-  const duracao = formData.get('duracao')?.toString().trim();
-  const valorServico = Number(formData.get('valorServico'));
-  const unidade = formData.get('unidade')?.toString().trim();
-  const tempoServico = formData.get('tempoServico')?.toString().trim();
-  const status = formData.get('status')?.toString()?.toString().trim();
-  const dataServico = new Date(formData.get('dataServico')?.toString().trim());
-  const funcionarioResponsavel = formData.get('funcionarioResponsavel')?.toString().trim();
+  const nome = sanitizeString(formData.get('nome'));
+  const cpf = sanitizeOptionalString(formData.get('cpf'));
+  const tipoServico = sanitizeOptionalString(formData.get('tipoServico'));
+  const duracao = sanitizeOptionalString(formData.get('duracao'));
+  const valorServico = parseFloatValue(formData.get('valorServico'));
+  const unidade = sanitizeOptionalString(formData.get('unidade'));
+  const tempoServico = sanitizeOptionalString(formData.get('tempoServico'));
+  const status = sanitizeOptionalString(formData.get('status'));
+  const dataServico = parseDate(formData.get('dataServico'));
+  const funcionarioResponsavel = sanitizeOptionalString(formData.get('funcionarioResponsavel'));
 
   console.log('Dados recebidos no action:', { nome, cpf, tipoServico, duracao, valorServico, unidade, tempoServico, status, dataServico, funcionarioResponsavel });
 
@@ -77,16 +78,16 @@ export async function deletar_Servico(id) {
 export async function updateServicoAction(id, formData) {
   const data = {};
 
-  const nome = formData.get("nome")?.toString().trim();
-  const cpf = formData.get("cpf")?.toString().trim();
-  const tipoServico = formData.get("tipoServico")?.toString().trim();
-  const duracao = formData.get("duracao")?.toString().trim();
-  const valorServico = formData.get("valorServico")?.toString();
-  const unidade = formData.get("unidade")?.toString().trim();
-  const tempoServico = formData.get("tempoServico")?.toString().trim();
-  const status = formData.get("status")?.toString().trim();
-  const dataServico = formData.get("dataServico")?.toString().trim();
-  const funcionarioResponsavel = formData.get("funcionarioResponsavel")?.toString().trim();
+  const nome = sanitizeString(formData.get("nome"));
+  const cpf = sanitizeOptionalString(formData.get("cpf"));
+  const tipoServico = sanitizeOptionalString(formData.get("tipoServico"));
+  const duracao = sanitizeOptionalString(formData.get("duracao"));
+  const valorServico = parseFloatValue(formData.get("valorServico"));
+  const unidade = sanitizeOptionalString(formData.get("unidade"));
+  const tempoServico = sanitizeOptionalString(formData.get("tempoServico"));
+  const status = sanitizeOptionalString(formData.get("status"));
+  const dataServico = parseDate(formData.get("dataServico"));
+  const funcionarioResponsavel = sanitizeOptionalString(formData.get("funcionarioResponsavel"));
 
   if (nome) data.nome = nome;
   if (cpf) data.cpf = cpf;
