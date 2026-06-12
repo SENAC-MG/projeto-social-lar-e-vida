@@ -1,4 +1,22 @@
 import { prisma } from "../../../lib/prisma";
+
+function sanitizeForLog(value) {
+    if (typeof value === "string") {
+        return value.replace(/[\r\n]/g, "");
+    }
+
+    if (Array.isArray(value)) {
+        return value.map(sanitizeForLog);
+    }
+
+    if (value && typeof value === "object") {
+        return Object.fromEntries(
+            Object.entries(value).map(([key, val]) => [key, sanitizeForLog(val)]),
+        );
+    }
+
+    return value;
+}
 /**
  * Buscar todos os funcionários
  *
@@ -68,13 +86,13 @@ export async function findFuncionarioById(id) {
  * - Retorna o funcionário atualizado
  */
 export async function updateFuncionario(id, data) {
-    console.log("Atualizando funcionário ID:", id, "com dados", data);
+    console.log("Atualizando funcionário ID:", id, "com dados", sanitizeForLog(data));
 
     const Funcionario_atualizado = await prisma.Funcionarios.update({
         where: { id },
         data,
     });
 
-    console.log("Funcionário atualizado com sucesso:", Funcionario_atualizado);
+    console.log("Funcionário atualizado com sucesso:", sanitizeForLog(Funcionario_atualizado));
     return Funcionario_atualizado;
 }
