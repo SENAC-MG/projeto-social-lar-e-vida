@@ -38,12 +38,14 @@ export default function Header() {
                         </button>
 
                         <div
+                            id="dashboard-menu"
+                            role="menu"
+                            aria-label="Dashboard menu"
                             className={`absolute right-0 z-50 mt-3 w-56 transition-all duration-200 ease-out ${
                                 dropdownOpen
                                     ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
                                     : "opacity-0 -translate-y-2 scale-95 pointer-events-none"
                             }`}
-                            role="menu"
                         >
                             <div className="absolute -top-2 right-4 h-4 w-4 rotate-45 border-l border-t border-gray-200 dark:border-gray-700 bg-[#f2f2f2] dark:bg-zinc-900" />
 
