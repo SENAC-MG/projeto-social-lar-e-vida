@@ -33,7 +33,7 @@ export default function Home() {
 
         localStorage.setItem("rememberSession", rememberSession);
 
-        const result = await login(email, password, rememberSession);
+        const result = await login(email, password);
 
         if (!result?.success) {
             alert("Usuário ou senha incorretos. Tente novamente.");
