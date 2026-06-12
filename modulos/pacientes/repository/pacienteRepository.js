@@ -1,4 +1,8 @@
 import { prisma } from "../../../lib/prisma";
+
+function sanitizeForLog(value) {
+    return String(value).replace(/[\r\n\t\f\v]+/g, " ").replace(/[\x00-\x1F\x7F]/g, "");
+}
 /**
  * Buscar todos os pacientes
  *
@@ -108,7 +112,8 @@ export async function findPacienteById(id) {
  * - Retorna o paciente atualizado
  */
 export async function updatePaciente(id, data) {
-    console.log("Atualizando Paciente ID:", id, "com dados", data);
+    const updatedFields = Object.keys(data || {}).map((field) => sanitizeForLog(field));
+    console.log("Atualizando Paciente ID:", id, "campos:", updatedFields.join(", "));
 
     const Paciente_atualizado = await prisma.Pacientes.update({
         where: { id },
