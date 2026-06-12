@@ -1,7 +1,7 @@
 "use client";
 
-import { useTheme } from "@wrksz/themes/client";
 import { useEffect, useMemo, useState } from "react";
+import { useTheme } from "@wrksz/themes/client";
 
 export function useChartTheme() {
     const { resolvedTheme } = useTheme();
@@ -16,9 +16,7 @@ export function useChartTheme() {
     const textColor = isDark ? "#f2f2f2" : "#121212";
     const mutedTextColor = isDark ? "#a3a3a3" : "#737373";
 
-    const gridColor = isDark
-        ? "rgba(255, 255, 255, 0.1)"
-        : "rgba(0, 0, 0, 0.1)";
+    const gridColor = isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)";
 
     const chartOptions = useMemo(
         () => ({

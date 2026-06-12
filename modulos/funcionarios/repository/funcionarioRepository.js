@@ -7,12 +7,12 @@ import { prisma } from "../../../lib/prisma";
  * - Usado normalmente para listagem em tabelas
  */
 export async function get_AllFuncionarios() {
-  const result = await prisma.Funcionarios.findMany({
-    orderBy: {
-      nome: "asc",
-    },
-  });
-  return result;
+    const result = await prisma.Funcionarios.findMany({
+        orderBy: {
+            nome: "asc",
+        },
+    });
+    return result;
 }
 /**
  * - Criar novo Funcionário
@@ -22,17 +22,17 @@ export async function get_AllFuncionarios() {
  * - Retorna o funcionário criado
  */
 export async function post_Funcionario(data) {
-  const { nome, email, cargo, telefone, status, dataContratacao } = data;
-  return await prisma.Funcionarios.create({
-    data: {
-      nome,
-      email,
-      cargo,
-      telefone,
-      status,
-      dataContratacao
-    }
-  });
+    const { nome, email, cargo, telefone, status, dataContratacao } = data;
+    return await prisma.Funcionarios.create({
+        data: {
+            nome,
+            email,
+            cargo,
+            telefone,
+            status,
+            dataContratacao,
+        },
+    });
 }
 /**
  * Deletar funcionário
@@ -41,10 +41,10 @@ export async function post_Funcionario(data) {
  * - Cuidado: Operação irreversível
  */
 export async function del_Funcionario(id) {
-  const result = await prisma.Funcionarios.delete({
-    where: { id },
-  });
-  return result;
+    const result = await prisma.Funcionarios.delete({
+        where: { id },
+    });
+    return result;
 }
 
 /**
@@ -55,11 +55,11 @@ export async function del_Funcionario(id) {
  * - Usado em edição, detalhes, etc
  */
 export async function findFuncionarioById(id) {
-  const funcionario = await prisma.Funcionarios.findUnique({
-    where: { id },
-  });
-  // Retorna o funcionário encontrado ou null se não existir
-  return funcionario;
+    const funcionario = await prisma.Funcionarios.findUnique({
+        where: { id },
+    });
+    // Retorna o funcionário encontrado ou null se não existir
+    return funcionario;
 }
 
 /**
@@ -68,13 +68,13 @@ export async function findFuncionarioById(id) {
  * - Retorna o funcionário atualizado
  */
 export async function updateFuncionario(id, data) {
-  console.log('Atualizando funcionário ID:', id, 'com dados', data);
+    console.log("Atualizando funcionário ID:", id, "com dados", data);
 
-  const Funcionario_atualizado = await prisma.Funcionarios.update({
-    where: { id },
-    data,
-  });
+    const Funcionario_atualizado = await prisma.Funcionarios.update({
+        where: { id },
+        data,
+    });
 
-  console.log('Funcionário atualizado com sucesso:', Funcionario_atualizado);
-  return Funcionario_atualizado;
+    console.log("Funcionário atualizado com sucesso:", Funcionario_atualizado);
+    return Funcionario_atualizado;
 }

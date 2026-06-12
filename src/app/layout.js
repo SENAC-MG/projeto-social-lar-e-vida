@@ -13,7 +13,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang="pt-BR" className="h-full" suppressHydrationWarning>
-            <body className={plusJakartaSans.className + " min-h-full flex flex-col antialiased"} suppressHydrationWarning>
+            <body
+                className={plusJakartaSans.className + " min-h-full flex flex-col antialiased"}
+                suppressHydrationWarning
+            >
                 <ThemeProvider storageKey="lar-vida-theme">
                     <ToastProvider />
                     {children}

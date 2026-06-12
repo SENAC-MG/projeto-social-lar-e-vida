@@ -18,9 +18,7 @@ export default function Header() {
                             onClick={() => setDropdownOpen(!dropdownOpen)}
                             className="overflow-hidden rounded-full border border-gray-300 shadow-inner transition-all duration-200 hover:scale-105 dark:border-gray-600"
                         >
-                            <span className="sr-only">
-                                Toggle dashboard menu
-                            </span>
+                            <span className="sr-only">Toggle dashboard menu</span>
 
                             {avatarError ? (
                                 <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center dark:bg-gray-700">
@@ -37,10 +35,11 @@ export default function Header() {
                         </button>
 
                         <div
-                            className={`absolute right-0 z-50 mt-3 w-56 transition-all duration-200 ease-out ${dropdownOpen
-                                ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
-                                : "opacity-0 -translate-y-2 scale-95 pointer-events-none"
-                                }`}
+                            className={`absolute right-0 z-50 mt-3 w-56 transition-all duration-200 ease-out ${
+                                dropdownOpen
+                                    ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
+                                    : "opacity-0 -translate-y-2 scale-95 pointer-events-none"
+                            }`}
                             role="menu"
                         >
                             <div className="absolute -top-2 right-4 h-4 w-4 rotate-45 border-l border-t border-gray-200 dark:border-gray-700 bg-[#f2f2f2] dark:bg-zinc-900" />

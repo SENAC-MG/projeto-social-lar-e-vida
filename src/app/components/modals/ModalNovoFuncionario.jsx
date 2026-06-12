@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Save, RotateCcw, User } from "lucide-react";
 import { toast } from "sonner";
 import { cadastrar_Funcionario } from "@modulos/funcionarios/controller/funcionarioController";
@@ -32,11 +32,7 @@ export default function ModalNovoFuncionario({ onClose, onSuccess }) {
     }
 
     return (
-        <Modal
-            title="Novo Funcionário"
-            onClose={onClose}
-            headerClassName={"bg-[--card-bg]"}
-        >
+        <Modal title="Novo Funcionário" onClose={onClose} headerClassName={"bg-[--card-bg]"}>
             <form
                 onSubmit={handleSubmit}
                 className="p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar bg-[--card-bg]"

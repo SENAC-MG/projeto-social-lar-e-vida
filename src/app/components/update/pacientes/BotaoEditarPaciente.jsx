@@ -3,12 +3,12 @@
 import { Pencil } from "lucide-react";
 
 export default function BotaoEditarPaciente({ onClick }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      title="Editar paciente"
-      className="
+    return (
+        <button
+            type="button"
+            onClick={onClick}
+            title="Editar paciente"
+            className="
         flex items-center justify-center
         w-10 h-10
         rounded-xl
@@ -20,8 +20,8 @@ export default function BotaoEditarPaciente({ onClick }) {
         hover:scale-105
         transition-all duration-200
       "
-    >
-      <Pencil size={18} />
-    </button>
-  );
+        >
+            <Pencil size={18} />
+        </button>
+    );
 }

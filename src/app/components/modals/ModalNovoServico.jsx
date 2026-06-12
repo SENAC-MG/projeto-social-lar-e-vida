@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Save, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { cadastrar_Servico } from "@modulos/servicos/controller/servicoController";
@@ -95,12 +95,7 @@ export default function ModalNovoServico({ onClose, onSuccess }) {
                         <label className="block text-foreground/70 text-sm mb-2 font-medium">
                             Data do Serviço <span className="text-primary">*</span>
                         </label>
-                        <input
-                            name="dataServico"
-                            type="date"
-                            required
-                            className={inputClass}
-                        />
+                        <input name="dataServico" type="date" required className={inputClass} />
                     </div>
 
                     <div>
@@ -173,10 +168,11 @@ export default function ModalNovoServico({ onClose, onSuccess }) {
                                     key={unidade}
                                     type="button"
                                     onClick={() => setUnidadeSelecionada(unidade)}
-                                    className={`px-6 py-2 rounded-full text-sm font-bold transition-all shadow-sm active:scale-95 ${isSelecionada
-                                        ? "bg-primary text-primary-foreground"
-                                        : "bg-card-bg border border-card-border text-foreground hover:bg-foreground/5"
-                                        }`}
+                                    className={`px-6 py-2 rounded-full text-sm font-bold transition-all shadow-sm active:scale-95 ${
+                                        isSelecionada
+                                            ? "bg-primary text-primary-foreground"
+                                            : "bg-card-bg border border-card-border text-foreground hover:bg-foreground/5"
+                                    }`}
                                 >
                                     {unidade}
                                 </button>

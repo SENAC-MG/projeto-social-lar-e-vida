@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export function useResponsiveSidebar() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.innerWidth >= 768) {
-      setIsSidebarOpen(true);
-    }
-  }, []);
+    useEffect(() => {
+        if (window.innerWidth >= 768) {
+            setIsSidebarOpen(true);
+        }
+    }, []);
 
-  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
+    const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
-  return { isSidebarOpen, setIsSidebarOpen, toggleSidebar };
+    return { isSidebarOpen, setIsSidebarOpen, toggleSidebar };
 }

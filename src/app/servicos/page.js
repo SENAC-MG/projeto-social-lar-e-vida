@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Wrench, Search, Menu } from "lucide-react";
 
 import Pagination from "../components/shared/ui/Pagination";
@@ -154,14 +154,15 @@ export default function ServicosPage() {
 
                                                 <td className="px-6 py-4 text-sm">
                                                     <span
-                                                        className={`px-3 py-1 rounded-full text-xs font-semibold ${servico.status === "pendente"
-                                                            ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300"
-                                                            : servico.status === "em andamento"
-                                                                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                                                                : servico.status === "concluido"
+                                                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                                            servico.status === "pendente"
+                                                                ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300"
+                                                                : servico.status === "em andamento"
+                                                                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                                                                  : servico.status === "concluido"
                                                                     ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
                                                                     : "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300"
-                                                            }`}
+                                                        }`}
                                                     >
                                                         {servico.status || "pendente"}
                                                     </span>
@@ -177,16 +178,18 @@ export default function ServicosPage() {
 
                                                 <td className="px-6 py-4 text-sm text-foreground/60">
                                                     {servico.dataServico
-                                                        ? new Date(servico.dataServico).toLocaleDateString(
-                                                            "pt-BR"
-                                                        )
+                                                        ? new Date(
+                                                              servico.dataServico
+                                                          ).toLocaleDateString("pt-BR")
                                                         : "-"}
                                                 </td>
 
                                                 <td className="px-6 py-4">
                                                     <div className="flex justify-center gap-2">
                                                         <BotaoEditarServico
-                                                            onClick={() => setServicoEditando(servico)}
+                                                            onClick={() =>
+                                                                setServicoEditando(servico)
+                                                            }
                                                         />
 
                                                         <BotaoDeletarServico

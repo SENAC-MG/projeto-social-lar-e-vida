@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { UserPlus, Users, Search, Menu } from "lucide-react";
 
 import Pagination from "../components/shared/ui/Pagination";
@@ -151,14 +151,16 @@ export default function PacientesPage() {
 
                                                 <td className="px-6 py-4 text-sm">
                                                     <span
-                                                        className={`px-3 py-1 rounded-full text-xs font-semibold ${paciente.status === "ativo"
-                                                            ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
-                                                            : paciente.status === "em tratamento"
-                                                                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                                                                : paciente.status === "alta"
+                                                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                                            paciente.status === "ativo"
+                                                                ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
+                                                                : paciente.status ===
+                                                                    "em tratamento"
+                                                                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                                                                  : paciente.status === "alta"
                                                                     ? "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300"
                                                                     : "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300"
-                                                            }`}
+                                                        }`}
                                                     >
                                                         {paciente.status || "-"}
                                                     </span>
@@ -166,14 +168,15 @@ export default function PacientesPage() {
 
                                                 <td className="px-6 py-4 text-sm">
                                                     <span
-                                                        className={`px-3 py-1 rounded-full text-xs font-semibold ${paciente.prioridade === "urgente"
-                                                            ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300"
-                                                            : paciente.prioridade === "alta"
-                                                                ? "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300"
-                                                                : paciente.prioridade === "media"
+                                                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                                            paciente.prioridade === "urgente"
+                                                                ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300"
+                                                                : paciente.prioridade === "alta"
+                                                                  ? "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300"
+                                                                  : paciente.prioridade === "media"
                                                                     ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300"
                                                                     : "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300"
-                                                            }`}
+                                                        }`}
                                                     >
                                                         {paciente.prioridade || "-"}
                                                     </span>
@@ -186,7 +189,9 @@ export default function PacientesPage() {
                                                 <td className="px-6 py-4">
                                                     <div className="flex justify-center gap-2">
                                                         <BotaoEditarPaciente
-                                                            onClick={() => setPacienteEditando(paciente)}
+                                                            onClick={() =>
+                                                                setPacienteEditando(paciente)
+                                                            }
                                                         />
 
                                                         <BotaoDeletarPaciente

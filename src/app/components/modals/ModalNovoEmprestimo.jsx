@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import { Save, RotateCcw, User } from "lucide-react";
+import { useState } from "react";
+import { Save, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { cadastrar_Emprestimo } from "@modulos/emprestimos/controller/emprestimoController";
 import Modal from "@/shared/ui/Modal";
-import Button from "@/shared/ui/Button";
 
 export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
     const [loading, setLoading] = useState(false);
@@ -32,11 +31,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
     }
 
     return (
-        <Modal
-            title="Novo Empréstimo"
-            onClose={onClose}
-            headerClassName={"bg-[--card-bg]"}
-        >
+        <Modal title="Novo Empréstimo" onClose={onClose} headerClassName={"bg-[--card-bg]"}>
             <form
                 onSubmit={handleSubmit}
                 className="bg-[--card-bg] p-6 space-y-8 overflow-y-auto max-h-[85vh] custom-scrollbar"
@@ -90,12 +85,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
                             <label className="block text-gray-400 text-sm mb-1.5 font-medium">
                                 Nascimento <span className="text-primary">*</span>
                             </label>
-                            <input
-                                name="nascimento"
-                                type="date"
-                                required
-                                className={inputClass}
-                            />
+                            <input name="nascimento" type="date" required className={inputClass} />
                         </div>
 
                         <div>
@@ -145,11 +135,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
                             <label className="block text-gray-400 text-sm mb-1.5 font-medium">
                                 Previsão de Devolução
                             </label>
-                            <input
-                                name="previsaoDevolucao"
-                                type="date"
-                                className={inputClass}
-                            />
+                            <input name="previsaoDevolucao" type="date" className={inputClass} />
                         </div>
 
                         <div>
@@ -196,12 +182,7 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
                             <label className="block text-gray-400 text-sm mb-1.5 font-medium">
                                 Número <span className="text-primary">*</span>
                             </label>
-                            <input
-                                name="numero"
-                                type="text"
-                                required
-                                className={inputClass}
-                            />
+                            <input name="numero" type="text" required className={inputClass} />
                         </div>
 
                         <div>
@@ -221,24 +202,14 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
                             <label className="block text-gray-400 text-sm mb-1.5 font-medium">
                                 Bairro <span className="text-primary">*</span>
                             </label>
-                            <input
-                                name="bairro"
-                                type="text"
-                                required
-                                className={inputClass}
-                            />
+                            <input name="bairro" type="text" required className={inputClass} />
                         </div>
 
                         <div className="md:col-span-2">
                             <label className="block text-gray-400 text-sm mb-1.5 font-medium">
                                 Cidade <span className="text-primary">*</span>
                             </label>
-                            <input
-                                name="cidade"
-                                type="text"
-                                required
-                                className={inputClass}
-                            />
+                            <input name="cidade" type="text" required className={inputClass} />
                         </div>
                     </div>
                 </section>

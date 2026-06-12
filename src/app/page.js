@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Mail, Lock, Eye, EyeOff, ShieldCheck } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { login } from "../../actions/login";
 import fundo from "../../public/fundo.png";
 import logo from "../../public/logo.png";
@@ -17,9 +17,7 @@ export default function Home() {
     const [rememberSession, setRememberSession] = useState(false);
 
     useEffect(() => {
-        const savedRememberSession =
-            localStorage.getItem("rememberSession");
-
+        const savedRememberSession = localStorage.getItem("rememberSession");
         if (savedRememberSession === "true") {
             setRememberSession(true);
         }
@@ -33,28 +31,25 @@ export default function Home() {
             return;
         }
 
-        localStorage.setItem(
-            "rememberSession",
-            rememberSession
-        );
+        localStorage.setItem("rememberSession", rememberSession);
 
-        const result = await login(
-            email,
-            password,
-            rememberSession
-        );
+        const result = await login(email, password, rememberSession);
 
         if (!result?.success) {
-            alert(
-                "Usuário ou senha incorretos. Tente novamente."
-            );
+            alert("Usuário ou senha incorretos. Tente novamente.");
         }
     };
 
     return (
         <main className="flex min-h-screen w-full font-sans">
             <div className="relative hidden w-[55%] lg:block">
-                <Image src={fundo} alt="Fundo" fill placeholder="blur" className="object-cover object-center blur-xs" />
+                <Image
+                    src={fundo}
+                    alt="Fundo"
+                    fill
+                    placeholder="blur"
+                    className="object-cover object-center blur-xs"
+                />
 
                 <div className="absolute inset-0 bg-black/50" />
 
@@ -77,14 +72,16 @@ export default function Home() {
 
                         <h3 className="text-6xl font-serif font-medium leading-[1.1] mb-6 drop-shadow-lg">
                             Um futuro mais <br />
-                            <span className="text-[#5C7A53] underline underline-offset-8">organizado</span>
+                            <span className="text-[#5C7A53] underline underline-offset-8">
+                                organizado
+                            </span>
                         </h3>
 
                         <p className="max-w-md text-xl text-gray-100 leading-relaxed drop-shadow-md text-justify">
                             O Lar e Vida é um sistema de gestão hospitalar desenvolvido para
-                            otimizar o gerenciamento de doações, voluntariado e recursos,
-                            garantindo que cada contribuição faça a maior diferença possível
-                            para nossos residentes.
+                            otimizar o gerenciamento de doações, voluntariado e recursos, garantindo
+                            que cada contribuição faça a maior diferença possível para nossos
+                            residentes.
                         </p>
                     </div>
                     <div className="h-14" />
@@ -182,6 +179,6 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-        </main >
+        </main>
     );
 }
