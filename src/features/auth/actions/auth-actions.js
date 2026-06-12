@@ -6,9 +6,7 @@ import { SESSION_COOKIE, SESSION_MAX_AGE } from "@/features/auth/constants/auth-
 
 import {
     authenticate,
-    requestPasswordReset,
     isResetTokenValid,
-    resetPassword,
 } from "@/features/auth/services/auth-service";
 
 import { generateJwtToken } from "@/features/auth/utils/jwt";
