@@ -1,4 +1,14 @@
 import { prisma } from "../../../lib/prisma";
+
+function sanitizeForLog(value) {
+    try {
+        const serialized =
+            typeof value === "string" ? value : JSON.stringify(value);
+        return serialized.replace(/[\r\n]/g, "");
+    } catch {
+        return String(value).replace(/[\r\n]/g, "");
+    }
+}
 /**
  * Buscar todos os empréstimos
  *
@@ -95,7 +105,12 @@ export async function findEmprestimoById(id) {
  * - Retorna o empréstimo atualizado
  */
 export async function updateEmprestimo(id, data) {
-    console.log("Atualizando Empréstimo ID:", id, "com dados", data);
+    console.log(
+        "Atualizando Empréstimo ID:",
+        id,
+        "com dados",
+        sanitizeForLog(data)
+    );
 
     const Emprestimo_atualizado = await prisma.Emprestimo.update({
         where: { id },
