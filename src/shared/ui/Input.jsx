@@ -16,7 +16,7 @@ export function InputField({ label, required = false, id, className, inputClassN
     return (
         <div className={cn("flex flex-col gap-1.5", className)}>
             {label && (
-                <label htmlFor={id} className="text-sm font-medium text-foreground/70">
+                <label htmlFor={id} className="text-sm font-medium text-black">
                     {label}
                     {required && <span className="ml-1 text-[#5C7A53]">*</span>}
                 </label>

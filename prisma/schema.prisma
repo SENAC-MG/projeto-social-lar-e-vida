@@ -35,7 +35,7 @@ model PasswordResetToken {
 model Pacientes {
   id            Int      @id @default(autoincrement())
   nome          String
-  status        String @default("ativo")
+  status        String   @default("ativo")
   cpf           String   @unique
   rg            String
   nascimento    DateTime
@@ -43,7 +43,7 @@ model Pacientes {
   profissao     String
   dataCadastro  DateTime @default(now())
   tipoCancer    String
-  prioridade    String @default("media")
+  prioridade    String   @default("media")
   CIDprincipal  String
   CIDsecundario String
   rua           String
@@ -54,6 +54,8 @@ model Pacientes {
   telefone1     String
   telefone2     String
   fotoUrl       String?
+
+  movimentacoes Movimentacao[]
 }
 
 model Emprestimo {
@@ -77,17 +79,19 @@ model Emprestimo {
 }
 
 model Servicos {
-  id           Int    @id @default(autoincrement())
-  nome         String
-  cpf          String
-  status       String @default("pendente")
-  dataServico  DateTime @default(now())
-  funcionarioResponsavel  String?
-  tipoServico  String
-  duracao      String
-  valorServico Float
-  unidade      String
-  tempoServico String
+  id                     Int      @id @default(autoincrement())
+  nome                   String
+  cpf                    String
+  status                 String   @default("pendente")
+  dataServico            DateTime @default(now())
+  funcionarioResponsavel String?
+  tipoServico            String
+  duracao                String
+  valorServico           Float
+  unidade                String
+  tempoServico           String
+
+  movimentacoes          Movimentacao[]
 }
 
 model Funcionarios {
@@ -98,4 +102,18 @@ model Funcionarios {
   cargo    String
   telefone String
   dataContratacao DateTime @default(now())
+}
+
+model Movimentacao {
+  id          Int      @id @default(autoincrement())
+  descricao   String
+  pacienteId  Int
+  servicoId   Int
+  createdAt   DateTime @default(now())
+
+  paciente    Pacientes @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+  servico     Servicos  @relation(fields: [servicoId], references: [id], onDelete: Cascade)
+
+  @@index([pacienteId])
+  @@index([servicoId])
 }
