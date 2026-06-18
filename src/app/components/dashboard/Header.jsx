@@ -3,15 +3,28 @@
 import { useState } from "react";
 import { User } from "lucide-react";
 import LogoutButton from "../LogoutButton";
+import DropdownRelatorios from "../relatorios/DropdownRelatorios";
 
-export default function Header() {
+export default function Header({
+    pacientes = [],
+    funcionarios = [],
+    emprestimos = [],
+    servicos = [],
+}) {
     const [avatarError, setAvatarError] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     return (
         <header className="border-b border-zinc-800 mb-6">
             <div className="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
-                <div className="flex h-16 items-center justify-end">
+                <div className="flex h-16 items-center justify-end gap-3">
+                    <DropdownRelatorios
+                        pacientes={pacientes}
+                        funcionarios={funcionarios}
+                        emprestimos={emprestimos}
+                        servicos={servicos}
+                    />
+
                     <div className="relative">
                         <button
                             type="button"

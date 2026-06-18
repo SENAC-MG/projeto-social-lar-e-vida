@@ -6,15 +6,29 @@ import DashboardGraphics from "./DashboardGraphics";
 import { useResponsiveSidebar } from "@/shared/hooks/useResponsiveSidebar";
 import Header from "./Header";
 
-export default function DashboardClient({ graficos, dashboardStats }) {
+export default function DashboardClient({
+    graficos,
+    dashboardStats,
+    pacientes = [],
+    funcionarios = [],
+    emprestimos = [],
+    servicos = [],
+}) {
     const { isSidebarOpen, toggleSidebar } = useResponsiveSidebar();
 
     return (
         <AppShell isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}>
             <div className="bg-[#EEF2F7] dark:bg-background flex-1 flex flex-col min-w-0 transition-all duration-300">
                 <main className="w-full max-w-8xl mx-auto px-4 py-2 flex-1">
-                    <Header />
+                    <Header
+                        pacientes={pacientes}
+                        funcionarios={funcionarios}
+                        emprestimos={emprestimos}
+                        servicos={servicos}
+                    />
+
                     <DashboardCards dados={dashboardStats} />
+
                     <DashboardGraphics graficos={graficos} />
                 </main>
             </div>
