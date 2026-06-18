@@ -109,9 +109,10 @@ export default function PacientesPage() {
                         </div>
 
                         <DataTable>
-                            <table className="w-full text-left border-collapse min-w-[900px]">
+                            <table className="w-full text-left border-collapse min-w-[1000px]">
                                 <thead className="bg-[#F9FBFD] dark:bg-zinc-800/50 border-b border-card-border">
                                     <tr className="text-[11px] uppercase tracking-wider text-foreground/50">
+                                        <th className="px-6 py-4 font-semibold">Foto</th>
                                         <th className="px-6 py-4 font-semibold">Nome</th>
                                         <th className="px-6 py-4 font-semibold">CPF</th>
                                         <th className="px-6 py-4 font-semibold">Sexo</th>
@@ -126,9 +127,9 @@ export default function PacientesPage() {
 
                                 <tbody>
                                     {loading ? (
-                                        <EmptyTableState colSpan="7">Carregando...</EmptyTableState>
+                                        <EmptyTableState colSpan="8">Carregando...</EmptyTableState>
                                     ) : pacientes.length === 0 ? (
-                                        <EmptyTableState colSpan="7">
+                                        <EmptyTableState colSpan="8">
                                             Nenhum paciente cadastrado
                                         </EmptyTableState>
                                     ) : (
@@ -137,6 +138,21 @@ export default function PacientesPage() {
                                                 key={paciente.id}
                                                 className="border-b border-card-border hover:bg-foreground/5 transition-colors"
                                             >
+                                                <td className="px-6 py-4">
+                                                    {paciente.fotoUrl ? (
+                                                        <img
+                                                            src={paciente.fotoUrl}
+                                                            alt={`Foto de ${paciente.nome}`}
+                                                            className="w-12 h-12 rounded-full object-cover border border-card-border"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-12 h-12 rounded-full bg-[#5C7A53]/20 border border-card-border flex items-center justify-center text-[#5C7A53] font-bold text-sm">
+                                                            {paciente.nome?.charAt(0)?.toUpperCase() ||
+                                                                "P"}
+                                                        </div>
+                                                    )}
+                                                </td>
+
                                                 <td className="px-6 py-4 text-foreground font-medium text-sm">
                                                     {paciente.nome}
                                                 </td>
@@ -151,16 +167,15 @@ export default function PacientesPage() {
 
                                                 <td className="px-6 py-4 text-sm">
                                                     <span
-                                                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                                            paciente.status === "ativo"
-                                                                ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
-                                                                : paciente.status ===
-                                                                    "em tratamento"
-                                                                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                                                                  : paciente.status === "alta"
+                                                        className={`px-3 py-1 rounded-full text-xs font-semibold ${paciente.status === "ativo"
+                                                            ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
+                                                            : paciente.status ===
+                                                                "em tratamento"
+                                                                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                                                                : paciente.status === "alta"
                                                                     ? "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300"
                                                                     : "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300"
-                                                        }`}
+                                                            }`}
                                                     >
                                                         {paciente.status || "-"}
                                                     </span>
@@ -168,15 +183,14 @@ export default function PacientesPage() {
 
                                                 <td className="px-6 py-4 text-sm">
                                                     <span
-                                                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                                            paciente.prioridade === "urgente"
-                                                                ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300"
-                                                                : paciente.prioridade === "alta"
-                                                                  ? "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300"
-                                                                  : paciente.prioridade === "media"
+                                                        className={`px-3 py-1 rounded-full text-xs font-semibold ${paciente.prioridade === "urgente"
+                                                            ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300"
+                                                            : paciente.prioridade === "alta"
+                                                                ? "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300"
+                                                                : paciente.prioridade === "media"
                                                                     ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300"
                                                                     : "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300"
-                                                        }`}
+                                                            }`}
                                                     >
                                                         {paciente.prioridade || "-"}
                                                     </span>

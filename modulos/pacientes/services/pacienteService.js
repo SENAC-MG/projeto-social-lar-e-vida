@@ -47,7 +47,8 @@ export async function gravarPaciente(
     telefone1,
     telefone2,
     sexo,
-    prioridade
+    prioridade,
+    fotoUrl
 ) {
     const nomeValid = validateRequiredString(nome, "nome");
     const statusValid = validateRequiredString(status, "status");
@@ -89,6 +90,7 @@ export async function gravarPaciente(
             telefone2: telefone2Valid || "",
             sexo: sexoValid,
             prioridade: prioridadeValid,
+            fotoUrl: fotoUrl || null,
         });
     } catch (err) {
         // Tratamento de erro do Prisma para unique constraint
