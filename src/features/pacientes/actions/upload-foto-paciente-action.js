@@ -1,7 +1,6 @@
 "use server";
 
 import { put } from "@vercel/blob";
-import { redimensionar } from "./redimensionar";
 
 export async function uploadFotoPacienteAction(arquivo) {
   if (!arquivo || arquivo.size === 0) {
@@ -20,12 +19,10 @@ export async function uploadFotoPacienteAction(arquivo) {
     throw new Error("A imagem deve ter no máximo 4,5 MB.");
   }
 
-  const imagemPng = await redimensionar(arquivo);
-
-  const blob = await put("pacientes/foto.png", imagemPng, {
+  const blob = await put(`pacientes/${arquivo.name}`, arquivo, {
     access: "public",
     addRandomSuffix: true,
-    contentType: "image/png",
+    contentType: arquivo.type,
   });
 
   return blob.url;
