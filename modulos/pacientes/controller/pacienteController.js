@@ -9,6 +9,7 @@ import {
 } from "../services/pacienteService";
 import { formatError } from "../../../lib/formatError";
 import { sanitizeString, sanitizeOptionalString, parseDate } from "../../../lib/sanitize";
+import { uploadFotoPacienteAction } from "@/features/pacientes/actions/upload-foto-paciente-action";
 /**
  * Buscar todos os pacientes
  *
@@ -42,6 +43,18 @@ export async function cadastrar_Paciente(formData) {
     const telefone2 = sanitizeOptionalString(formData.get("telefone2"));
     const sexo = sanitizeOptionalString(formData.get("sexo"));
     const prioridade = sanitizeOptionalString(formData.get("prioridade"));
+    const foto = formData.get("foto");
+
+    let fotoUrl = null;
+
+    try {
+        fotoUrl = await uploadFotoPacienteAction(foto);
+    } catch (error) {
+        return {
+            success: false,
+            error: error.message,
+        };
+    }
 
     console.log("Dados recebidos no action:", {
         nome,
@@ -62,6 +75,7 @@ export async function cadastrar_Paciente(formData) {
         telefone2,
         sexo,
         prioridade,
+        fotoUrl,
     });
 
     try {
@@ -84,7 +98,8 @@ export async function cadastrar_Paciente(formData) {
             telefone1,
             telefone2,
             sexo,
-            prioridade
+            prioridade,
+            fotoUrl
         );
         //Voltando com a resposta controlada para o frontend
         return {
