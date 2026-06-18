@@ -1,14 +1,46 @@
 "use client";
 
 import { useState } from "react";
-import { Save, RotateCcw, User, Phone, MapPin, Stethoscope } from "lucide-react";
+import { Save, RotateCcw, User, Phone, MapPin, Stethoscope, ImagePlus } from "lucide-react";
 import { toast } from "sonner";
 import { cadastrar_Paciente } from "@modulos/pacientes/controller/pacienteController";
 import Modal from "@/shared/ui/Modal";
 import Button from "@/shared/ui/Button";
 
+const TIPOS_PERMITIDOS = ["image/png", "image/jpeg", "image/webp"];
+const TAMANHO_MAXIMO = 4.5 * 1024 * 1024;
+
 export default function ModalNovoPaciente({ onClose, onSuccess }) {
     const [loading, setLoading] = useState(false);
+    const [previewFoto, setPreviewFoto] = useState(null);
+
+    const inputClass =
+        "bg-card w-full border border-border rounded-lg px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground";
+
+    function handleFotoChange(e) {
+        const arquivo = e.target.files?.[0];
+
+        if (!arquivo) {
+            setPreviewFoto(null);
+            return;
+        }
+
+        if (!TIPOS_PERMITIDOS.includes(arquivo.type)) {
+            toast.error("A foto precisa ser PNG, JPG ou WEBP.");
+            e.target.value = "";
+            setPreviewFoto(null);
+            return;
+        }
+
+        if (arquivo.size > TAMANHO_MAXIMO) {
+            toast.error("A foto deve ter no máximo 4,5 MB.");
+            e.target.value = "";
+            setPreviewFoto(null);
+            return;
+        }
+
+        setPreviewFoto(URL.createObjectURL(arquivo));
+    }
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -18,21 +50,24 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
         const res = await cadastrar_Paciente(formData);
 
         if (res.success) {
-            toast.success(res.message);
+            toast.success(res.message || "Paciente cadastrado com sucesso!");
             onSuccess?.();
             onClose();
         } else {
-            toast.error(res.error);
+            toast.error(res.error || "Erro ao cadastrar paciente.");
         }
 
         setLoading(false);
     }
 
-    const inputClass =
-        "bg-card w-full border border-border rounded-lg px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground";
+    function handleReset(e) {
+        e.preventDefault();
+        e.currentTarget.closest("form").reset();
+        setPreviewFoto(null);
+    }
 
     return (
-        <Modal title="Novo Paciente" onClose={onClose} headerClassName={"bg-[--card-bg]"}>
+        <Modal title="Novo Paciente" onClose={onClose} headerClassName="bg-[--card-bg]">
             <form
                 onSubmit={handleSubmit}
                 className="bg-[--card-bg] p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
@@ -43,6 +78,41 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
                     </h3>
 
                     <div className="grid grid-cols-12 gap-4">
+                        <div className="col-span-12 flex flex-col gap-3">
+                            <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
+                                <ImagePlus size={16} />
+                                Foto do Paciente
+                            </label>
+
+                            <div className="flex flex-col md:flex-row gap-4 md:items-center">
+                                <div className="w-28 h-28 rounded-lg border border-border bg-card overflow-hidden flex items-center justify-center">
+                                    {previewFoto ? (
+                                        <img
+                                            src={previewFoto}
+                                            alt="Prévia da foto do paciente"
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : (
+                                        <ImagePlus size={32} className="text-muted-foreground" />
+                                    )}
+                                </div>
+
+                                <div className="flex-1">
+                                    <input
+                                        name="foto"
+                                        type="file"
+                                        accept="image/png, image/jpeg, image/webp"
+                                        onChange={handleFotoChange}
+                                        className={inputClass}
+                                    />
+
+                                    <p className="text-gray-500 text-[11px] italic font-medium mt-1">
+                                        Aceita PNG, JPG ou WEBP até 4,5 MB.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                         <div className="col-span-12 md:col-span-8 flex flex-col gap-1.5">
                             <label className="text-sm font-medium text-foreground/70">
                                 Nome Completo <span className="text-primary">*</span>
@@ -275,9 +345,10 @@ export default function ModalNovoPaciente({ onClose, onSuccess }) {
                     </Button>
 
                     <Button
-                        type="reset"
+                        type="button"
                         variant="secondary"
                         disabled={loading}
+                        onClick={handleReset}
                         className="px-8 hover:!bg-[#5B6B7C] cursor-pointer"
                     >
                         <RotateCcw size={18} />

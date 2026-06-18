@@ -45,6 +45,7 @@ export async function post_Paciente(data) {
         telefone2,
         sexo,
         prioridade,
+        fotoUrl
     } = data;
     return await prisma.Pacientes.create({
         data: {
@@ -66,6 +67,7 @@ export async function post_Paciente(data) {
             telefone2,
             sexo,
             prioridade,
+            fotoUrl
         },
     });
 }
