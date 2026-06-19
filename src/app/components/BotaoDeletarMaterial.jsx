@@ -3,31 +3,65 @@
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { deletar_Material } from "@modulos/materiais/controller/materialController";
 
 export default function BotaoDeletarMaterial({ id, onDeleted }) {
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+
     async function handleDelete() {
         const result = await Swal.fire({
-            title: "Deseja excluir este material?",
-            text: "Essa ação não poderá ser desfeita.",
-            icon: "warning",
+            title: "Digite 123 para confirmar exclusão",
+            input: "text",
+            text: "Essa ação não poderá ser desfeita",
+            inputPlaceholder: "Digite 123",
             showCancelButton: true,
-            confirmButtonText: "Sim, excluir",
+            confirmButtonText: "Deletar",
             cancelButtonText: "Cancelar",
-            confirmButtonColor: "#dc2626",
-            cancelButtonColor: "#5B6B7C",
+            confirmButtonColor: "#d33",
+
+            preConfirm: (valorDigitado) => {
+                if (valorDigitado !== "123") {
+                    Swal.showValidationMessage("Código incorreto. Digite 123 para deletar.");
+                    return false;
+                }
+
+                return true;
+            },
+
+            allowOutsideClick: () => !Swal.isLoading(),
         });
 
         if (!result.isConfirmed) return;
+        setLoading(true);
 
-        const res = await deletar_Material(id);
+        try {
+            const res = await deletar_Material(id);
 
-        if (res.success) {
-            toast.success(res.message || "Material deletado com sucesso!");
-            onDeleted?.();
-        } else {
-            toast.error(res.error || "Erro ao deletar material.");
+            if (res.success) {
+                toast.success(res.message || "Material deletado com sucesso!");
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Material deletado com sucesso!",
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+
+                if (onDeleted) {
+                    await onDeleted();
+                }
+            } else {
+                toast.error(res.error || "Erro ao deletar material.");
+            }
+        } catch (error) {
+            toast.error(error?.message || "Erro inesperado ao deletar material.");
+        } finally {
+            setLoading(false);
+            router.refresh();
         }
     }
 
@@ -35,10 +69,15 @@ export default function BotaoDeletarMaterial({ id, onDeleted }) {
         <button
             type="button"
             onClick={handleDelete}
-            className="cursor-pointer p-2 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-300 transition-colors"
+            disabled={loading}
+            className="flex items-center justify-center p-2 rounded-lg
+      bg-red-500/10 hover:bg-red-500/20
+      border border-red-500/20
+      text-red-400 hover:text-red-300
+      transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             title="Excluir material"
         >
-            <Trash2 size={16} />
+            <Trash2 size={18} />
         </button>
     );
 }

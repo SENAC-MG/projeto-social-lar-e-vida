@@ -7,10 +7,10 @@ export default function BotaoEditarMaterial({ onClick }) {
         <button
             type="button"
             onClick={onClick}
-            className="cursor-pointer p-2 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-300 transition-colors"
-            title="Editar material"
+            title="Editar Material"
+            className="flex items-center justify-center w-10 h-10 rounded-xl border border-blue-500/10 bg-blue-500/5 text-blue-400 hover:bg-blue-500/15 hover:border-blue-500/20 hover:scale-105 transition-all duration-200"
         >
-            <Pencil size={16} />
+            <Pencil size={18} />
         </button>
     );
 }

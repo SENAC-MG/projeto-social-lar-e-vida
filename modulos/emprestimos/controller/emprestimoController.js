@@ -14,6 +14,7 @@ import {
     parseDate,
     parseIntegerValue,
 } from "../../../lib/sanitize";
+import { revalidatePath } from "next/cache";
 /**
  * Buscar todos os empréstimos
  *
@@ -88,6 +89,9 @@ export async function cadastrar_Emprestimo(formData) {
             dataDevolucao,
             materialId
         );
+        revalidatePath("/emprestimos");
+        revalidatePath("/materiais");
+        revalidatePath("/dashboard");
         //Voltando com a resposta conrolada para o frontend
         return {
             success: true,
@@ -175,6 +179,10 @@ export async function updateEmprestimoAction(id, formData) {
 
     try {
         const emprestimoAtualizado = await updateEmprestimoService(id, data);
+        revalidatePath("/emprestimos");
+        revalidatePath("/materiais");
+        revalidatePath("/dashboard");
+
 
         return {
             success: true,

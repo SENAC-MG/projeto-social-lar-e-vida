@@ -143,13 +143,65 @@ export async function updateEmprestimo(id, data) {
             throw new Error("Empréstimo não encontrado.");
         }
 
+        const quantidadeAntiga = Number(emprestimoAtual.quantidade);
+        const quantidadeNova =
+            data.quantidade !== undefined
+                ? Number(data.quantidade)
+                : quantidadeAntiga;
+
+        if (Number.isNaN(quantidadeNova) || quantidadeNova < 1) {
+            throw new Error("Quantidade inválida.");
+        }
+
+        const materialId = emprestimoAtual.materialId;
+
+        if (materialId && data.status !== "devolvido") {
+            const material = await tx.materiais.findUnique({
+                where: { id: Number(materialId) },
+            });
+
+            if (!material) {
+                throw new Error("Material vinculado ao empréstimo não encontrado.");
+            }
+
+            const diferenca = quantidadeNova - quantidadeAntiga;
+
+            if (diferenca > 0) {
+                if (material.quantidadeAtual < diferenca) {
+                    throw new Error(
+                        `Estoque insuficiente. Disponível: ${material.quantidadeAtual}. Necessário adicional: ${diferenca}.`
+                    );
+                }
+
+                await tx.materiais.update({
+                    where: { id: Number(materialId) },
+                    data: {
+                        quantidadeAtual: {
+                            decrement: diferenca,
+                        },
+                    },
+                });
+            }
+
+            if (diferenca < 0) {
+                await tx.materiais.update({
+                    where: { id: Number(materialId) },
+                    data: {
+                        quantidadeAtual: {
+                            increment: Math.abs(diferenca),
+                        },
+                    },
+                });
+            }
+        }
+
         const statusAnterior = emprestimoAtual.status;
         const novoStatus = data.status;
 
         const deveReporEstoque =
             statusAnterior !== "devolvido" &&
             novoStatus === "devolvido" &&
-            emprestimoAtual.materialId;
+            materialId;
 
         const emprestimoAtualizado = await tx.Emprestimo.update({
             where: { id: Number(id) },
@@ -158,12 +210,10 @@ export async function updateEmprestimo(id, data) {
 
         if (deveReporEstoque) {
             await tx.materiais.update({
-                where: {
-                    id: Number(emprestimoAtual.materialId),
-                },
+                where: { id: Number(materialId) },
                 data: {
                     quantidadeAtual: {
-                        increment: emprestimoAtual.quantidade,
+                        increment: quantidadeAntiga,
                     },
                 },
             });

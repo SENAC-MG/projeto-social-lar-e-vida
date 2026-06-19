@@ -131,8 +131,8 @@ export default function MateriaisPage() {
                     <th className="px-6 py-4 font-semibold">Descrição</th>
                     <th className="px-6 py-4 font-semibold">Total</th>
                     <th className="px-6 py-4 font-semibold">Disponível</th>
-                    <th className="px-6 py-4 font-semibold">Emprestado para</th>
                     <th className="px-6 py-4 font-semibold">Emprestado</th>
+                    <th className="px-6 py-4 font-semibold">Emprestado para</th>
                     <th className="px-6 py-4 font-semibold">Status</th>
                     <th className="px-6 py-4 text-center font-semibold">
                       Ações
@@ -164,37 +164,41 @@ export default function MateriaisPage() {
                             {material.nome}
                           </td>
 
-                          <td className="px-6 py-4 text-foreground/60 text-sm max-w-[300px] truncate">
-                            {material.descricao || "-"}
+                          <td className="px-6 py-4 text-foreground/60 text-sm max-w-[260px]">
+                            <p className="truncate" title={material.descricao || ""}>
+                              {material.descricao || "-"}
+                            </p>
                           </td>
 
-                          <td className="px-6 py-4 text-foreground/60 text-sm">
+                          <td className="px-6 py-4 text-center text-foreground/60 text-sm">
                             {total}
                           </td>
 
-                          <td className="px-6 py-4 text-sm">
-                            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
+                          <td className="px-6 py-4 text-center text-sm">
+                            <span className="inline-flex justify-center min-w-8 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
                               {atual}
                             </span>
                           </td>
 
-                          <td className="px-6 py-4 text-sm">
-                            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300">
+                          <td className="px-6 py-4 text-center text-sm">
+                            <span className="inline-flex justify-center min-w-8 px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300">
                               {emprestado}
                             </span>
                           </td>
-                          <td className="px-6 py-4 text-foreground/60 text-sm">
-                            {material.emprestimos?.length > 0
-                              ? material.emprestimos.map((emprestimo) => emprestimo.nome).join(", ")
-                              : "Disponível"}
+
+                          <td className="px-6 py-4 text-foreground/60 text-sm max-w-[220px]">
+                            <p className="truncate">
+                              {material.emprestimos?.length > 0
+                                ? material.emprestimos.map((emprestimo) => emprestimo.nome).join(", ")
+                                : "Disponível"}
+                            </p>
                           </td>
-                          <td className="px-6 py-4 text-sm">
-                            <span
-                              className={`px-3 py-1 rounded-full text-xs font-semibold ${material.status === "ativo"
-                                ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
-                                : "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300"
-                                }`}
-                            >
+
+                          <td className="px-6 py-4 text-center text-sm">
+                            <span className={`inline-flex justify-center min-w-16 px-3 py-1 rounded-full text-xs font-semibold ${material.status === "ativo"
+                              ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
+                              : "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300"
+                              }`}>
                               {material.status || "-"}
                             </span>
                           </td>

@@ -4,6 +4,7 @@ import { get_Pacientes } from "@modulos/pacientes/controller/pacienteController"
 import { get_Emprestimos } from "@modulos/emprestimos/controller/emprestimoController";
 import { get_Servicos } from "@modulos/servicos/controller/servicoController";
 import { get_Funcionarios } from "@modulos/funcionarios/controller/funcionarioController";
+import { get_Materiais } from "@modulos/materiais/controller/materialController";
 
 export default async function DashboardPage() {
     const [
@@ -12,12 +13,14 @@ export default async function DashboardPage() {
         emprestimos,
         servicos,
         funcionarios,
+        materiais,
     ] = await Promise.all([
         get_DashboardCharts(),
         get_Pacientes(),
         get_Emprestimos(),
         get_Servicos(),
         get_Funcionarios(),
+        get_Materiais(),
     ]);
 
     const dados = {
@@ -50,6 +53,7 @@ export default async function DashboardPage() {
             funcionarios={funcionarios}
             emprestimos={emprestimos}
             servicos={servicos}
+            materiais={materiais}
         />
     );
 }
