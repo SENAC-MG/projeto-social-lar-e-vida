@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Save } from "lucide-react";
+import { Save, Package } from "lucide-react";
 import { toast } from "sonner";
 import { updateEmprestimoAction } from "@modulos/emprestimos/controller/emprestimoController";
 
@@ -23,6 +23,11 @@ export default function ModalEditarEmprestimo({ emprestimo, onClose, onSuccess }
         setLoading(true);
 
         const formData = new FormData(e.currentTarget);
+
+        if (emprestimo.materialId) {
+            formData.append("materialId", emprestimo.materialId);
+        }
+
         const res = await updateEmprestimoAction(emprestimo.id, formData);
 
         if (res.success) {
@@ -86,21 +91,11 @@ export default function ModalEditarEmprestimo({ emprestimo, onClose, onSuccess }
                             className={inputClass}
                         />
 
-                        <input
-                            name="quantidade"
-                            type="number"
-                            min="1"
-                            defaultValue={emprestimo.quantidade || 1}
-                            placeholder="Quantidade"
-                            className={inputClass}
-                        />
-
                         <select
                             name="status"
                             defaultValue={emprestimo.status || "ativo"}
                             className={`${inputClass} appearance-none cursor-pointer`}
                         >
-                            <option value="">Não alterar</option>
                             <option value="ativo">Ativo</option>
                             <option value="devolvido">Devolvido</option>
                             <option value="atrasado">Atrasado</option>
@@ -111,7 +106,6 @@ export default function ModalEditarEmprestimo({ emprestimo, onClose, onSuccess }
                             name="previsaoDevolucao"
                             type="date"
                             defaultValue={formatDate(emprestimo.previsaoDevolucao)}
-                            placeholder="Previsão Devolução"
                             className={inputClass}
                         />
 
@@ -119,24 +113,58 @@ export default function ModalEditarEmprestimo({ emprestimo, onClose, onSuccess }
                             name="dataDevolucao"
                             type="date"
                             defaultValue={formatDate(emprestimo.dataDevolucao)}
-                            placeholder="Data Devolução"
                             className={inputClass}
                         />
                     </div>
                 </section>
 
                 <section>
-                    <h3 className="text-primary text-xs font-bold uppercase tracking-wider mb-4">
-                        Materiais Emprestados
+                    <h3 className="text-primary text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <Package size={14} />
+                        Material Emprestado
                     </h3>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div className="md:col-span-2">
+                            <label className="block text-gray-400 text-sm mb-1.5 font-medium">
+                                Material vinculado
+                            </label>
+
+                            <input
+                                type="text"
+                                value={emprestimo.material?.nome || "Nenhum material vinculado"}
+                                disabled
+                                className={`${inputClass} opacity-70 cursor-not-allowed`}
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-gray-400 text-sm mb-1.5 font-medium">
+                                Quantidade
+                            </label>
+
+                            <input
+                                name="quantidade"
+                                type="number"
+                                min="1"
+                                defaultValue={emprestimo.quantidade || 1}
+                                className={inputClass}
+                            />
+                        </div>
+                    </div>
 
                     <textarea
                         name="materiaisEmprestados"
                         rows="3"
                         defaultValue={emprestimo.materiaisEmprestados}
-                        placeholder="Descreva os materiais"
+                        placeholder="Observações sobre o material"
                         className={`${inputClass} resize-none min-h-[80px]`}
                     />
+
+                    <p className="text-xs text-gray-500 mt-2">
+                        Para registrar devolução e repor o estoque, altere o status para{" "}
+                        <strong>Devolvido</strong>.
+                    </p>
                 </section>
 
                 <section>

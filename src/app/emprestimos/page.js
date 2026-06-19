@@ -136,6 +136,8 @@ export default function EmprestimosPage() {
 
                                         <th className="px-6 py-4">Quantidade</th>
 
+                                        <th className="px-6 py-4 font-semibold">Material</th>
+
                                         <th className="px-6 py-4">Status</th>
 
                                         <th className="px-6 py-4">Data Empréstimo</th>
@@ -168,6 +170,9 @@ export default function EmprestimosPage() {
                                                 <td className="px-6 py-4 text-sm text-foreground/60">
                                                     {emprestimo.cpf}
                                                 </td>
+                                                <td className="px-6 py-4 text-foreground/60 text-sm">
+                                                    {emprestimo.material?.nome || "-"}
+                                                </td>
 
                                                 <td className="px-6 py-4 text-sm text-foreground/60">
                                                     {emprestimo.quantidade || 1}
@@ -175,15 +180,14 @@ export default function EmprestimosPage() {
 
                                                 <td className="px-6 py-4 text-sm">
                                                     <span
-                                                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                                            emprestimo.status === "ativo"
-                                                                ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
-                                                                : emprestimo.status === "devolvido"
-                                                                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                                                                  : emprestimo.status === "atrasado"
+                                                        className={`px-3 py-1 rounded-full text-xs font-semibold ${emprestimo.status === "ativo"
+                                                            ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
+                                                            : emprestimo.status === "devolvido"
+                                                                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                                                                : emprestimo.status === "atrasado"
                                                                     ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300"
                                                                     : "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300"
-                                                        }`}
+                                                            }`}
                                                     >
                                                         {emprestimo.status || "ativo"}
                                                     </span>
@@ -192,16 +196,16 @@ export default function EmprestimosPage() {
                                                 <td className="px-6 py-4 text-sm text-foreground/60">
                                                     {emprestimo.dataEmprestimo
                                                         ? new Date(
-                                                              emprestimo.dataEmprestimo
-                                                          ).toLocaleDateString("pt-BR")
+                                                            emprestimo.dataEmprestimo
+                                                        ).toLocaleDateString("pt-BR")
                                                         : "-"}
                                                 </td>
 
                                                 <td className="px-6 py-4 text-sm text-foreground/60">
                                                     {emprestimo.previsaoDevolucao
                                                         ? new Date(
-                                                              emprestimo.previsaoDevolucao
-                                                          ).toLocaleDateString("pt-BR")
+                                                            emprestimo.previsaoDevolucao
+                                                        ).toLocaleDateString("pt-BR")
                                                         : "-"}
                                                 </td>
 

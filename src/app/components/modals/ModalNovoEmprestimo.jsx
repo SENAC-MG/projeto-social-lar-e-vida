@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Save, RotateCcw, Search } from "lucide-react";
 import { toast } from "sonner";
 import { cadastrar_Emprestimo } from "@modulos/emprestimos/controller/emprestimoController";
+import { get_Materiais } from "@modulos/materiais/controller/materialController";
 import Modal from "@/shared/ui/Modal";
 import { buscarPacientePorCpfAction } from "@/features/pacientes/actions/buscar-paciente-actions";
 
@@ -13,6 +14,7 @@ const initialFormData = {
     rg: "",
     nascimento: "",
     dataEmprestimo: new Date().toISOString().split("T")[0],
+    materialId: "",
     quantidade: 1,
     status: "ativo",
     previsaoDevolucao: "",
@@ -31,9 +33,31 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
     const [loading, setLoading] = useState(false);
     const [buscandoPaciente, setBuscandoPaciente] = useState(false);
     const [formData, setFormData] = useState(initialFormData);
+    const [materiais, setMateriais] = useState([]);
+    const [carregandoMateriais, setCarregandoMateriais] = useState(true);
 
     const inputClass =
         "bg-card w-full border border-border rounded-lg px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground";
+
+    useEffect(() => {
+        async function carregarMateriais() {
+            try {
+                const dados = await get_Materiais();
+
+                const materiaisAtivos = dados.filter(
+                    (material) => material.status === "ativo" && material.quantidadeAtual > 0
+                );
+
+                setMateriais(materiaisAtivos);
+            } catch {
+                toast.error("Erro ao carregar materiais.");
+            } finally {
+                setCarregandoMateriais(false);
+            }
+        }
+
+        carregarMateriais();
+    }, []);
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -212,21 +236,6 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
 
                         <div>
                             <label className="block text-gray-400 text-sm mb-1.5 font-medium">
-                                Quantidade <span className="text-primary">*</span>
-                            </label>
-                            <input
-                                name="quantidade"
-                                type="number"
-                                min="1"
-                                value={formData.quantidade}
-                                onChange={handleChange}
-                                required
-                                className={inputClass}
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-gray-400 text-sm mb-1.5 font-medium">
                                 Status <span className="text-primary">*</span>
                             </label>
                             <select
@@ -276,13 +285,58 @@ export default function ModalNovoEmprestimo({ onClose, onSuccess }) {
                         Materiais Emprestados <span className="text-primary">*</span>
                     </h3>
 
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label className="block text-gray-400 text-sm mb-1.5 font-medium">
+                                Material <span className="text-primary">*</span>
+                            </label>
+
+                            <select
+                                name="materialId"
+                                value={formData.materialId}
+                                onChange={handleChange}
+                                required
+                                disabled={carregandoMateriais}
+                                className={`${inputClass} appearance-none cursor-pointer`}
+                            >
+                                <option value="">
+                                    {carregandoMateriais
+                                        ? "Carregando materiais..."
+                                        : "Selecione um material"}
+                                </option>
+
+                                {materiais.map((material) => (
+                                    <option key={material.id} value={material.id}>
+                                        {material.nome} — disponíveis: {material.quantidadeAtual}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-gray-400 text-sm mb-1.5 font-medium">
+                                Quantidade <span className="text-primary">*</span>
+                            </label>
+
+                            <input
+                                name="quantidade"
+                                type="number"
+                                min="1"
+                                value={formData.quantidade}
+                                onChange={handleChange}
+                                required
+                                className={inputClass}
+                            />
+                        </div>
+                    </div>
+
                     <textarea
                         name="materiaisEmprestados"
                         rows="3"
                         value={formData.materiaisEmprestados}
                         onChange={handleChange}
                         required
-                        placeholder="Descreva os materiais"
+                        placeholder="Descreva os materiais e observações do empréstimo"
                         className={`${inputClass} resize-none min-h-[80px]`}
                     />
                 </section>

@@ -13,6 +13,7 @@ export default function DashboardClient({
     funcionarios = [],
     emprestimos = [],
     servicos = [],
+    materiais = [],
 }) {
     const { isSidebarOpen, toggleSidebar } = useResponsiveSidebar();
 
@@ -27,7 +28,7 @@ export default function DashboardClient({
                         servicos={servicos}
                     />
 
-                    <DashboardCards dados={dashboardStats} />
+                    <DashboardCards dados={dashboardStats} materiais={materiais} />
 
                     <DashboardGraphics graficos={graficos} />
                 </main>
