@@ -6,4 +6,5 @@ export const mainNavigationItems = [
     { path: "/pacientes", icon: Users, label: "Pacientes" },
     { path: "/emprestimos", icon: Package, label: "Empréstimos" },
     { path: "/servicos", icon: Wrench, label: "Serviços" },
+    { path: "/materiais", icon: Package, label: "Materiais" },
 ];

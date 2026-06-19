@@ -14,6 +14,7 @@ import {
     parseDate,
     parseIntegerValue,
 } from "../../../lib/sanitize";
+import { revalidatePath } from "next/cache";
 /**
  * Buscar todos os empréstimos
  *
@@ -45,6 +46,7 @@ export async function cadastrar_Emprestimo(formData) {
     const status = sanitizeOptionalString(formData.get("status"));
     const previsaoDevolucao = parseDate(formData.get("previsaoDevolucao"));
     const dataDevolucao = parseDate(formData.get("dataDevolucao"));
+    const materialId = parseIntegerValue(formData.get("materialId"));
 
     console.log("Dados recebidos no action:", {
         nome,
@@ -63,6 +65,7 @@ export async function cadastrar_Emprestimo(formData) {
         status,
         previsaoDevolucao,
         dataDevolucao,
+        materialId
     });
 
     try {
@@ -83,8 +86,12 @@ export async function cadastrar_Emprestimo(formData) {
             telefone2,
             status,
             previsaoDevolucao,
-            dataDevolucao
+            dataDevolucao,
+            materialId
         );
+        revalidatePath("/emprestimos");
+        revalidatePath("/materiais");
+        revalidatePath("/dashboard");
         //Voltando com a resposta conrolada para o frontend
         return {
             success: true,
@@ -144,6 +151,7 @@ export async function updateEmprestimoAction(id, formData) {
     const status = sanitizeOptionalString(formData.get("status"));
     const previsaoDevolucao = parseDate(formData.get("previsaoDevolucao"));
     const dataDevolucao = parseDate(formData.get("dataDevolucao"));
+    const materialId = parseIntegerValue(formData.get("materialId"));
 
     if (nome) data.nome = nome;
     if (cpf) data.cpf = cpf;
@@ -160,10 +168,21 @@ export async function updateEmprestimoAction(id, formData) {
     if (telefone2) data.telefone2 = telefone2;
     if (status) data.status = status;
     if (previsaoDevolucao) data.previsaoDevolucao = new Date(previsaoDevolucao);
-    if (dataDevolucao) data.dataDevolucao = new Date(dataDevolucao);
+
+    if (status === "devolvido" && !dataDevolucao) {
+        data.dataDevolucao = new Date();
+    }
+
+    if (dataDevolucao) {
+        data.dataDevolucao = new Date(dataDevolucao);
+    }
 
     try {
         const emprestimoAtualizado = await updateEmprestimoService(id, data);
+        revalidatePath("/emprestimos");
+        revalidatePath("/materiais");
+        revalidatePath("/dashboard");
+
 
         return {
             success: true,

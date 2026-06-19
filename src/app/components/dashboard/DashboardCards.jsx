@@ -1,9 +1,25 @@
 "use client";
 
-import { Users, Package, Wrench, Hospital } from "lucide-react";
+import { Users, Package, Wrench, Hospital, Boxes, AlertTriangle } from "lucide-react";
 
-export default function DashboardCards({ dados }) {
+export default function DashboardCards({ dados, materiais = [] }) {
     const loading = !dados;
+
+    const totalMateriais = materiais.length;
+
+    const materiaisDisponiveis = materiais.filter(
+        (material) => Number(material.quantidadeAtual) > 0
+    ).length;
+
+    const materiaisEmprestados = materiais.filter(
+        (material) => Number(material.quantidadeTotal) - Number(material.quantidadeAtual) > 0
+    ).length;
+
+    const estoqueBaixo = materiais.filter(
+        (material) =>
+            Number(material.quantidadeTotal) > 0 &&
+            Number(material.quantidadeAtual) <= Number(material.quantidadeTotal) * 0.3
+    ).length;
 
     const cards = [
         {
@@ -60,6 +76,34 @@ export default function DashboardCards({ dados }) {
             valor: dados?.funcionariosAtivos ?? 0,
             descricao: "Ativos",
             icone: Hospital,
+            corBorda: "#A6477B",
+        },
+        {
+            titulo: "Materiais",
+            valor: totalMateriais,
+            descricao: "Cadastrados",
+            icone: Boxes,
+            corBorda: "#5C7A53",
+        },
+        {
+            titulo: "Disponíveis",
+            valor: materiaisDisponiveis,
+            descricao: "Com estoque",
+            icone: Boxes,
+            corBorda: "#3D5A80",
+        },
+        {
+            titulo: "Emprestados",
+            valor: materiaisEmprestados,
+            descricao: "Em uso",
+            icone: Package,
+            corBorda: "#D88C42",
+        },
+        {
+            titulo: "Estoque Baixo",
+            valor: estoqueBaixo,
+            descricao: "Abaixo de 30%",
+            icone: AlertTriangle,
             corBorda: "#A6477B",
         },
     ];

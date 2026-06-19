@@ -45,7 +45,8 @@ export async function gravarEmprestimo(
     telefone2,
     status,
     previsaoDevolucao,
-    dataDevolucao
+    dataDevolucao,
+    materialId
 ) {
     const nomeValid = validateRequiredString(nome, "nome");
     const cpfValid = validateRequiredString(cpf, "cpf");
@@ -63,7 +64,7 @@ export async function gravarEmprestimo(
     const statusValid = validateRequiredString(status, "status");
     const previsaoValid = validateOptionalDate(previsaoDevolucao, "previsaoDevolucao");
     const devolucaoValid = validateOptionalDate(dataDevolucao, "dataDevolucao");
-
+    const materialIdValid = validateRequiredNumber(materialId, "materialId");
     // Se passou por todas regras pode salvar -> pode salvar
     return await post_Emprestimo({
         nome: nomeValid,
@@ -82,6 +83,7 @@ export async function gravarEmprestimo(
         status: statusValid,
         previsaoDevolucao: previsaoValid,
         dataDevolucao: devolucaoValid,
+        materialId: materialIdValid,
     });
 }
 
