@@ -17,12 +17,14 @@ function sanitizeForLog(value) {
  * - Usado normalmente para listagem em tabelas
  */
 export async function get_AllEmprestimos() {
-    const result = await prisma.Emprestimo.findMany({
+    return await prisma.Emprestimo.findMany({
         orderBy: {
             nome: "asc",
         },
+        include: {
+            material: true,
+        },
     });
-    return result;
 }
 /**
  * - Criar novo Empréstimo
@@ -49,26 +51,52 @@ export async function post_Emprestimo(data) {
         status,
         previsaoDevolucao,
         dataDevolucao,
+        materialId,
     } = data;
-    return await prisma.Emprestimo.create({
-        data: {
-            nome,
-            cpf,
-            rg,
-            nascimento,
-            dataEmprestimo,
-            quantidade,
-            rua,
-            numero,
-            cep,
-            bairro,
-            cidade,
-            telefone1,
-            telefone2,
-            status,
-            previsaoDevolucao,
-            dataDevolucao,
-        },
+
+    return await prisma.$transaction(async (tx) => {
+        const material = await tx.materiais.findUnique({
+            where: { id: Number(materialId) },
+        });
+
+        if (!material) {
+            throw new Error("Material não encontrado.");
+        }
+
+        if (material.quantidadeAtual < quantidade) {
+            throw new Error("Quantidade insuficiente em estoque.");
+        }
+
+        const emprestimo = await tx.Emprestimo.create({
+            data: {
+                nome,
+                cpf,
+                rg,
+                nascimento,
+                dataEmprestimo,
+                quantidade,
+                rua,
+                numero,
+                cep,
+                bairro,
+                cidade,
+                telefone1,
+                telefone2,
+                status,
+                previsaoDevolucao,
+                dataDevolucao,
+                materialId: Number(materialId),
+            },
+        });
+
+        await tx.materiais.update({
+            where: { id: Number(materialId) },
+            data: {
+                quantidadeAtual: material.quantidadeAtual - quantidade,
+            },
+        });
+
+        return emprestimo;
     });
 }
 /**
@@ -92,11 +120,12 @@ export async function del_Emprestimo(id) {
  * - Usado em edição, detalhes, etc
  */
 export async function findEmprestimoById(id) {
-    const emprestimo = await prisma.Emprestimo.findUnique({
-        where: { id },
+    return await prisma.Emprestimo.findUnique({
+        where: { id: Number(id) },
+        include: {
+            material: true,
+        },
     });
-    // Retorna o empréstimo encontrado ou null se não existir
-    return emprestimo;
 }
 
 /**
@@ -105,18 +134,41 @@ export async function findEmprestimoById(id) {
  * - Retorna o empréstimo atualizado
  */
 export async function updateEmprestimo(id, data) {
-    console.log(
-        "Atualizando Empréstimo ID:",
-        id,
-        "com dados",
-        sanitizeForLog(data)
-    );
+    return await prisma.$transaction(async (tx) => {
+        const emprestimoAtual = await tx.Emprestimo.findUnique({
+            where: { id: Number(id) },
+        });
 
-    const Emprestimo_atualizado = await prisma.Emprestimo.update({
-        where: { id },
-        data,
+        if (!emprestimoAtual) {
+            throw new Error("Empréstimo não encontrado.");
+        }
+
+        const statusAnterior = emprestimoAtual.status;
+        const novoStatus = data.status;
+
+        const deveReporEstoque =
+            statusAnterior !== "devolvido" &&
+            novoStatus === "devolvido" &&
+            emprestimoAtual.materialId;
+
+        const emprestimoAtualizado = await tx.Emprestimo.update({
+            where: { id: Number(id) },
+            data,
+        });
+
+        if (deveReporEstoque) {
+            await tx.materiais.update({
+                where: {
+                    id: Number(emprestimoAtual.materialId),
+                },
+                data: {
+                    quantidadeAtual: {
+                        increment: emprestimoAtual.quantidade,
+                    },
+                },
+            });
+        }
+
+        return emprestimoAtualizado;
     });
-
-    console.log("Empréstimo atualizado com sucesso:", Emprestimo_atualizado);
-    return Emprestimo_atualizado;
 }

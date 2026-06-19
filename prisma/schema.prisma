@@ -76,6 +76,8 @@ model Emprestimo {
   cidade               String
   telefone1            String
   telefone2            String
+  materialId Int?
+  material   Materiais? @relation(fields: [materialId], references: [id])
 }
 
 model Servicos {
@@ -116,4 +118,16 @@ model Movimentacao {
 
   @@index([pacienteId])
   @@index([servicoId])
+}
+
+model Materiais {
+  id                Int      @id @default(autoincrement())
+  nome              String
+  descricao         String?
+  quantidadeTotal   Int      @default(0)
+  quantidadeAtual   Int      @default(0)
+  status            String   @default("ativo")
+  createdAt         DateTime @default(now())
+
+  emprestimos       Emprestimo[]
 }
