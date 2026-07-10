@@ -91,12 +91,20 @@ export async function updateMaterialService(id, data) {
     }
   }
 
-  if (
-    data.quantidadeTotal !== undefined &&
-    data.quantidadeAtual !== undefined &&
-    data.quantidadeAtual > data.quantidadeTotal
-  ) {
-    throw new Error("A quantidade disponível não pode ser maior que a quantidade total.");
+  const quantidadeTotalFinal =
+    data.quantidadeTotal !== undefined
+      ? Number(data.quantidadeTotal)
+      : material.quantidadeTotal;
+
+  const quantidadeAtualFinal =
+    data.quantidadeAtual !== undefined
+      ? Number(data.quantidadeAtual)
+      : material.quantidadeAtual;
+
+  if (quantidadeAtualFinal > quantidadeTotalFinal) {
+    throw new Error(
+      "A quantidade disponível não pode ser maior que a quantidade total."
+    );
   }
 
   return await updateMaterial(Number(id), data);

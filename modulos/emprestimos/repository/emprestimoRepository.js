@@ -9,12 +9,9 @@ function sanitizeForLog(value) {
         return String(value).replace(/[\r\n]/g, "");
     }
 }
+
 /**
  * Buscar todos os empréstimos
- *
- * - Retorna uma lista com todos os empréstimos do banco
- * - Ordena do mais recente para o mais antigo (criadoEm DESC)
- * - Usado normalmente para listagem em tabelas
  */
 export async function get_AllEmprestimos() {
     return await prisma.Emprestimo.findMany({
@@ -26,12 +23,9 @@ export async function get_AllEmprestimos() {
         },
     });
 }
+
 /**
- * - Criar novo Empréstimo
- *
- * - Recebe um objeto com os dados do empréstimo
- * - Ex: { nome, cpf, rg}
- * - Retorna o Empréstimo criado
+ * Criar novo empréstimo
  */
 export async function post_Emprestimo(data) {
     const {
@@ -92,32 +86,56 @@ export async function post_Emprestimo(data) {
         await tx.materiais.update({
             where: { id: Number(materialId) },
             data: {
-                quantidadeAtual: material.quantidadeAtual - quantidade,
+                quantidadeAtual: {
+                    decrement: quantidade,
+                },
             },
         });
 
         return emprestimo;
     });
 }
+
 /**
- * Deletar Empréstimo
- *
- * - Remove o Empréstimo do banco pelo ID
- * - Cuidado: Operação irreversível
+ * Deletar empréstimo
  */
 export async function del_Emprestimo(id) {
-    const result = await prisma.Emprestimo.delete({
-        where: { id },
+    return await prisma.$transaction(async (tx) => {
+        const emprestimo = await tx.Emprestimo.findUnique({
+            where: { id: Number(id) },
+        });
+
+        if (!emprestimo) {
+            throw new Error("Empréstimo não encontrado.");
+        }
+
+        const consomeEstoque =
+            emprestimo.status === "ativo" ||
+            emprestimo.status === "atrasado";
+
+        if (consomeEstoque && emprestimo.materialId) {
+            await tx.materiais.update({
+                where: {
+                    id: Number(emprestimo.materialId),
+                },
+                data: {
+                    quantidadeAtual: {
+                        increment: emprestimo.quantidade,
+                    },
+                },
+            });
+        }
+
+        return await tx.Emprestimo.delete({
+            where: {
+                id: Number(id),
+            },
+        });
     });
-    return result;
 }
 
 /**
- * Buscar Empréstimo pelo ID
- *
- * - Busca um único Empréstimo pelo ID ( chave primária )
- * - Retorna null se não encontrar
- * - Usado em edição, detalhes, etc
+ * Buscar empréstimo por ID
  */
 export async function findEmprestimoById(id) {
     return await prisma.Emprestimo.findUnique({
@@ -129,9 +147,7 @@ export async function findEmprestimoById(id) {
 }
 
 /**
- * - Recebe o ID do empréstimo e os novos dados
- * - Atualiza apenas os campos enviados
- * - Retorna o empréstimo atualizado
+ * Atualizar empréstimo
  */
 export async function updateEmprestimo(id, data) {
     return await prisma.$transaction(async (tx) => {
@@ -144,6 +160,7 @@ export async function updateEmprestimo(id, data) {
         }
 
         const quantidadeAntiga = Number(emprestimoAtual.quantidade);
+
         const quantidadeNova =
             data.quantidade !== undefined
                 ? Number(data.quantidade)
@@ -155,21 +172,78 @@ export async function updateEmprestimo(id, data) {
 
         const materialId = emprestimoAtual.materialId;
 
-        if (materialId && data.status !== "devolvido") {
+        const statusAnterior = emprestimoAtual.status;
+        const novoStatus = data.status ?? statusAnterior;
+
+        const estavaConsumindoEstoque =
+            statusAnterior === "ativo" ||
+            statusAnterior === "atrasado";
+
+        const vaiConsumirEstoque =
+            novoStatus === "ativo" ||
+            novoStatus === "atrasado";
+
+        if (materialId) {
             const material = await tx.materiais.findUnique({
                 where: { id: Number(materialId) },
             });
 
             if (!material) {
-                throw new Error("Material vinculado ao empréstimo não encontrado.");
+                throw new Error(
+                    "Material vinculado ao empréstimo não encontrado."
+                );
             }
 
-            const diferenca = quantidadeNova - quantidadeAntiga;
+            // Continua consumindo estoque (ativo -> ativo)
+            if (estavaConsumindoEstoque && vaiConsumirEstoque) {
+                const diferenca = quantidadeNova - quantidadeAntiga;
 
-            if (diferenca > 0) {
-                if (material.quantidadeAtual < diferenca) {
+                if (diferenca > 0) {
+                    if (material.quantidadeAtual < diferenca) {
+                        throw new Error(
+                            `Estoque insuficiente. Disponível: ${material.quantidadeAtual}. Necessário adicional: ${diferenca}.`
+                        );
+                    }
+
+                    await tx.materiais.update({
+                        where: { id: Number(materialId) },
+                        data: {
+                            quantidadeAtual: {
+                                decrement: diferenca,
+                            },
+                        },
+                    });
+                }
+
+                if (diferenca < 0) {
+                    await tx.materiais.update({
+                        where: { id: Number(materialId) },
+                        data: {
+                            quantidadeAtual: {
+                                increment: Math.abs(diferenca),
+                            },
+                        },
+                    });
+                }
+            }
+
+            // Ativo/Atrasado -> Devolvido/Cancelado
+            if (estavaConsumindoEstoque && !vaiConsumirEstoque) {
+                await tx.materiais.update({
+                    where: { id: Number(materialId) },
+                    data: {
+                        quantidadeAtual: {
+                            increment: quantidadeAntiga,
+                        },
+                    },
+                });
+            }
+
+            // Devolvido/Cancelado -> Ativo/Atrasado
+            if (!estavaConsumindoEstoque && vaiConsumirEstoque) {
+                if (material.quantidadeAtual < quantidadeNova) {
                     throw new Error(
-                        `Estoque insuficiente. Disponível: ${material.quantidadeAtual}. Necessário adicional: ${diferenca}.`
+                        `Estoque insuficiente. Disponível: ${material.quantidadeAtual}. Necessário: ${quantidadeNova}.`
                     );
                 }
 
@@ -177,47 +251,29 @@ export async function updateEmprestimo(id, data) {
                     where: { id: Number(materialId) },
                     data: {
                         quantidadeAtual: {
-                            decrement: diferenca,
-                        },
-                    },
-                });
-            }
-
-            if (diferenca < 0) {
-                await tx.materiais.update({
-                    where: { id: Number(materialId) },
-                    data: {
-                        quantidadeAtual: {
-                            increment: Math.abs(diferenca),
+                            decrement: quantidadeNova,
                         },
                     },
                 });
             }
         }
 
-        const statusAnterior = emprestimoAtual.status;
-        const novoStatus = data.status;
-
-        const deveReporEstoque =
-            statusAnterior !== "devolvido" &&
-            novoStatus === "devolvido" &&
-            materialId;
+        console.log(
+            "Atualizando Empréstimo ID:",
+            id,
+            "com dados",
+            sanitizeForLog(data)
+        );
 
         const emprestimoAtualizado = await tx.Emprestimo.update({
             where: { id: Number(id) },
             data,
         });
 
-        if (deveReporEstoque) {
-            await tx.materiais.update({
-                where: { id: Number(materialId) },
-                data: {
-                    quantidadeAtual: {
-                        increment: quantidadeAntiga,
-                    },
-                },
-            });
-        }
+        console.log(
+            "Empréstimo atualizado com sucesso:",
+            emprestimoAtualizado
+        );
 
         return emprestimoAtualizado;
     });
