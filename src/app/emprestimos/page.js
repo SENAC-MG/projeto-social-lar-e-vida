@@ -171,11 +171,11 @@ export default function EmprestimosPage() {
                                                     {emprestimo.cpf}
                                                 </td>
                                                 <td className="px-6 py-4 text-foreground/60 text-sm">
-                                                    {emprestimo.material?.nome || "-"}
+                                                    {emprestimo.quantidade || 1}
                                                 </td>
 
                                                 <td className="px-6 py-4 text-sm text-foreground/60">
-                                                    {emprestimo.quantidade || 1}
+                                                    {emprestimo.material?.nome || "-"}
                                                 </td>
 
                                                 <td className="px-6 py-4 text-sm">
