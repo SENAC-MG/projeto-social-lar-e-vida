@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { useState } from "react";
 import {
@@ -65,7 +65,6 @@ function CollapsibleSection({ title, icon: Icon, defaultOpen = false, children }
     );
 }
 
-// ─── Componente de passo numerado ────────────────────────────────────────────
 function Step({ number, title, children }) {
     return (
         <div className="flex gap-4 mb-6 last:mb-0">
@@ -80,7 +79,6 @@ function Step({ number, title, children }) {
     );
 }
 
-// ─── Componente de dica / informação ─────────────────────────────────────────
 function TipBox({ type = "info", title, children }) {
     const styles = {
         info: {
@@ -167,19 +165,17 @@ function Code({ children }) {
     );
 }
 
-// ─── Página principal ────────────────────────────────────────────────────────
 export default function DocumentationPage() {
     const { isSidebarOpen, toggleSidebar } = useResponsiveSidebar();
 
     const sections = [
         { id: "visao-geral", label: "Visão Geral do Sistema" },
-        { id: "dashboard", label: "Dashboard de Gráficos" },
+        { id: "dashboard", label: "Dashboard de gráficos" },
         { id: "funcionarios", label: "Cadastro de funcionarios" },
         { id: "pacientes", label: "Cadastro de pacientes" },
-        { id: "materiais", label: "Cadastro, controle e estoque de materiais" },
+        { id: "materiais", label: "Cadastro e controle de estoque" },
         { id: "emprestimos", label: "Criação de empréstimos" },
         { id: "servicos", label: "Cadastro de serviços" },
-        { id: "glossario", label: "Glossário Técnico" },
     ];
 
     const [activeSection, setActiveSection] = useState("visao-geral");
@@ -234,11 +230,7 @@ export default function DocumentationPage() {
                             </nav>
                         </aside>
 
-                        {/* ── Conteúdo principal ──────────────────────────────────── */}
                         <div className="flex-1 min-w-0 space-y-6 max-w-4xl">
-                            {/* ══════════════════════════════════════════════════════════
-                  VISÃO GERAL
-              ══════════════════════════════════════════════════════════ */}
                             {activeSection === "visao-geral" && (
                                 <>
                                     <div className="bg-gradient-to-br from-[#5C7A53] to-[#4A6342] rounded-2xl p-6 sm:p-8 text-white">
@@ -322,9 +314,6 @@ export default function DocumentationPage() {
                                 </>
                             )}
 
-                            {/* ══════════════════════════════════════════════════════════
-                  DASHBOARD
-              ══════════════════════════════════════════════════════════ */}
                             {activeSection === "dashboard" && (
                                 <>
                                     <div className="bg-gradient-to-br from-[#5C7A53] to-[#4A6342] rounded-2xl p-6 sm:p-8 text-white">
@@ -674,13 +663,18 @@ export default function DocumentationPage() {
                                         </p>
                                     </div>
 
+                                    <div className="min-h-screen grid md:grid-cols-2">
+                                        <Image src="/Emprestimos.png" alt="Foto 1" width={500} height={500} className="w-full h-auto object-cover" />
+                                        <Image src="/Emprestimos.jpg" alt="Foto 3" width={500} height={500} className="w-full h-auto object-cover" />
+                                    </div>
+
                                     <CollapsibleSection
                                         title="Como cadastrar um novo funcionário"
                                         icon={UserPlus}
                                         defaultOpen={true}
                                     >
 
-                                        <Image src="/Emprestimos.jpg" height={500} width={500} alt="text" />
+
 
                                         <Step number={1} title="Acesse o módulo de Funcionários">
                                             <p>
@@ -839,7 +833,7 @@ export default function DocumentationPage() {
                                         icon={UserPlus}
                                         defaultOpen={true}
                                     >
-                                        <Image src="/menu/Emprestimos.png" height={500} width={500} alt="text" />
+                                        <Image src="" height={500} width={500} alt="text" />
                                         <Step number={1} title="Acesse o módulo de Pacientes">
                                             <p>
                                                 Na barra lateral, clique no ícone <strong>Pacientes</strong> (ícone de
@@ -1048,7 +1042,7 @@ export default function DocumentationPage() {
                                         icon={ClipboardList}
                                         defaultOpen={true}
                                     >
-                                        <Image src="/documentation/Funcionarios.png" height={500} width={500} alt="text" />
+                                        <Image src="" height={500} width={500} alt="text" />
 
                                         <Step number={1} title="Acesse o módulo de Empréstimos">
                                             <p>
@@ -1231,273 +1225,6 @@ export default function DocumentationPage() {
                                                 paciente.
                                             </p>
                                         </Step>
-                                    </CollapsibleSection>
-                                </>
-                            )}
-
-                            {/* ══════════════════════════════════════════════════════════
-                  GLOSSÁRIO
-              ══════════════════════════════════════════════════════════ */}
-                            {activeSection === "glossario" && (
-                                <>
-                                    <div className="bg-gradient-to-br from-[#5C7A53] to-[#4A6342] rounded-2xl p-6 sm:p-8 text-white">
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <BookOpen size={28} />
-                                            <h2 className="text-2xl sm:text-3xl font-bold">Glossário Técnico</h2>
-                                        </div>
-                                        <p className="text-white/80 text-sm sm:text-base leading-relaxed max-w-2xl">
-                                            Termos técnicos e executivos utilizados no sistema e na documentação.
-                                        </p>
-                                    </div>
-
-                                    <CollapsibleSection
-                                        title="Termos Técnicos"
-                                        icon={FileText}
-                                        defaultOpen={true}
-                                    >
-                                        <div className="overflow-x-auto rounded-lg border border-card-border">
-                                            <table className="w-full text-sm">
-                                                <thead>
-                                                    <tr className="bg-foreground/5 text-foreground/60 text-xs uppercase tracking-wider">
-                                                        <th className="px-4 py-3 text-left font-semibold">Termo</th>
-                                                        <th className="px-4 py-3 text-left font-semibold">Definição</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            API
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Interface de Programação de Aplicações. Conjunto de rotinas e padrões
-                                                            que permitem a comunicação entre diferentes sistemas.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            CID
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Classificação Internacional de Doenças. Sistema de codificação usado
-                                                            para classificar doenças e problemas relacionados à saúde.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            CRUD
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Create, Read, Update, Delete. Operações básicas de criação, leitura,
-                                                            atualização e exclusão de registros em um sistema.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            ORM
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Object-Relational Mapping. Técnica que mapeia objetos para bancos de
-                                                            dados relacionais, facilitando a manipulação dos dados.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            Prisma
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            ORM utilizado no sistema para comunicação com o banco de dados SQLite.
-                                                            Oferece type-safety e consultas otimizadas.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            SQLite
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Sistema de gerenciamento de banco de dados relacional leve e
-                                                            embarcado, utilizado como base de dados da aplicação.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            Next.js
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Framework React para produção, utilizado no desenvolvimento do
-                                                            frontend e backend da aplicação.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            Tailwind CSS
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Framework CSS utilitário utilizado para estilização da interface,
-                                                            permitindo design responsivo e personalizado.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            XSS
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Cross-Site Scripting. Tipo de vulnerabilidade de segurança que permite
-                                                            a injeção de scripts maliciosos. O sistema possui proteção contra XSS.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            Modal
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Janela de diálogo sobreposta à página principal, utilizada para
-                                                            formulários de cadastro e edição sem redirecionamento.
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </CollapsibleSection>
-
-                                    <CollapsibleSection title="Termos Executivos / Funcionais" icon={Settings}>
-                                        <div className="overflow-x-auto rounded-lg border border-card-border">
-                                            <table className="w-full text-sm">
-                                                <thead>
-                                                    <tr className="bg-foreground/5 text-foreground/60 text-xs uppercase tracking-wider">
-                                                        <th className="px-4 py-3 text-left font-semibold">Termo</th>
-                                                        <th className="px-4 py-3 text-left font-semibold">Definição</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            Dashboard
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Painel de controle com indicadores visuais e gráficos para
-                                                            monitoramento rápido do estado operacional da instituição.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            Paciente Oncológico
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Paciente diagnosticado com neoplasia (câncer) que está em
-                                                            acompanhamento na instituição.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            Prioridade
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Nível de urgência atribuído ao paciente (Baixa, Média, Alta, Urgente)
-                                                            para direcionamento de recursos e atenção da equipe.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            Empréstimo
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Registro de saída de material hospitalar para um paciente, com
-                                                            controle de prazo e status de devolução.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            Estoque
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Controle de quantidades de materiais hospitalares disponíveis,
-                                                            emprestados e totais.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            Sidebar
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Barra lateral de navegação que dá acesso a todos os módulos do
-                                                            sistema. Pode ser expandida ou recolhida.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            Tema Claro/Escuro
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Funcionalidade que permite alternar entre o modo claro e escuro da
-                                                            interface, disponível no rodapé da barra lateral.
-                                                        </td>
-                                                    </tr>
-                                                    <tr className="border-t border-card-border">
-                                                        <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                                                            Paginação
-                                                        </td>
-                                                        <td className="px-4 py-3 text-foreground/60">
-                                                            Mecanismo de divisão de resultados em páginas (15 registros por
-                                                            página) para facilitar a navegação em listas extensas.
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </CollapsibleSection>
-
-                                    <CollapsibleSection title="Perguntas Frequentes (FAQ)" icon={HelpCircle}>
-                                        <div className="space-y-4">
-                                            <div className="bg-foreground/5 rounded-lg p-4 border border-card-border">
-                                                <h4 className="font-semibold text-sm text-foreground mb-1">
-                                                    Como faço para recuperar minha senha de acesso?
-                                                </h4>
-                                                <p className="text-xs text-foreground/60">
-                                                    Procure o administrador do sistema para solicitar a redefinição de senha. A funcionalidade de recuperação autônoma será implementada em versões futuras.
-                                                </p>
-                                            </div>
-
-                                            <div className="bg-foreground/5 rounded-lg p-4 border border-card-border">
-                                                <h4 className="font-semibold text-sm text-foreground mb-1">
-                                                    Posso editar um empréstimo após ele ser registrado?
-                                                </h4>
-                                                <p className="text-xs text-foreground/60">
-                                                    Sim. Na listagem de empréstimos, clique no ícone de editar (lápis) para
-                                                    alterar dados como status, data de devolução e materiais emprestados.
-                                                </p>
-                                            </div>
-
-                                            <div className="bg-foreground/5 rounded-lg p-4 border border-card-border">
-                                                <h4 className="font-semibold text-sm text-foreground mb-1">
-                                                    O que acontece com o estoque quando um empréstimo é registrado?
-                                                </h4>
-                                                <p className="text-xs text-foreground/60">
-                                                    A quantidade disponível do material é reduzida automaticamente. Quando a
-                                                    devolução é registrada, o estoque é atualizado novamente.
-                                                </p>
-                                            </div>
-
-                                            <div className="bg-foreground/5 rounded-lg p-4 border border-card-border">
-                                                <h4 className="font-semibold text-sm text-foreground mb-1">
-                                                    Como alternar entre o tema claro e escuro?
-                                                </h4>
-                                                <p className="text-xs text-foreground/60">
-                                                    No rodapé da barra lateral esquerda, localize o botão de alternância de
-                                                    tema (ícone de sol/lua). Clique para alternar entre os modos.
-                                                </p>
-                                            </div>
-
-                                            <div className="bg-foreground/5 rounded-lg p-4 border border-card-border">
-                                                <h4 className="font-semibold text-sm text-foreground mb-1">
-                                                    É possível cadastrar um paciente sem informar o CPF?
-                                                </h4>
-                                                <p className="text-xs text-foreground/60">
-                                                    Não. O CPF é um campo obrigatório no cadastro de pacientes, pois é
-                                                    utilizado como identificador único e para busca automática no módulo de
-                                                    empréstimos.
-                                                </p>
-                                            </div>
-                                        </div>
                                     </CollapsibleSection>
                                 </>
                             )}
