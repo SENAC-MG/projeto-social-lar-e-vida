@@ -173,12 +173,12 @@ export default function DocumentationPage() {
 
     const sections = [
         { id: "visao-geral", label: "Visão Geral do Sistema" },
-        { id: "dashboard", label: "Dashboard — Painel de Controle" },
-        { id: "funcionarios", label: "Funcionários — Gestão de Equipe" },
-        { id: "pacientes", label: "Pacientes — Cadastro e Acompanhamento" },
-        { id: "materiais", label: "Materiais — Controle de Estoque" },
-        { id: "emprestimos", label: "Empréstimos — Registro e Devolução" },
-        { id: "servicos", label: "Serviços — Prestação de Serviços" },
+        { id: "dashboard", label: "Dashboard de Gráficos" },
+        { id: "funcionarios", label: "Cadastro de funcionarios" },
+        { id: "pacientes", label: "Cadastro de pacientes" },
+        { id: "materiais", label: "Cadastro, controle e estoque de materiais" },
+        { id: "emprestimos", label: "Criação de empréstimos" },
+        { id: "servicos", label: "Cadastro de serviços" },
         { id: "glossario", label: "Glossário Técnico" },
     ];
 
@@ -188,7 +188,6 @@ export default function DocumentationPage() {
         <AppShell isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}>
             <main className="bg-[#EEF2F7] dark:bg-background flex-1 flex flex-col min-w-0 transition-all duration-300">
                 <div className="p-4 sm:p-8">
-                    {/* ── Cabeçalho ─────────────────────────────────────────────── */}
                     <div className="flex items-center gap-3 sm:gap-4 mb-8">
                         <button
                             type="button"
@@ -681,7 +680,8 @@ export default function DocumentationPage() {
                                         defaultOpen={true}
                                     >
 
-                                        <Image src="" />
+                                        <Image src="/Emprestimos.jpg" height={500} width={500} alt="text" />
+
                                         <Step number={1} title="Acesse o módulo de Funcionários">
                                             <p>
                                                 Na barra lateral esquerda, clique no ícone <strong>Funcionários</strong>{" "}
@@ -839,8 +839,7 @@ export default function DocumentationPage() {
                                         icon={UserPlus}
                                         defaultOpen={true}
                                     >
-                                        <Image />
-
+                                        <Image src="/menu/Emprestimos.png" height={500} width={500} alt="text" />
                                         <Step number={1} title="Acesse o módulo de Pacientes">
                                             <p>
                                                 Na barra lateral, clique no ícone <strong>Pacientes</strong> (ícone de
@@ -1049,7 +1048,7 @@ export default function DocumentationPage() {
                                         icon={ClipboardList}
                                         defaultOpen={true}
                                     >
-                                        <Image />
+                                        <Image src="/documentation/Funcionarios.png" height={500} width={500} alt="text" />
 
                                         <Step number={1} title="Acesse o módulo de Empréstimos">
                                             <p>
