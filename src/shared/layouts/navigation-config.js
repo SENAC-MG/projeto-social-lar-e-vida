@@ -1,4 +1,4 @@
-import { Hospital, LayoutGrid, Package, Users, Wrench } from "lucide-react";
+import { Hospital, LayoutGrid, Package, Users, Wrench, BookOpen } from "lucide-react";
 
 export const mainNavigationItems = [
     { path: "/dashboard", icon: LayoutGrid, label: "Dashboard" },
@@ -7,4 +7,5 @@ export const mainNavigationItems = [
     { path: "/emprestimos", icon: Package, label: "Empréstimos" },
     { path: "/servicos", icon: Wrench, label: "Serviços" },
     { path: "/materiais", icon: Package, label: "Materiais" },
+    { path: "/documentation", icon: BookOpen, label: "Documentação" },
 ];
